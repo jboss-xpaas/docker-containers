@@ -20,7 +20,7 @@
         - Add jbpm-dashbuilder WAR
             - Add the dependency to kie-wb WAR (jboss-all.xml?)
         - Add custom context name for kie-wb as "kie-wb"?
-        - Replace "standalone.xml" files for jboss-cli sh files (to improve futures EAP/Wildfly version upgrades)
+        - Replace "standalone.xml" files for jboss-cli sh files ( to improve futures EAP/Wildfly version upgrades )
         - Clustering
     - BRMS docker image
         - TODO
