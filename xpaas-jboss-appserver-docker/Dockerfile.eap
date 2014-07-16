@@ -1,0 +1,45 @@
+#####################################################################
+# Dockerfile to build xpaas-eap-docker container image including:
+#   - http daemon
+#   - jboss EAP 6.1
+# Based on XPaaS Base docker image
+# Version: 1.0
+######################################################################
+
+####### BASE ############
+FROM xpaas/xpaas_base:1.0
+
+####### MAINTAINER ############
+MAINTAINER "JBoss XPaaS Team" "xpass-eng@redhat.com"
+
+####### BASE SOFTWARE ############
+# HTTP daemon
+RUN yum install -y httpd
+RUN yum clean all
+
+####### EAP 6.1 ############
+ADD bin/jboss-eap-6.1.0.zip /tmp/
+
+WORKDIR /tmp
+RUN unzip -q jboss-eap-6.1.0.zip
+RUN mv jboss-eap-6.1/ jboss-appserver/
+RUN mv jboss-appserver/ /opt/
+RUN rm -rf jboss-eap-6.1.0.zip
+
+####### PORT EXPOSING ###########
+# Wildfly ports
+EXPOSE 80
+EXPOSE 8080
+EXPOSE 8443
+EXPOSE 9990
+EXPOSE 9999
+
+####### HELPER SCRIPTS ###########
+WORKDIR /
+ADD conf/scripts/jboss-appserver/start.sh /scripts/jboss-appserver/start.sh
+
+####### ADD THE SUPERVISOR DAEMON PROGRAMS ###########
+WORKDIR /
+ADD conf/supervisord/httpd.sv.conf /etc/supervisord/conf.d/httpd.sv.conf
+ADD conf/supervisord/jboss-appserver.sv.conf /etc/supervisord/conf.d/jboss-appserver.sv.conf
+CMD ["/usr/bin/supervisord","-c","/etc/supervisord.conf"]

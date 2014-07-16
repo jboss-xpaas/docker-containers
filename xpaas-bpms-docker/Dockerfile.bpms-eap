@@ -1,0 +1,24 @@
+#####################################################################
+# Dockerfile to build xpaas-bpms-eap-docker container image including:
+#   - http daemon
+#   - EAP 6.1
+# Based on XPaaS JBoss EAP docker image
+# Version: 1.0
+######################################################################
+
+####### BASE ############
+FROM xpaas/xpaas_eap:1.0
+
+####### MAINTAINER ############
+MAINTAINER "JBoss XPaaS Team" "xpass-eng@redhat.com"
+
+####### EAP 6.1 ############
+RUN curl --silent --output /tmp/kie-wb-eap_6_1.war https://repository.jboss.org/nexus/service/local/repositories/releases/content/org/kie/kie-wb-distribution-wars/6.1.0.CR1/kie-wb-distribution-wars-6.1.0.CR1-eap-6_1.war
+WORKDIR /tmp
+RUN mv kie-wb-eap_6_1.war /opt/jboss-appserver/standalone/deployments/
+RUN touch /opt/jboss-appserver/standalone/deployments/kie-wb-eap_6_1.war.dodeploy
+
+WORKDIR /
+ADD conf/bpms-roles.properties /opt/jboss-appserver/standalone/configuration/bpms-roles.properties
+ADD conf/bpms-users.properties /opt/jboss-appserver/standalone/configuration/bpms-users.properties
+ADD conf/standalone-eap.xml /opt/jboss-appserver/standalone/configuration/standalone.xml

@@ -1,0 +1,31 @@
+- Docker images
+    - All Images
+        - build the "latest" tag too for all xpaas docker images
+    - Dockerfiles
+        - Handle script errors
+        - Generate the "latest" image tag automatically in addittion of current image version tag
+    - XPaas Base docker image
+        - Refactor /etc/profile environment variables
+            - Instead of adding the "export" sentence in /etc/profile, add a custom script that exports them in /etc/profile.d
+        - Export the docker container IP address ($DOCKER_IP)
+                where DOCKER_IP=$(ifconfig eth0 | egrep '([0-9]{1,3}\.){3}[0-9]{1,3}' | awk '{print $2}')
+        - There are some yum errors during image build
+        - When running sshd, a warning about internal IP address is shown
+    - xpaas-jboss-appserver-docker
+        - Config files (server profiles, users, roles, etc) + deployments into wildfly
+            - via ssh
+            - via shared volume
+        - When running httpd, a warning about internal IP address is shown
+    - BPMS docker image
+        - Add jbpm-dashbuilder WAR
+            - Add the dependency to kie-wb WAR (jboss-all.xml?)
+        - Add custom context name for kie-wb as "kie-wb"?
+        - Replace "standalone.xml" files for jboss-cli sh files (to improve futures EAP/Wildfly version upgrades)
+        - Clustering
+    - BRMS docker image
+        - TODO
+
+- Fabric8 integration 
+- Review OpenShift3 integration with docker
+- Continuous build integration: On each new release, automatically generate the docker image (new tag) and upload to DockerHub
+    - http://www.wouterdanes.net/2014/04/11/continuous-integration-using-docker-maven-and-jenkins.html

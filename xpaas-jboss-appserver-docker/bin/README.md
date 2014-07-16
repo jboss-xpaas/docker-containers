@@ -1,0 +1,1 @@
+**Drop here you JBoss EAP 6.1.0 ZIP file named <code>jboss-eap-6.1.0.zip</code>**
