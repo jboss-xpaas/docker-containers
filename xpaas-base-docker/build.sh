@@ -9,3 +9,5 @@ docker build -t $IMAGE_NAME:$IMAGE_TAG .
 #ID=$(docker build -t $IMAGE_NAME:$IMAGE_TAG .)
 #docker tag $ID $IMAGE_NAME:latest # Add as latest tag too.
 echo "Build done"
+
+docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_NAME:latest
