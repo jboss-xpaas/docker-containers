@@ -18,13 +18,13 @@ RUN yum install -y httpd
 RUN yum clean all
 
 ####### EAP 6.1 ############
-ADD bin/jboss-eap-6.1.0.zip /tmp/
+ADD bin/jboss-eap-6.1.1.zip /tmp/
 
 WORKDIR /tmp
-RUN unzip -q jboss-eap-6.1.0.zip
+RUN unzip -q jboss-eap-6.1.1.zip
 RUN mv jboss-eap-6.1/ jboss-appserver/
 RUN mv jboss-appserver/ /opt/
-RUN rm -rf jboss-eap-6.1.0.zip
+RUN rm -rf jboss-eap-6.1.1.zip
 
 ####### ADDITIONAL EAP MODULES ############
 #MySQL driver module
