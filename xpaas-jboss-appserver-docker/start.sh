@@ -24,6 +24,22 @@ function usage
      echo "usage: start.sh [[[-i [wildfly,eap] ] [-c <container_name> ] [-p <root_password>] [-ap <admin_password>]] | [-h]]"
 }
 
+if [ $# -ne 2 ]; then
+  echo "Missing argument: starting docker container."
+  usage
+  exit 65
+fi
+
+if [ ! "$1" == "-i" ]; then
+    usage
+    exit
+fi
+
+if [ ! "$2" == "eap" ] && [ ! "$2" == "wildfly" ]; then
+    usage
+    exit
+fi
+
 while [ "$1" != "" ]; do
     case $1 in
         -i | --image ) shift

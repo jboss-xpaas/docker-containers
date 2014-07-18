@@ -24,6 +24,23 @@ function usage
      echo "usage: start.sh [[[-i [bpms-wildfly,bpms-eap] ] [-c <container_name> ] [-p <root_password>] [-ap <admin_password>]] | [-h]]"
 }
 
+if [ $# -ne 2 ]; then
+  echo "Missing argument: starting docker container."
+  usage
+  exit 65
+fi
+
+if [ ! "$1" == "-i" ]; then
+    usage
+    exit
+fi
+
+if [ ! "$2" == "bpms-eap" ] && [ ! "$2" == "bpms-wildfly" ]; then
+    usage
+    exit
+fi
+
+
 while [ "$1" != "" ]; do
     case $1 in
         -i | --image ) shift
@@ -47,6 +64,7 @@ while [ "$1" != "" ]; do
     esac
     shift
 done
+
 
 
 # Check if container is already started
