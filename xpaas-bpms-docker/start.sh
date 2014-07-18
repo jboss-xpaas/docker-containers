@@ -88,5 +88,13 @@ echo $image_xpaas_wildfly > docker.pid
 # End
 echo "Installation of $CONTAINER_NAME docker image container finished"
 echo ""
-echo "Server started in $ip_wildfly"
+echo "Server starting in $ip_wildfly"
 
+if [ $IMAGE_NAME == "xpaas/xpaas_bpms-eap" ]; then
+    echo "The bpms is running at http://$ip_wildfly:8080/kie-wb-eap_6_1"
+
+fi
+
+if [ $IMAGE_NAME == "xpaas/xpaas_jbpm-wildfly" ]; then
+    echo "The bpms is running at http://$ip_wildfly:8080/kie-wb-wildfly"
+fi
