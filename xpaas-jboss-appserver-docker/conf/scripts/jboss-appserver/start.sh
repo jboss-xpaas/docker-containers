@@ -10,11 +10,11 @@ fi
 echo "Using '$JBOSS_APPSERVER_ADMIN_PASSWORD' as JBoss Application Server admin password"
 /opt/jboss-appserver/bin/add-user.sh admin $JBOSS_APPSERVER_ADMIN_PASSWORD --silent
 
+# Obtain the container IP address
+DOCKER_IP=$(/bin/sh /jboss/scripts/docker-ip.sh)
 
 # Starts JBoss Application Server
-DOCKER_IP=$(/bin/sh /scripts/docker-ip.sh)
-
 echo "Starting JBoss Application Server in HTTP address 0.0.0.0:8080 and management address $DOCKER_IP"
-./opt/jboss-appserver/bin/standalone.sh -b 0.0.0.0 -Djboss.bind.address.management=$DOCKER_IP
+/opt/jboss-appserver/bin/standalone.sh -b 0.0.0.0 -Djboss.bind.address.management=$DOCKER_IP
 
 exit $?

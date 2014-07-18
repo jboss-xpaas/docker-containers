@@ -22,6 +22,7 @@ Table of contents
 * **[Deploying web applications into JBoss Application Server](#deploying-web-applications-into-JBoss-Application-Server)**
 * **[Logging](#logging)**
 * **[Stopping the container](#stopping-the-container)**
+* **[JBoss startup commands](#JBoss-startup-commands)**
 * **[Notes](#notes)**
 
 Control scripts
@@ -102,33 +103,33 @@ Starting, stopping and restarting the HTTP daemon
 
 To start the HTTP daemon run:
     
-    ssh root@localhost -p <ssh_port> sh /scripts/start.sh httpd
+    ssh root@localhost -p <ssh_port> sh /jboss/scripts/start.sh httpd
 
 To stop the HTTP daemon run:
     
-    ssh root@localhost -p <ssh_port> sh /scripts/stop.sh httpd
+    ssh root@localhost -p <ssh_port> sh /jboss/scripts/stop.sh httpd
 
 To restart the HTTP daemon run:
     
-    ssh root@localhost -p <ssh_port> sh /scripts/restart.sh httpd
+    ssh root@localhost -p <ssh_port> sh /jboss/scripts/restart.sh httpd
 
 Starting, stopping and restarting JBoss Application Server
 ----------------------------------------------------------
 
 To start JBoss Wildfly/EAP run:
     
-    ssh root@localhost -p <ssh_port> sh /scripts/start.sh wildfly
-    ssh root@localhost -p <ssh_port> sh /scripts/start.sh eap
+    ssh root@localhost -p <ssh_port> sh /jboss/scripts/start.sh wildfly
+    ssh root@localhost -p <ssh_port> sh /jboss/scripts/start.sh eap
 
 To stop JBoss Wildfly/EAP run:
     
-    ssh root@localhost -p <ssh_port> sh /scripts/stop.sh wildfly
-    ssh root@localhost -p <ssh_port> sh /scripts/stop.sh eap
+    ssh root@localhost -p <ssh_port> sh /jboss/scripts/stop.sh wildfly
+    ssh root@localhost -p <ssh_port> sh /jboss/scripts/stop.sh eap
 
 To restart JBoss Wildfly/EAP run:
     
-    ssh root@localhost -p <ssh_port> sh /scripts/restart.sh wildfly
-    ssh root@localhost -p <ssh_port> sh /scripts/restart.sh eap
+    ssh root@localhost -p <ssh_port> sh /jboss/scripts/restart.sh wildfly
+    ssh root@localhost -p <ssh_port> sh /jboss/scripts/restart.sh eap
 
 Acessing JBoss Application Server HTTP interface
 ------------------------------------------------
@@ -219,7 +220,14 @@ Stopping the container
 To stop the previous image container run using <code>start.sh</code> script just type:
 
     ./stop.sh
-    
+
+JBoss startup commands
+----------------------
+
+In order to execute your custom JBoss Command Line Interface (CLI) commands, this container provides
+a mechanism that executes all <code>sh</code> script files located at <code>/jboss/scripts/jboss-appserver/startup</code> 
+once the application server has been started.
+
 Notes
 -----
 **JBoss Wildfly/EAP:**     

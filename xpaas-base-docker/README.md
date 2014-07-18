@@ -93,15 +93,15 @@ Starting, stopping and restarting the SSH daemon
 
 To start the SSH daemon run:
     
-    ssh root@localhost -p <ssh_port> sh /scripts/start.sh sshd
+    ssh root@localhost -p <ssh_port> sh /jboss/scripts/start.sh sshd
 
 To stop the SSH daemon run:
     
-    ssh root@localhost -p <ssh_port> sh /scripts/stop.sh sshd
+    ssh root@localhost -p <ssh_port> sh /jboss/scripts/stop.sh sshd
 
 To restart the SSH daemon run:
     
-    ssh root@localhost -p <ssh_port> sh /scripts/restart.sh sshd
+    ssh root@localhost -p <ssh_port> sh /jboss/scripts/restart.sh sshd
 
 Logging
 -------

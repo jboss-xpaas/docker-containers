@@ -1,0 +1,3 @@
+/subsystem=datasources/data-source=ExampleDS:remove
+data-source add --name=bpms_mysql --jndi-name=java:jboss/datasources/ExampleDS --driver-name=mysql --connection-url=jdbc:mysql://localhost:3306/kie_wb --use-java-context=true --password= --user-name=
+/subsystem=datasources/data-source=bpms_mysql:test-connection-in-pool

@@ -113,3 +113,8 @@ Stopping the container
 To stop the previous image container run using <code>start.sh</code> script just type:
 
     ./stop.sh
+
+Using external MySQL database
+-----------------------------
+
+* [MySQL docker container](https://registry.hub.docker.com/_/mysql/)

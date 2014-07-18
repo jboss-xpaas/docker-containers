@@ -1,9 +1,9 @@
 - Docker images
-    - All Images
-        - build the "latest" tag too for all xpaas docker images
     - Dockerfiles
         - Handle script errors
-        - Generate the "latest" image tag automatically in addittion of current image version tag
+    - Supervisor
+        - Create program groups
+        - Execute jboss CLI files when jboss has started successfully using different approach than jboss-startup.sh control script (using supervisor events?)
     - XPaas Base docker image
         - Refactor /etc/profile environment variables
             - Instead of adding the "export" sentence in /etc/profile, add a custom script that exports them in /etc/profile.d
@@ -28,4 +28,5 @@
 - Fabric8 integration 
 - Review OpenShift3 integration with docker
 - Continuous build integration: On each new release, automatically generate the docker image (new tag) and upload to DockerHub
+    - Create docker "JBoss XPaaS" account ant upload the images?
     - http://www.wouterdanes.net/2014/04/11/continuous-integration-using-docker-maven-and-jenkins.html

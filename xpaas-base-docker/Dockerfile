@@ -82,14 +82,14 @@ EXPOSE 22
 
 ####### HELPER SCRIPTS ###########
 WORKDIR /
-RUN mkdir -p /scripts
-ADD conf/scripts/docker-ip.sh /scripts/docker-ip.sh
+RUN mkdir -p /jboss/scripts
+ADD conf/scripts/docker-ip.sh /jboss/scripts/docker-ip.sh
 
 ####### CONFIGURE & RUN THE SUPERVISOR DAEMON ###########
-ADD conf/scripts/init.sh /scripts/init.sh
-ADD conf/scripts/root-password.sh /scripts/root-password.sh
-ADD conf/scripts/supervisord/start.sh /scripts/start.sh
-ADD conf/scripts/supervisord/restart.sh /scripts/restart.sh
-ADD conf/scripts/supervisord/stop.sh /scripts/stop.sh
+ADD conf/scripts/init.sh /jboss/scripts/init.sh
+ADD conf/scripts/root-password.sh /jboss/scripts/root-password.sh
+ADD conf/scripts/supervisord/start.sh /jboss/scripts/start.sh
+ADD conf/scripts/supervisord/restart.sh /jboss/scripts/restart.sh
+ADD conf/scripts/supervisord/stop.sh /jboss/scripts/stop.sh
 
 CMD ["/usr/bin/supervisord","-c","/etc/supervisord.conf"]

@@ -25,7 +25,7 @@ IMAGE_NAME="xpaas/xpaas_$IMAGE"
 IMAGE_TAG="1.0"
 
 # Generate the dockerfile for the given image to build.
-echo "Generation the dockerfile for $IMAGE"
+echo "Generating the dockerfile for $IMAGE"
 if [ -f Dockerfile ]; then
     rm -f Dockerfile
 fi
@@ -37,4 +37,5 @@ docker build --rm -t $IMAGE_NAME:$IMAGE_TAG .
 echo "Build done"
 rm -f Dockerfile
 
+# Create the latest tag
 docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_NAME:latest

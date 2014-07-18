@@ -26,6 +26,10 @@ RUN mv jboss-eap-6.1/ jboss-appserver/
 RUN mv jboss-appserver/ /opt/
 RUN rm -rf jboss-eap-6.1.0.zip
 
+####### ADDITIONAL EAP MODULES ############
+#MySQL driver module
+ADD bin/mysql_module.tar /opt/jboss-appserver/modules/system/layers/base
+
 ####### PORT EXPOSING ###########
 # Wildfly ports
 EXPOSE 80
@@ -36,10 +40,14 @@ EXPOSE 9999
 
 ####### HELPER SCRIPTS ###########
 WORKDIR /
-ADD conf/scripts/jboss-appserver/start.sh /scripts/jboss-appserver/start.sh
+RUN mkdir -p /jboss/scripts/jboss-appserver/startup
+ADD conf/scripts/jboss-appserver/start.sh /jboss/scripts/jboss-appserver/start.sh
+ADD conf/scripts/jboss-appserver/jboss-startup.sh /jboss/scripts/jboss-appserver/jboss-startup.sh
+ADD conf/scripts/jboss-appserver/startup/create-drivers.sh /jboss/scripts/jboss-appserver/startup/create-drivers.sh
 
 ####### ADD THE SUPERVISOR DAEMON PROGRAMS ###########
 WORKDIR /
 ADD conf/supervisord/httpd.sv.conf /etc/supervisord/conf.d/httpd.sv.conf
 ADD conf/supervisord/jboss-appserver.sv.conf /etc/supervisord/conf.d/jboss-appserver.sv.conf
+ADD conf/supervisord/jboss-appserver-startup.sv.conf /etc/supervisord/conf.d/jboss-appserver-startup.sv.conf
 CMD ["/usr/bin/supervisord","-c","/etc/supervisord.conf"]
