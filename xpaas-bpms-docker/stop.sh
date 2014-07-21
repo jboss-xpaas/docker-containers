@@ -9,3 +9,4 @@ if [ -f docker.pid ]; then
     rm -f docker.pid
 fi
 
+exit 0

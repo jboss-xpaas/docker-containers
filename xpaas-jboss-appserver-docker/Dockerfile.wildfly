@@ -45,7 +45,7 @@ ADD conf/scripts/jboss-appserver/start.sh /jboss/scripts/jboss-appserver/start.s
 ADD conf/scripts/jboss-appserver/start-jboss.sh /jboss/scripts/jboss-appserver/start-jboss.sh
 ADD conf/scripts/jboss-appserver/jboss-startup.sh /jboss/scripts/jboss-appserver/jboss-startup.sh
 ADD conf/scripts/jboss-appserver/jboss-cli.sh /jboss/scripts/jboss-appserver/jboss-cli.sh
-# ADD conf/scripts/jboss-appserver/startup/create-drivers.sh /jboss/scripts/jboss-appserver/startup/create-drivers.sh
+ADD conf/scripts/jboss-appserver/startup/0-create-drivers.sh /jboss/scripts/jboss-appserver/startup/0-create-drivers.sh
 
 ####### ADD THE SUPERVISOR DAEMON PROGRAMS ###########
 WORKDIR /

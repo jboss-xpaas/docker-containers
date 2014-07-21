@@ -95,3 +95,4 @@ echo "Installation of $CONTAINER_NAME docker image container finished"
 echo ""
 echo "Server started in $ip_wildfly"
 
+exit 0

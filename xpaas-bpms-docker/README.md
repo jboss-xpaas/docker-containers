@@ -92,8 +92,7 @@ Using JBoss BPMS
 By default, the JBoss Wildfly/EAP HTTP interface bind address points to <code>0.0.0.0</code>, so you can discover your container port mapping for port <code>8080</code> 
 and type in you browser:
  
-    http://localhost:<binding_port>/kie-wb-wildfly
-    http://localhost:<binding_port>/kie-wb-eap_6_1
+    http://localhost:<binding_port>/kie-wb
     
 Where <code>&lt;binding_port&gt;</code> can be found by running:
 
@@ -105,20 +104,18 @@ Another option if about accessing the Wildfly HTTP interface using the container
     
 Then you can type this URL:
 
-    http://<container_ip_address>:8080/kie-wb-wildfly
-    http://<container_ip_address>:8080/kie-wb-eap_6_1
+    http://<container_ip_address>:8080/kie-wb
 
 **Notes**           
-* The context name for JBoss BPMS for EAP is <code>kie-wb-eap_6_1</code>      
-* The context name for JBoss BPMS for Wildfly is <code>kie-wb-wildfly</code>      
+* The context name for JBoss BPMS is <code>kie-wb</code>      
 * The default <code>admin</code> password is <code>admin</code>           
 
 BPMS Users and roles
 --------------------
 
-BPMS uses a custom security realm based on a properties file.   
+BPMS uses a custom security application realm based on a properties file.   
 
-The default JBoss BPMS users & roles are:
+The default JBoss BPMS application users & roles are:
 
 <table>
     <tr>
@@ -153,13 +150,13 @@ The default JBoss BPMS users & roles are:
     </tr>
 </table>
 
-In order to manage users and roles you can edit via SSH the properties files by running:
+You can manage additional users and roles via SSH by editing the properties files:     
 
     vi /opt/jboss-appserver/standalone/configuration/bpms-users.properties
     vi /opt/jboss-appserver/standalone/configuration/bpms-roles.properties
 
 
-Note: In order to manage JBoss EAP/Wildfly administration & remote users see [JBoss Wildfly/EAP Docker Image](../xpaas-jboss-appserver-docker/README.md)
+Note: In order to manage JBoss EAP/Wildfly management users see [JBoss Wildfly/EAP Docker Image](../xpaas-jboss-appserver-docker/README.md)
 
 Logging
 -------

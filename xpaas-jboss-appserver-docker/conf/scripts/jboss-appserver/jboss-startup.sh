@@ -4,6 +4,8 @@
 # JBoss Application Server startup detection script
 # This script waits for JBoss Application Server startup and run some custom scripts
 # located at $STARTUP_DIRECTORY ( /jboss/scripts/jboss-appserver/startup )
+# NOTE: This script run the custom startup scripts once JBoss EAP/Wildfly has started,
+# before deploying web applications.
 ######################################################################################
 
 # Script arguments

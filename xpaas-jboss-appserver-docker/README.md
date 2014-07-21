@@ -279,6 +279,9 @@ In order to execute your custom JBoss Command Line Interface (CLI) commands, thi
 a mechanism that executes all <code>sh</code> script files located at <code>/jboss/scripts/jboss-appserver/startup</code> 
 once the application server has been started.
 
+**Notes**     
+* Scripts will be executed in alphabetically ascendant sort order
+
 Notes
 -----
 **JBoss Wildfly/EAP:**     

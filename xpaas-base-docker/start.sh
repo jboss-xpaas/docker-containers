@@ -60,3 +60,4 @@ echo "Installation of xpaas-base docker image container finished"
 echo ""
 echo "Server started in $ip_xpaas_base"
 
+exit 0

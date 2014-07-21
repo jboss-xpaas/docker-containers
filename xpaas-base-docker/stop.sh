@@ -8,3 +8,5 @@ if [ -f docker.pid ]; then
     docker stop $container_id
     rm -f docker.pid
 fi
+
+exit 0

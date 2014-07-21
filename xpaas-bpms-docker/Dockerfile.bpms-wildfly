@@ -12,17 +12,15 @@ FROM xpaas/xpaas_wildfly:1.0
 ####### MAINTAINER ############
 MAINTAINER "JBoss XPaaS Team" "xpass-eng@redhat.com"
 
-####### EAP 6.1 ############
-RUN curl --silent --output /tmp/kie-wb-wildfly.war http://repository.jboss.org/nexus/content/groups/public-jboss/org/kie/kie-wb-distribution-wars/6.1.0.CR2/kie-wb-distribution-wars-6.1.0.CR2-wildfly.war
-WORKDIR /tmp
-RUN mv kie-wb-wildfly.war /opt/jboss-appserver/standalone/deployments/
-RUN touch /opt/jboss-appserver/standalone/deployments/kie-wb-wildfly.war.dodeploy
+####### BPMS for Wildfly 8 ############
+RUN curl --silent --output /tmp/kie-wb.war http://repository.jboss.org/nexus/content/groups/public-jboss/org/kie/kie-wb-distribution-wars/6.1.0.CR2/kie-wb-distribution-wars-6.1.0.CR2-wildfly.war
 
+####### SCRIPTS ############
 WORKDIR /
 RUN mkdir -p /jboss/scripts/bpms
-ADD conf/scripts/jboss-appserver/init/set-bpms-dialect.sh /jboss/scripts/jboss-appserver/init/set-bpms-dialect.sh
+ADD conf/scripts/jboss-appserver/startup/1-configure-bpms.sh /jboss/scripts/jboss-appserver/startup/1-configure-bpms.sh
 ADD conf/scripts/jboss-appserver/start-jboss.sh /jboss/scripts/jboss-appserver/start-jboss.sh
+ADD conf/scripts/bpms/bpms.cli /jboss/scripts/bpms/bpms.cli
 ADD conf/scripts/bpms/change-hibernate-dialect.sh /jboss/scripts/bpms/change-hibernate-dialect.sh
 ADD conf/bpms-roles.properties /opt/jboss-appserver/standalone/configuration/bpms-roles.properties
 ADD conf/bpms-users.properties /opt/jboss-appserver/standalone/configuration/bpms-users.properties
-ADD conf/standalone-wildfly.xml /opt/jboss-appserver/standalone/configuration/standalone.xml

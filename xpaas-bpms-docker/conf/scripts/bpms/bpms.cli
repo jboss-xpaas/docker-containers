@@ -1,3 +1,18 @@
-/subsystem=datasources/data-source=ExampleDS:remove
-data-source add --name=bpms_mysql --jndi-name=java:jboss/datasources/ExampleDS --driver-name=mysql --connection-url=jdbc:mysql://localhost:3306/kie_wb --use-java-context=true --password= --user-name=
-/subsystem=datasources/data-source=bpms_mysql:test-connection-in-pool
+# Datasource configuration
+/subsystem=datasources/data-source=ExampleDS:write-attribute(name=connection-url,value="${jboss.bpms.connection_url:jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}")
+/subsystem=datasources/data-source=ExampleDS:write-attribute(name=driver-name,value="${jboss.bpms.driver:h2}")
+/subsystem=datasources/data-source=ExampleDS:write-attribute(name=user-name,value="${jboss.bpms.username:sa}")
+/subsystem=datasources/data-source=ExampleDS:write-attribute(name=password,value="${jboss.bpms.password:sa}")
+
+# Management - Security Realms
+/core-service=management/security-realm=ApplicationRealm/authentication=properties:write-attribute(name=path,value=bpms-users.properties)
+/core-service=management/security-realm=ApplicationRealm/authorization=properties:write-attribute(name=path,value=bpms-roles.properties)
+
+# Subsystem - Security
+/subsystem=security/security-domain=other/authentication=classic/login-module=RealmDirect:remove
+/subsystem=security/security-domain=other/authentication=classic/login-module=Remoting:remove
+/subsystem=security/security-domain=other/authentication=classic/login-module=UsersRoles:add(code=UsersRoles,flag=required,module-options={"usersProperties" => "${jboss.server.config.dir}/bpms-users.properties","rolesProperties" => "${jboss.server.config.dir}/bpms-roles.properties"})
+
+# Reload configuration
+/:reload
+
