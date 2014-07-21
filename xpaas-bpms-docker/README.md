@@ -118,6 +118,41 @@ BPMS Users and roles
 
 BPMS uses a custom security realm based on a properties file.   
 
+The default JBoss BPMS users & roles are:
+
+<table>
+    <tr>
+        <td><b>User</b></td>
+        <td><b>Password</b></td>
+        <td><b>Role</b></td>
+    </tr>
+    <tr>
+        <td>admin</td>
+        <td>admin</td>
+        <td>admin</td>
+    </tr>
+    <tr>
+        <td>pzapata</td>
+        <td>pzapata</td>
+        <td>analyst</td>
+    </tr>
+    <tr>
+        <td>roger</td>
+        <td>roger</td>
+        <td>developer</td>
+    </tr>
+    <tr>
+        <td>neus</td>
+        <td>neus</td>
+        <td>manager</td>
+    </tr>
+    <tr>
+        <td>user</td>
+        <td>user</td>
+        <td>user</td>
+    </tr>
+</table>
+
 In order to manage users and roles you can edit via SSH the properties files by running:
 
     vi /opt/jboss-appserver/standalone/configuration/bpms-users.properties
