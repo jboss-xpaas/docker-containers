@@ -17,8 +17,10 @@ Table of contents
 * **[Building the docker container](#building-the-docker-container)**
 * **[Running the container](#running-the-container)**
 * **[Using JBoss BPMS](#using-JBoss-BPMS)**
+* **[BPMS Users and roles](#BPMS-Users-and-roles)**
 * **[Logging](#logging)**
 * **[Stopping the container](#stopping-the-container)**
+* **[Using external database](#Using-external-database)**
 
 Control scripts
 ---------------
@@ -83,9 +85,7 @@ For running bpms, you need to specify some database connection JBoss Wildfly/EAP
 * If no container name argument is set and image to build is <code>bpms-eap</code>, it defaults to <code>xpaas_bpms-eap</code>    
 * If no root password argument is set, it defaults to <code>xpaas</code>    
 * If no JBoss Wildfly/EAP admin user password argument is set, it defaults to <code>admin123!</code>      
-* Current available bpms connection drivers are:
-    * <code>h2</code>     
-    * <code>mysql</code>     
+* Current available bpms connection drivers are <code>h2</code> and <code>mysql</code>     
 
 Using JBoss BPMS
 ----------------
@@ -113,6 +113,19 @@ Then you can type this URL:
 * The context name for JBoss BPMS for Wildfly is <code>kie-wb-wildfly</code>      
 * The default <code>admin</code> password is <code>admin</code>           
 
+BPMS Users and roles
+--------------------
+
+BPMS uses a custom security realm based on a properties file.   
+
+In order to manage users and roles you can edit via SSH the properties files by running:
+
+    vi /opt/jboss-appserver/standalone/configuration/bpms-users.properties
+    vi /opt/jboss-appserver/standalone/configuration/bpms-roles.properties
+
+
+Note: In order to manage JBoss EAP/Wildfly administration & remote users see [JBoss Wildfly/EAP Docker Image](../xpaas-jboss-appserver-docker/README.md)
+
 Logging
 -------
 
@@ -132,10 +145,10 @@ To stop the previous image container run using <code>start.sh</code> script just
 
     ./stop.sh
 
-Using external MySQL database
------------------------------
+Using external database
+-----------------------
 
-You can use any external MySQL database instance for running JBoss BPMS.      
+You can use any external database instance for running JBoss BPMS.      
 
 In order to connect to an external database you have to set these environment variables:    
 
@@ -144,7 +157,7 @@ In order to connect to an external database you have to set these environment va
 - <code>BPMS_CONNECTION_USER</code> - The database connection username. If not set, defaults to <code>sa</code>
 - <code>BPMS_CONNECTION_PASSWORD</code> - The database connection password. If not set, defaults to <code>sa</code>      
 
-In addition, you can use the [Docker MySQL image](https://registry.hub.docker.com/_/mysql/) to run a MySQL docker container and link with JBoss BPMS.    
+For example, you can use the  to run a MySQL docker container and use the database instance with JBoss BPMS:    
 
 1.- Download the Docker MySQL image
     
@@ -152,11 +165,19 @@ In addition, you can use the [Docker MySQL image](https://registry.hub.docker.co
     
 2.- Run the MySQL docker image
 
-    docker run --name bpms-mysql -e MYSQL_ROOT_PASSWORD=root123 -d -P mysql
+    docker run -e MYSQL_ROOT_PASSWORD=root123 -d -P mysql
     
 3.- Create the JBoss BPMS database in the MySQL instance     
 
 4.- Run the JBoss BPMS docker image
 
-    ./start.sh --link bpms-mysql:mysql -i bpms-wildfly -c xpaas_bpms-wildfly -p "root123!" -ap "root123!" -d "mysql" -url "jdbc:mysql://<mysql_container_ip>:<mysql_container_port>/<database>" -user <username> -password <password>
+    ./start.sh -i bpms-wildfly -c xpaas_bpms-wildfly -p "root123!" -ap "root123!" -d "mysql" -url "jdbc:mysql://<mysql_container_ip>:<mysql_port>/<database>" -user <username> -password <password>
 
+Where <code>mysql_container_ip</code> - Can be found by running:
+    
+    docker inspect --format '{{ .NetworkSettings.IPAddress }}' <mysql_container_id>
+ 
+**Notes**     
+* Using this strategy there is no need for running the containers using Docker container linking     
+* Another strategy is to run the MySQL docker container using the argument <code>-P</code> and bind the connection to an available port on <code>localhost</code>      
+* Current available bpms connection drivers are <code>h2</code> and <code>mysql</code>    

@@ -1,6 +1,8 @@
 - Docker images
     - All images
         - Fail running the container if any mandatory env variable is not set
+        - README's
+            - Code tags -> underscore character is not visible as well 
     - Dockerfiles
         - Handle script errors
     - Supervisor
