@@ -19,6 +19,10 @@ RUN mv kie-wb-wildfly.war /opt/jboss-appserver/standalone/deployments/
 RUN touch /opt/jboss-appserver/standalone/deployments/kie-wb-wildfly.war.dodeploy
 
 WORKDIR /
+RUN mkdir -p /jboss/scripts/bpms
+ADD conf/scripts/jboss-appserver/init/set-bpms-dialect.sh /jboss/scripts/jboss-appserver/init/set-bpms-dialect.sh
+ADD conf/scripts/jboss-appserver/start-jboss.sh /jboss/scripts/jboss-appserver/start-jboss.sh
+ADD conf/scripts/bpms/change-hibernate-dialect.sh /jboss/scripts/bpms/change-hibernate-dialect.sh
 ADD conf/bpms-roles.properties /opt/jboss-appserver/standalone/configuration/bpms-roles.properties
 ADD conf/bpms-users.properties /opt/jboss-appserver/standalone/configuration/bpms-users.properties
 ADD conf/standalone-wildfly.xml /opt/jboss-appserver/standalone/configuration/standalone.xml

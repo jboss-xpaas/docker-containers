@@ -10,6 +10,14 @@
 #                           If not specified, defaults to "xpaas"
 # -ap | --admin-password:        The JBoss App Server admin user password 
 #                           If not specified, defaults to "admin123!"
+# -d | --connection-driver: The BPMS database connection driver 
+#                           If not specified, defaults to "h2!"
+# -url | --connection-url:  The BPMS database connection URL 
+#                           If not specified, defaults to "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
+# -user | --connection-username:    The BPMS database connection username 
+#                                   If not specified, defaults to "sa"
+# -password | --connection-password:    The BPMS database connection password 
+#                                       If not specified, defaults to "sa"
 # -h | --help;              Show the script usage
 #
 
@@ -18,6 +26,10 @@ ROOT_PASSWORD="xpaas"
 JBOSS_APPSERVER_ADMIN_PASSWORD="admin123!"
 IMAGE_NAME="xpaas/xpaas_bpms-wildfly"
 IMAGE_TAG="1.0"
+CONNECTION_DRIVER=h2
+CONNECTION_URL="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
+CONNECTION_USERNAME=SA
+CONNECTION_PASSWORD=SA
 
 function usage
 {
@@ -56,6 +68,18 @@ while [ "$1" != "" ]; do
         -ap | --admin-password )  shift
                                 JBOSS_APPSERVER_ADMIN_PASSWORD=$1
                                 ;;
+        -d | --connection-driver )  shift
+                                CONNECTION_DRIVER=$1
+                                ;;
+        -url | --connection-url )  shift
+                                CONNECTION_URL=$1
+                                ;;
+        -user | --connection-username )  shift
+                                CONNECTION_USERNAME=$1
+                                ;;
+        -password | --connection-password )  shift
+                                CONNECTION_PASSWORD=$1
+                                ;;
         -h | --help )           usage
                                 exit
                                 ;;
@@ -81,7 +105,11 @@ echo "Starting $CONTAINER_NAME docker container using:"
 echo "** Container name: $CONTAINER_NAME"
 echo "** Root password: $ROOT_PASSWORD"
 echo "** JBoss Admin password: $JBOSS_APPSERVER_ADMIN_PASSWORD"
-image_xpaas_wildfly=$(docker run -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e JBOSS_APPSERVER_ADMIN_PASSWORD="$JBOSS_APPSERVER_ADMIN_PASSWORD" $IMAGE_NAME:$IMAGE_TAG)
+echo "** BPMS connection driver: $CONNECTION_DRIVER"
+echo "** BPMS connection URL: $CONNECTION_URL"
+echo "** BPMS connection username: $CONNECTION_USERNAME"
+echo "** BPMS connection password: $CONNECTION_PASSWORD"
+image_xpaas_wildfly=$(docker run -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e JBOSS_APPSERVER_ADMIN_PASSWORD="$JBOSS_APPSERVER_ADMIN_PASSWORD" -e BPMS_CONNECTION_URL="$CONNECTION_URL" -e BPMS_CONNECTION_DRIVER="$CONNECTION_DRIVER" -e BPMS_CONNECTION_USER="$CONNECTION_USERNAME" -e BPMS_CONNECTION_PASSWORD="$CONNECTION_PASSWORD" $IMAGE_NAME:$IMAGE_TAG)
 ip_wildfly=$(docker inspect $image_xpaas_wildfly | grep IPAddress | awk '{print $2}' | tr -d '",')
 echo $image_xpaas_wildfly > docker.pid
 

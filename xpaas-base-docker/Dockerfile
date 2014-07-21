@@ -2,13 +2,14 @@
 # Dockerfile to build xpaas-base-docker container image including:
 #   - Supervisor daemon
 #   - Supervisor-stdout
+#   - Git client
 #   - Python PIP
 #   - Net tools
 #   - Telnet client
 #   - Open SSH server & client
 #   - Unzip tool
 #   - wget tool
-#   - Java 1.7.0 OpenJDK 
+#   - Java 1.7.0 OpenJDK & development package
 #   - Maven 3.0.5 & JBoss Nexus repositories configured
 # Based on Fedora docker image
 # Version: 1.0
@@ -29,7 +30,7 @@ ENV MAVEN_HOME /opt/apache-maven
 
 ####### BASE SOFTWARE ############
 # telnet is required by some fabric command. without it you have silent failures
-RUN yum install -y net-tools java-1.7.0-openjdk which telnet unzip openssh-server sudo openssh-clients supervisor wget python-pip
+RUN yum install -y net-tools java-1.7.0-openjdk java-devel which telnet unzip openssh-server sudo openssh-clients supervisor wget python-pip git
 RUN yum clean all
 RUN pip install supervisor-stdout
 

@@ -10,6 +10,8 @@
 #                           If not specified, defaults to "xpaas"
 # -ap | --admin-password:        The JBoss App Server admin user password 
 #                           If not specified, defaults to "admin123!"
+# -args | --arguments:      The arguments for running standalone.sh 
+#                           If not specified, defaults to empty
 # -h | --help;              Show the script usage
 #
 
@@ -18,10 +20,11 @@ ROOT_PASSWORD="xpaas"
 JBOSS_APPSERVER_ADMIN_PASSWORD="admin123!"
 IMAGE_NAME="xpaas/xpaas_wildfly"
 IMAGE_TAG="1.0"
+RUN_ARGUMENTS=
 
 function usage
 {
-     echo "usage: start.sh [[[-i [wildfly,eap] ] [-c <container_name> ] [-p <root_password>] [-ap <admin_password>]] | [-h]]"
+     echo "usage: start.sh [[[-i [wildfly,eap] ] [-c <container_name> ] [-p <root_password>] [-ap <admin_password>]  [-args <run_arguments> ]] | [-h]]"
 }
 
 if [ $# -ne 2 ]; then
@@ -55,6 +58,9 @@ while [ "$1" != "" ]; do
         -ap | --admin-password )  shift
                                 JBOSS_APPSERVER_ADMIN_PASSWORD=$1
                                 ;;
+        -args | --arguments )  shift
+                                RUN_ARGUMENTS=$1
+                                ;;
         -h | --help )           usage
                                 exit
                                 ;;
@@ -79,7 +85,8 @@ echo "Starting $CONTAINER_NAME docker container using:"
 echo "** Container name: $CONTAINER_NAME"
 echo "** Root password: $ROOT_PASSWORD"
 echo "** JBoss Admin password: $JBOSS_APPSERVER_ADMIN_PASSWORD"
-image_xpaas_wildfly=$(docker run -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e JBOSS_APPSERVER_ADMIN_PASSWORD="$JBOSS_APPSERVER_ADMIN_PASSWORD" $IMAGE_NAME:$IMAGE_TAG)
+echo "** JBoss run arguments: $RUN_ARGUMENTS"
+image_xpaas_wildfly=$(docker run -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e JBOSS_APPSERVER_ADMIN_PASSWORD="$JBOSS_APPSERVER_ADMIN_PASSWORD" -e JBOSS_APPSERVER_ARGUMENTS="$RUN_ARGUMENTS" $IMAGE_NAME:$IMAGE_TAG)
 ip_wildfly=$(docker inspect $image_xpaas_wildfly | grep IPAddress | awk '{print $2}' | tr -d '",')
 echo $image_xpaas_wildfly > docker.pid
 

@@ -60,6 +60,12 @@ Or you can try it out via docker command directly:
 
 These commands will start a new XPaas Base container with SSH daemon enabed.     
 
+**Environment variables**
+
+These are the environment variables supported when running the JBoss Wildfly/EAP container:       
+
+- <code>ROOT_PASSWORD</code> - The root password for <code>root</code> system user. Useful to connect via SSH
+
 **Notes**           
 * If no container name argument is set, it defaults to <code>xpaas-base</code>       
 * If no root password argument is set, it defaults to <code>xpaas</code>    
@@ -124,5 +130,3 @@ Notes
 -----
 
 * The default daemon enabled with the container is <code>supervisor</code>.The other daemon and program executions are handled by the supervisor daemon
-* When running the container, the following environment variables are set:
-    * DOCKER_IP - The IP address for the container

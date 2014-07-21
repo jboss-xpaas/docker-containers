@@ -1,5 +1,10 @@
 #!/bin/sh
 
+###############################################################
+# XPaas supervisor daemon control script
+# This script is used to start a supervisor program
+###############################################################
+
 # Program arguments
 #   1.- The program name
 

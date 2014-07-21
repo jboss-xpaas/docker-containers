@@ -1,9 +1,13 @@
 - Docker images
+    - All images
+        - Fail running the container if any mandatory env variable is not set
     - Dockerfiles
         - Handle script errors
     - Supervisor
         - Create program groups
-        - Execute jboss CLI files when jboss has started successfully using different approach than jboss-startup.sh control script (using supervisor events?)
+        - Execute jboss CLI files when jboss has started successfully 
+            - using different approach than jboss-startup.sh control script (using supervisor events?)
+            - Execute CLI when building the image instead of running the container -> which server profile?
     - XPaas Base docker image
         - Refactor /etc/profile environment variables
             - Instead of adding the "export" sentence in /etc/profile, add a custom script that exports them in /etc/profile.d
@@ -12,11 +16,16 @@
         - There are some yum errors during image build
         - When running sshd, a warning about internal IP address is shown
     - xpaas-jboss-appserver-docker
+        - Domain mode support
+        - Clustering (standalone & domain modes)
         - Config files (server profiles, users, roles, etc) + deployments into wildfly
             - via ssh
             - via shared volume
+        - Unify both dockerfiles (eap,wildfly) in a single one -> Using templates & sed command?
         - When running httpd, a warning about internal IP address is shown
     - BPMS docker image
+        - Show the URL connection in the console output -> http://3243.33:338/kie-wb.....
+        - Add default users/roles
         - Add jbpm-dashbuilder WAR
             - Add the dependency to kie-wb WAR (jboss-all.xml?)
         - Add custom context name for kie-wb as "kie-wb"?

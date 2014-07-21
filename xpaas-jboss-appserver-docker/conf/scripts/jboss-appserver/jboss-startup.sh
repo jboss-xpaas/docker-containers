@@ -1,5 +1,11 @@
 #!/bin/bash
 
+######################################################################################
+# JBoss Application Server startup detection script
+# This script waits for JBoss Application Server startup and run some custom scripts
+# located at $STARTUP_DIRECTORY ( /jboss/scripts/jboss-appserver/startup )
+######################################################################################
+
 # Script arguments
 # 1.- The directory where sh script files to execute after server startup are located.
 

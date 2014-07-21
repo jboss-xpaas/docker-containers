@@ -1,4 +1,11 @@
-#!/bin/bash
+#!/bin/sh
+
+##########################################################################
+# JBoss Application Server startup script
+# 1.- Configure admin passowrd
+# 2.- Execute custom scripts in /jboss/scripts/jboss-appserver/init
+# 3.- Start JBoss Application Server 
+##########################################################################
 
 # Check if any jboss appserver (wildfly, eap) admin password is set in container runtime configuration.
 if [[ -z "$JBOSS_APPSERVER_ADMIN_PASSWORD" ]] ; then
@@ -13,8 +20,19 @@ echo "Using '$JBOSS_APPSERVER_ADMIN_PASSWORD' as JBoss Application Server admin 
 # Obtain the container IP address
 DOCKER_IP=$(/bin/sh /jboss/scripts/docker-ip.sh)
 
-# Starts JBoss Application Server
-echo "Starting JBoss Application Server in HTTP address 0.0.0.0:8080 and management address $DOCKER_IP"
-/opt/jboss-appserver/bin/standalone.sh -b 0.0.0.0 -Djboss.bind.address.management=$DOCKER_IP
+# Execute custom scripts before starting JBoss Application Server
+INIT_DIRECTORY=/jboss/scripts/jboss-appserver/init
+echo "Executing custom scripts in $INIT_DIRECTORY..."
+pushd .
+cd $INIT_DIRECTORY
+for script in *.sh
+do
+ echo "Running jboss custom init script '$script'"
+ ./$script
+done
+popd
+
+# Starts JBoss Application Server using $RUN_ARGUMENTS, specified when running the container, if any.
+/jboss/scripts/jboss-appserver/start-jboss.sh $DOCKER_IP
 
 exit $?

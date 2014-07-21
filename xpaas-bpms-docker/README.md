@@ -53,21 +53,39 @@ Running the container
 
 To run a new image container from XPaaS JBoss Wildfly/EAP  run:
     
-    ./start.sh [-i [bpms-wildfly,bpms-eap]] [-c <container_name>] [-p <root_password>] [-ap <admin_password>]
-    Example: ./start.sh -i bpms-wildfly -c xpaas_bpms-wildfly -p "root123!" -ap "root123!"
+    ./start.sh [-i [bpms-wildfly,bpms-eap]] [-c <container_name>] [-p <root_password>] [-ap <admin_password>] [-d <connection_driver>] [-url <connection_url>] [-user <connection_user>] [-password <connection_password>]
+    Example: ./start.sh -i bpms-wildfly -c xpaas_bpms-wildfly -p "root123!" -ap "root123!" -d "h2" -url "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE" -user sa -password sa
 
 Or you can try it out via docker command directly:
 
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_APPSERVER_ADMIN_PASSWORD="<jboss_admin_password>"] xpaas/xpaas_bpms-wildfly:<version>
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_APPSERVER_ADMIN_PASSWORD="<jboss_admin_password>"] xpaas/xpaas_bpms-eap:<version>
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_APPSERVER_ADMIN_PASSWORD="<jboss_admin_password>"] [-e BPMS_CONNECTION_DRIVER="<connection_driver>"] [-e BPMS_CONNECTION_URL="<connection_url>"] [-e BPMS_CONNECTION_USER="<connection_user>"] [-e BPMS_CONNECTION_PASSWORD="<connection_password>"] xpaas/xpaas_bpms-wildfly:<version>
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_APPSERVER_ADMIN_PASSWORD="<jboss_admin_password>"] [-e BPMS_CONNECTION_DRIVER="<connection_driver>"] [-e BPMS_CONNECTION_URL="<connection_url>"] [-e BPMS_CONNECTION_USER="<connection_user>"] [-e BPMS_CONNECTION_PASSWORD="<connection_password>"] xpaas/xpaas_bpms-eap:<version>
 
 These commands will start JBoss BPMS web application.
+
+**Environment variables**
+
+These are the environment variables supported when running the JBoss Wildfly/EAP container:       
+
+- <code>ROOT_PASSWORD</code> - The root password for <code>root</code> system user. Useful to connect via SSH     
+- <code>JBOSS_APPSERVER_ADMIN_PASSWORD</code> - The JBoss <code>admin</code> user password      
+- <code>JBOSS_APPSERVER_ARGUMENTS</code> - The arguments to pass when executing <code>standalone.sh</code> startup script     
+
+For running bpms, you need to specify some database connection JBoss Wildfly/EAP run arguments:
+
+- <code>BPMS_CONNECTION_URL</code> - The database connection URL. If not set, defaults to <code>jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</code>          
+- <code>BPMS_CONNECTION_DRIVER</code> - The database connection driver. See [Notes] for available database connection drivers. If not set, defaults to <code>h2</code>        
+- <code>BPMS_CONNECTION_USER</code> - The database connection username. If not set, defaults to <code>sa</code>
+- <code>BPMS_CONNECTION_PASSWORD</code> - The database connection password. If not set, defaults to <code>sa</code>
 
 **Notes**           
 * If no container name argument is set and image to build is <code>bpms-wildfly</code>, it defaults to <code>xpaas_bpms-wildfly</code>        
 * If no container name argument is set and image to build is <code>bpms-eap</code>, it defaults to <code>xpaas_bpms-eap</code>    
 * If no root password argument is set, it defaults to <code>xpaas</code>    
-* If no JBoss Wildfly/EAP admin user password argument is set, it defaults to <code>admin123!</code>     
+* If no JBoss Wildfly/EAP admin user password argument is set, it defaults to <code>admin123!</code>      
+* Current available bpms connection drivers are:
+    * <code>h2</code>     
+    * <code>mysql</code>     
 
 Using JBoss BPMS
 ----------------
@@ -117,4 +135,28 @@ To stop the previous image container run using <code>start.sh</code> script just
 Using external MySQL database
 -----------------------------
 
-* [MySQL docker container](https://registry.hub.docker.com/_/mysql/)
+You can use any external MySQL database instance for running JBoss BPMS.      
+
+In order to connect to an external database you have to set these environment variables:    
+
+- <code>BPMS_CONNECTION_URL</code> - The database connection URL. If not set, defaults to <code>jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</code>          
+- <code>BPMS_CONNECTION_DRIVER</code> - The database connection driver. See [Notes] for available database connection drivers. If not set, defaults to <code>h2</code>        
+- <code>BPMS_CONNECTION_USER</code> - The database connection username. If not set, defaults to <code>sa</code>
+- <code>BPMS_CONNECTION_PASSWORD</code> - The database connection password. If not set, defaults to <code>sa</code>      
+
+In addition, you can use the [Docker MySQL image](https://registry.hub.docker.com/_/mysql/) to run a MySQL docker container and link with JBoss BPMS.    
+
+1.- Download the Docker MySQL image
+    
+    docker pull mysql
+    
+2.- Run the MySQL docker image
+
+    docker run --name bpms-mysql -e MYSQL_ROOT_PASSWORD=root123 -d -P mysql
+    
+3.- Create the JBoss BPMS database in the MySQL instance     
+
+4.- Run the JBoss BPMS docker image
+
+    ./start.sh --link bpms-mysql:mysql -i bpms-wildfly -c xpaas_bpms-wildfly -p "root123!" -ap "root123!" -d "mysql" -url "jdbc:mysql://<mysql_container_ip>:<mysql_container_port>/<database>" -user <username> -password <password>
+

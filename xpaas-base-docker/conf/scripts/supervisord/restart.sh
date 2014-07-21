@@ -1,5 +1,10 @@
 #!/bin/sh
 
+###############################################################
+# XPaas supervisor daemon control script
+# This script is used to restart a supervisor program
+###############################################################
+
 # Program arguments
 #   1.- The program name
 
