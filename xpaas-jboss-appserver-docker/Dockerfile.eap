@@ -17,6 +17,8 @@ MAINTAINER "JBoss XPaaS Team" "xpass-eng@redhat.com"
 RUN yum install -y httpd
 RUN yum clean all
 
+ENV JBOSS_MANAGEMENT_PORT 9999
+
 ####### EAP 6.1 ############
 ADD bin/jboss-eap-6.1.1.zip /tmp/
 

@@ -13,7 +13,8 @@ FROM xpaas/xpaas_eap:1.0
 MAINTAINER "JBoss XPaaS Team" "xpass-eng@redhat.com"
 
 ####### BPMS for EAP 6.1 ############
-RUN curl --silent --output /tmp/kie-wb.war https://repository.jboss.org/nexus/service/local/repositories/releases/content/org/kie/kie-wb-distribution-wars/6.1.0.CR1/kie-wb-distribution-wars-6.1.0.CR1-eap-6_1.war
+RUN curl --silent --output /tmp/kie-wb.war https://repository.jboss.org/nexus/service/local/repositories/releases/content/org/kie/kie-wb-distribution-wars/6.1.0.CR2/kie-wb-distribution-wars-6.1.0.CR2-eap-6_1.war
+RUN curl --silent --output /tmp/dashbuilder.war http://repository.jboss.org/nexus/content/repositories/releases/org/jbpm/dashboard/jbpm-dashboard-distributions/6.1.0.CR2/jbpm-dashboard-distributions-6.1.0.CR2-jboss-as7.war
 
 ####### SCRIPTS ############
 WORKDIR /

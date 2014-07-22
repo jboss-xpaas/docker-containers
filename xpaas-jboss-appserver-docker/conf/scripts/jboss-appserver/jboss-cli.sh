@@ -43,6 +43,6 @@ done
 DOCKER_IP=$(/bin/sh /jboss/scripts/docker-ip.sh)
 
 # Connect to JBoss CLI using management IP as DOCKER_IP
-/opt/jboss-appserver/bin/jboss-cli.sh -c --controller=$DOCKER_IP:9990 $COMMAND $FILE
+/opt/jboss-appserver/bin/jboss-cli.sh -c --controller=$DOCKER_IP:$JBOSS_MANAGEMENT_PORT $COMMAND $FILE
 
 exit $?

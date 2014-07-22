@@ -12,6 +12,8 @@ FROM xpaas/xpaas_base:1.0
 ####### MAINTAINER ############
 MAINTAINER "JBoss XPaaS Team" "xpass-eng@redhat.com"
 
+ENV JBOSS_MANAGEMENT_PORT 9990
+
 ####### BASE SOFTWARE ############
 # HTTP daemon
 RUN yum install -y httpd

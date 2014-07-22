@@ -33,10 +33,16 @@ echo "Configuring server datasource & security parameters..."
 
 # Deploy BPMS webapp
 # TODO: Deploy via CLI?
-# TODO: Pending to deploy jbpm-dashbuilder
 echo "Deploying BPMS webapp..."
 cp -f /tmp/kie-wb.war /opt/jboss-appserver/standalone/deployments/
 touch /opt/jboss-appserver/standalone/deployments/kie-wb.war.dodeploy
+
+# Deploy Dashbuilder webapp
+# TODO: Deploy via CLI?
+echo "Deploying Dashbuilder webapp..."
+cp -f /tmp/dashbuilder.war /opt/jboss-appserver/standalone/deployments/
+touch /opt/jboss-appserver/standalone/deployments/dashbuilder.war.dodeploy
+
 
 echo "End of JBoss BPMS web application configuration."
 
