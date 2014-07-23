@@ -21,6 +21,7 @@ Table of contents
 * **[Logging](#logging)**
 * **[Stopping the container](#stopping-the-container)**
 * **[Using external database](#Using-external-database)**
+* **[Experimenting](#Experimenting)**
 * **[Notes](#Notes)**
 
 Control scripts
@@ -243,6 +244,15 @@ Take a look at the following example:
 The JBoss BPMS database connection will automatically link to the MySQL docker container instance using the <code>bpms</code> database.
 
 NOTE: When using MySQL container linking with JBoss BPMS container, the connection envrionment variables <code>BPMS_CONNECTION_URL, BPMS_CONNECTION_DRIVER, BPMS_CONNECTION_USER, BPMS_CONNECTION_PASSWORD</code> have no effect, even if set when running the JBoss BPMS container.
+
+Experimenting
+-------------
+To spin up a shell in one of the containers try:
+
+    docker run -P -i -t xpaas/xpaas_bpms-wildfly /bin/bash # For JBoss Wildfly distribution
+    docker run -P -i -t xpaas/xpaas_bpms-eap /bin/bash # For JBoss EAP distribution
+    
+You can then noodle around the container and run stuff & look at files etc.
 
 Notes
 -----

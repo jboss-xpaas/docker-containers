@@ -23,6 +23,7 @@ Table of contents
 * **[Logging](#logging)**
 * **[Stopping the container](#stopping-the-container)**
 * **[JBoss startup scripts](#JBoss-startup-scripts)**
+* **[Experimenting](#Experimenting)**
 * **[Notes](#notes)**
 
 Control scripts
@@ -271,6 +272,15 @@ These scripts will be executed only once (on first container run), in order to a
 initial configurations for JBoss Wildfly/EAP before doing any deploy.
 
 NOTE that scripts will be executed using filename alphabetically ascendant sort order
+
+Experimenting
+-------------
+To spin up a shell in one of the containers try:
+
+    docker run -P -i -t xpaas/xpaas_wildfly /bin/bash # For JBoss Wildfly distribution
+    docker run -P -i -t xpaas/xpaas_eap /bin/bash # For JBoss EAP distribution
+    
+You can then noodle around the container and run stuff & look at files etc.
 
 Notes
 -----

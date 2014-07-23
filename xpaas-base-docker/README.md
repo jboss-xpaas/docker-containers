@@ -22,6 +22,7 @@ Table of contents
 * **[Starting, stopping and restarting the SSH daemon](#starting,-stopping-and-restarting-the-SSH-daemon)**
 * **[Logging](#logging)**
 * **[Stopping the container](#stopping-the-container)**
+* **[Experimenting](#Experimenting)**
 * **[Notes](#notes)**
 
 Control scripts
@@ -125,6 +126,14 @@ Stopping the container
 To stop the previous image container run using <code>start.sh</code> script just type:
 
     ./stop.sh
+
+Experimenting
+-------------
+To spin up a shell in one of the containers try:
+
+    docker run -P -i -t xpaas/xpaas_base /bin/bash
+    
+You can then noodle around the container and run stuff & look at files etc.
     
 Notes
 -----
