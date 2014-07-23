@@ -1,6 +1,5 @@
 - Docker images
     - All images
-        - Fail running the container if any mandatory env variable is not set
         - README's
             - Code tags -> underscore character is not visible as well 
     - Dockerfiles
@@ -23,6 +22,7 @@
         - Unify both dockerfiles (eap,wildfly) in a single one -> Using templates & sed command?
         - When running httpd, a warning about internal IP address is shown
     - BPMS docker image
+        - BPMS Wildfly container is not starting up as well -> https://issues.jboss.org/browse/WFLY-3355 
         - Clustering
     - BRMS docker image
         - TODO

@@ -12,6 +12,7 @@ FROM xpaas/xpaas_base:1.0
 ####### MAINTAINER ############
 MAINTAINER "JBoss XPaaS Team" "xpass-eng@redhat.com"
 
+####### ENVIRONEMNT ############
 ENV JBOSS_MANAGEMENT_PORT 9990
 
 ####### BASE SOFTWARE ############
@@ -45,7 +46,7 @@ RUN mkdir -p /jboss/scripts/jboss-appserver/startup
 RUN mkdir -p /jboss/scripts/jboss-appserver/init
 ADD conf/scripts/jboss-appserver/start.sh /jboss/scripts/jboss-appserver/start.sh
 ADD conf/scripts/jboss-appserver/start-jboss.sh /jboss/scripts/jboss-appserver/start-jboss.sh
-ADD conf/scripts/jboss-appserver/jboss-startup.sh /jboss/scripts/jboss-appserver/jboss-startup.sh
+ADD conf/scripts/jboss-appserver/jboss-startup-detection.sh /jboss/scripts/jboss-appserver/jboss-startup-detection.sh
 ADD conf/scripts/jboss-appserver/jboss-cli.sh /jboss/scripts/jboss-appserver/jboss-cli.sh
 ADD conf/scripts/jboss-appserver/startup/0-create-drivers.sh /jboss/scripts/jboss-appserver/startup/0-create-drivers.sh
 

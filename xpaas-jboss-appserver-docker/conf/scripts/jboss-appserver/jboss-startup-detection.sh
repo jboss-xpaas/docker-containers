@@ -14,7 +14,7 @@
 # Check image argument to build.
 if [ $# -ne 1 ]; then
   echo "Missing argument: startup directory."
-  echo "Usage: ./jboss-startup.sh /jboss/scripts/jboss-appserver/startup"
+  echo "Usage: ./jboss-startup-detection.sh /jboss/scripts/jboss-appserver/startup"
   exit 65
 fi
 
