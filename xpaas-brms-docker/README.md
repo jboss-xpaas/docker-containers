@@ -55,7 +55,7 @@ Running the container
 
 To run a new image container from XPaaS JBoss Wildfly/EAP  run:
     
-    ./start.sh [-i [brms-wildfly,brms-eap]] [-c <container_name>] [-p <root_password>] [-ap <admin_password>] [-d <connection_driver>] [-url <connection_url>] [-user <connection_user>] [-password <connection_password>]
+    ./start.sh [-i [brms-wildfly,brms-eap]] [-c <container_name>] [-p <root_password>] [-ap <admin_password>] [-d <connection_driver>] [-url <connection_url>] [-user <connection_user>] [-password <connection_password>] [-l <container_linking>]
     Example: ./start.sh -i brms-wildfly -c xpaas_brms-wildfly -p "root123!" -ap "root123!" -d "h2" -url "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE" -user sa -password sa
 
 Or you can try it out via docker command directly:
@@ -209,6 +209,35 @@ Where <code>mysql_container_ip</code> - Can be found by running:
     
     docker inspect --format '{{ .NetworkSettings.IPAddress }}' <mysql_container_id>
  
+ **MySQL docker container linking support**
+ 
+ If you are using as external database a MySQL instance, and it's provided using the [Official MySQL docker container](https://registry.hub.docker.com/_/mysql/), 
+ you can use [Docker container linking](https://docs.docker.com/userguide/dockerlinks/) to run JBoss BRMS with minimal startup configuration.     
+ 
+ When linking MySQL container with the JBoss BRMS one, the only mandatory environment variable to set is <code>BRMS_DATABASE</code>.     
+ 
+ Take a look at the following example:
+ 
+ 1.- Download the Docker MySQL image
+     
+     docker pull mysql
+     
+ 2.- Run the MySQL docker image (with container naming support)
+ 
+     docker run --name brms-mysql -e MYSQL_ROOT_PASSWORD=root123 -d -P mysql
+     
+ 3.- Create the JBoss BRMS database in the MySQL instance named <code>brms</code>  
+ 
+ 4.- Run the JBoss BRMS docker image (with container linking support)
+ 
+     ./start.sh -i brms-wildfly -c xpaas_brms-wildfly -l brms-mysql:mysql -db brms # Using start.sh script
+      
+      docker run --link brms-mysql:mysql -P -d -e BRMS_DATABASE="brms" xpaas/xpaas_brms-wildfly # Using docker command
+      
+ The JBoss BRMS database connection will automatically link to the MySQL docker container instance using the <code>brms</code> database.
+ 
+ NOTE: When using MySQL container linking with JBoss BRMS container, the connection envrionment variables <code>BRMS_CONNECTION_URL, BRMS_CONNECTION_DRIVER, BRMS_CONNECTION_USER, BRMS_CONNECTION_PASSWORD</code> have no effect, even if set when running the JBoss BRMS container.
+
 **Notes**     
 * Using this strategy there is no need for running the containers using Docker container linking     
 * Another strategy is to run the MySQL docker container using the argument <code>-P</code> and bind the connection to an available port on <code>localhost</code>      

@@ -18,6 +18,10 @@
 #                                   If not specified, defaults to "sa"
 # -password | --connection-password:    The BPMS database connection password 
 #                                       If not specified, defaults to "sa"
+# -l | --link:              The docker "link" run argument. 
+#                           If not set, not container linking is applied.
+# -db | --database-name:    The name of the database to use when container is running linked with any database container. 
+#                           If not set, defaults to "bpms"
 # -h | --help;              Show the script usage
 #
 
@@ -30,10 +34,12 @@ CONNECTION_DRIVER=h2
 CONNECTION_URL="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
 CONNECTION_USERNAME=SA
 CONNECTION_PASSWORD=SA
+CONNECTION_DATABASE="bpms"
+CONTAINER_LINKING=""
 
 function usage
 {
-     echo "usage: start.sh [[[-i [bpms-wildfly,bpms-eap] ] [-c <container_name> ] [-p <root_password>] [-ap <admin_password>]] | [-h]]"
+     echo "usage: start.sh [[[-i [bpms-wildfly,bpms-eap] ] [-c <container_name> ] [-p <root_password>] [-ap <admin_password>] [-l <container_linking>] [-db <external_db_name>]] | [-h]]"
 }
 
 if [ $# -ne 2 ]; then
@@ -80,6 +86,12 @@ while [ "$1" != "" ]; do
         -password | --connection-password )  shift
                                 CONNECTION_PASSWORD=$1
                                 ;;
+        -l | --link )           shift
+                                CONTAINER_LINKING="--link $1"
+                                ;;
+        -db | --database-name )  shift
+                                CONNECTION_DATABASE=$1
+                                ;;
         -h | --help )           usage
                                 exit
                                 ;;
@@ -88,8 +100,6 @@ while [ "$1" != "" ]; do
     esac
     shift
 done
-
-
 
 # Check if container is already started
 if [ -f docker.pid ]; then
@@ -109,7 +119,7 @@ echo "** BPMS connection driver: $CONNECTION_DRIVER"
 echo "** BPMS connection URL: $CONNECTION_URL"
 echo "** BPMS connection username: $CONNECTION_USERNAME"
 echo "** BPMS connection password: $CONNECTION_PASSWORD"
-image_xpaas_wildfly=$(docker run -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e JBOSS_APPSERVER_ADMIN_PASSWORD="$JBOSS_APPSERVER_ADMIN_PASSWORD" -e BPMS_CONNECTION_URL="$CONNECTION_URL" -e BPMS_CONNECTION_DRIVER="$CONNECTION_DRIVER" -e BPMS_CONNECTION_USER="$CONNECTION_USERNAME" -e BPMS_CONNECTION_PASSWORD="$CONNECTION_PASSWORD" $IMAGE_NAME:$IMAGE_TAG)
+image_xpaas_wildfly=$(docker run $CONTAINER_LINKING -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e JBOSS_APPSERVER_ADMIN_PASSWORD="$JBOSS_APPSERVER_ADMIN_PASSWORD" -e BPMS_CONNECTION_URL="$CONNECTION_URL" -e BPMS_CONNECTION_DRIVER="$CONNECTION_DRIVER" -e BPMS_CONNECTION_USER="$CONNECTION_USERNAME" -e BPMS_CONNECTION_PASSWORD="$CONNECTION_PASSWORD" -e BPMS_DATABASE="$CONNECTION_DATABASE" $IMAGE_NAME:$IMAGE_TAG)
 ip_wildfly=$(docker inspect $image_xpaas_wildfly | grep IPAddress | awk '{print $2}' | tr -d '",')
 echo $image_xpaas_wildfly > docker.pid
 
