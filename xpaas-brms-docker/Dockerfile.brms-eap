@@ -1,0 +1,26 @@
+#####################################################################
+# Dockerfile to build xpaas-brms-eap-docker container image including:
+#   - http daemon
+#   - EAP 6.1
+# Based on XPaaS JBoss EAP docker image
+# Version: 1.0
+######################################################################
+
+####### BASE ############
+FROM xpaas/xpaas_eap:1.0
+
+####### MAINTAINER ############
+MAINTAINER "JBoss XPaaS Team" "xpass-eng@redhat.com"
+
+####### BRMS for EAP 6.1 ############
+RUN curl --silent --output /tmp/kie-drools-wb.war http://repository.jboss.org/nexus/content/groups/public-jboss/org/kie/kie-drools-wb-distribution-wars/6.1.0.CR2/kie-drools-wb-distribution-wars-6.1.0.CR2-eap-6_1.war
+
+####### SCRIPTS ############
+WORKDIR /
+RUN mkdir -p /jboss/scripts/brms
+ADD conf/scripts/jboss-appserver/startup/1-configure-brms.sh /jboss/scripts/jboss-appserver/startup/1-configure-brms.sh
+ADD conf/scripts/jboss-appserver/start-jboss.sh /jboss/scripts/jboss-appserver/start-jboss.sh
+ADD conf/scripts/brms/brms.cli /jboss/scripts/brms/brms.cli
+ADD conf/scripts/brms/change-hibernate-dialect.sh /jboss/scripts/brms/change-hibernate-dialect.sh
+ADD conf/brms-roles.properties /opt/jboss-appserver/standalone/configuration/brms-roles.properties
+ADD conf/brms-users.properties /opt/jboss-appserver/standalone/configuration/brms-users.properties

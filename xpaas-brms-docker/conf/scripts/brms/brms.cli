@@ -1,0 +1,18 @@
+# Datasource configuration
+/subsystem=datasources/data-source=ExampleDS:write-attribute(name=connection-url,value="${jboss.brms.connection_url:jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}")
+/subsystem=datasources/data-source=ExampleDS:write-attribute(name=driver-name,value="${jboss.brms.driver:h2}")
+/subsystem=datasources/data-source=ExampleDS:write-attribute(name=user-name,value="${jboss.brms.username:sa}")
+/subsystem=datasources/data-source=ExampleDS:write-attribute(name=password,value="${jboss.brms.password:sa}")
+
+# Management - Security Realms
+/core-service=management/security-realm=ApplicationRealm/authentication=properties:write-attribute(name=path,value=brms-users.properties)
+/core-service=management/security-realm=ApplicationRealm/authorization=properties:write-attribute(name=path,value=brms-roles.properties)
+
+# Subsystem - Security
+/subsystem=security/security-domain=other/authentication=classic/login-module=RealmDirect:remove
+/subsystem=security/security-domain=other/authentication=classic/login-module=Remoting:remove
+/subsystem=security/security-domain=other/authentication=classic/login-module=UsersRoles:add(code=UsersRoles,flag=required,module-options={"usersProperties" => "${jboss.server.config.dir}/brms-users.properties","rolesProperties" => "${jboss.server.config.dir}/brms-roles.properties"})
+
+# Reload configuration
+/:reload
+
