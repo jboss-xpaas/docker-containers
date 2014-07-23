@@ -129,4 +129,27 @@ To stop the previous image container run using <code>start.sh</code> script just
 Notes
 -----
 
-* The default daemon enabled with the container is <code>supervisor</code>.The other daemon and program executions are handled by the supervisor daemon
+* The default daemon enabled with the container is <code>supervisor</code>.The other daemon and program executions are handled by the supervisor daemon     
+* This container publishes the following environment variables:     
+<table>
+    <tr>
+        <td><b>Name</b></td>
+        <td><b>Value</b></td>
+    </tr>
+    <tr>
+        <td>JAVA_HOME</td>
+        <td>usr/lib/jvm/jre</td>
+    </tr>
+    <tr>
+        <td>M2_HOME</td>
+        <td>/opt/apache-maven</td>
+    </tr>
+    <tr>
+        <td>MAVEN_HOME</td>
+        <td>/opt/apache-maven</td>
+    </tr>
+    <tr>
+        <td>M2</td>
+        <td>/opt/apache-maven/bin</td>
+    </tr>
+</table>

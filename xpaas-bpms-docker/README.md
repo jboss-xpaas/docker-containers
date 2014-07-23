@@ -21,6 +21,7 @@ Table of contents
 * **[Logging](#logging)**
 * **[Stopping the container](#stopping-the-container)**
 * **[Using external database](#Using-external-database)**
+* **[Notes](#Notes)**
 
 Control scripts
 ---------------
@@ -213,3 +214,8 @@ Where <code>mysql_container_ip</code> - Can be found by running:
 * Using this strategy there is no need for running the containers using Docker container linking     
 * Another strategy is to run the MySQL docker container using the argument <code>-P</code> and bind the connection to an available port on <code>localhost</code>      
 * Current available bpms connection drivers are <code>h2</code> and <code>mysql</code>    
+
+Notes
+-----
+* This container overrides the default JBoss Wildfly/EAP start command (from XPaaS JBoss Wildfly/EAP image), adding some custom system properties     
+* There is no support for clustering     

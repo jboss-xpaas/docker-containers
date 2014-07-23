@@ -5,37 +5,24 @@
     - Dockerfiles
         - Handle script errors
     - Supervisor
-        - Create program groups
-        - Execute jboss CLI files when jboss has started successfully 
-            - using different approach than jboss-startup.sh control script (using supervisor events?)
-            - Execute CLI when building the image instead of running the container -> which server profile?
+        - Create program groups?
         - Review program restarts and exit codes
     - XPaas Base docker image
-        - Refactor /etc/profile environment variables
-            - Instead of adding the "export" sentence in /etc/profile, add a custom script that exports them in /etc/profile.d
         - There are some yum errors during image build
         - When running sshd, a warning about internal IP address is shown
     - xpaas-jboss-appserver-docker
         - Other databse modules preinstalled?
         - Domain mode support
         - Clustering (standalone & domain modes)
-        - Unify both dockerfiles (eap,wildfly) in a single one -> Using templates & sed command?
         - When running httpd, a warning about internal IP address is shown
     - BPMS docker image
         - BPMS Wildfly container is not starting up as well -> https://issues.jboss.org/browse/WFLY-3355 
         - Clustering
     - BRMS docker image
-        - TODO
-    - Other todos
-        - Perform CLI configurations only ONCE 
-            - jboss-appserver -> driver
-            - bpms -> cli commands (datasources & security & deploy)
-            Options:
-            - On image build time, not on container runtime (which xml/profile file?)
-            - When running for first time, create a marker file.
+        - TODO -> Neus
             
 - Fabric8 integration 
 - Review OpenShift3 integration with docker
 - Continuous build integration: On each new release, automatically generate the docker image (new tag) and upload to DockerHub
-    - Create docker "JBoss XPaaS" account ant upload the images?
+    - Create dockerhub "JBoss XPaaS" account ant upload the images?
     - http://www.wouterdanes.net/2014/04/11/continuous-integration-using-docker-maven-and-jenkins.html

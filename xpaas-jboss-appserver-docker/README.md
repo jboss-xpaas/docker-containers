@@ -72,9 +72,9 @@ These commands will start a new XPaas Wildfly container with HTTP daemon and Wil
 
 These are the environment variables supported when running the JBoss Wildfly/EAP container:       
 
-- <code>ROOT_PASSWORD</code> - The root password for <code>root</code> system user. Useful to connect via SSH     
-- <code>JBOSS_APPSERVER_ADMIN_PASSWORD</code> - The JBoss <code>admin</code> user password      
-- <code>JBOSS_APPSERVER_ARGUMENTS</code> - The arguments to pass when executing <code>standalone.sh</code> startup script     
+* <code>ROOT_PASSWORD</code> - The root password for <code>root</code> system user. Useful to connect via SSH     
+* <code>JBOSS_APPSERVER_ADMIN_PASSWORD</code> - The JBoss <code>admin</code> user password      
+* <code>JBOSS_APPSERVER_ARGUMENTS</code> - The arguments to pass when executing <code>standalone.sh</code> startup script     
 
 **Notes**           
 * If no container name argument is set and image to build is <code>wildfly</code>, it defaults to <code>xpaas-wildfly</code>        
@@ -223,11 +223,6 @@ Once connected, you can create users too by running:
 
     /opt/jboss-appserver/bin/add-user-sh
 
-**Configuration using docker volumes**
-
-TODO
-
-
 Deploying web applications into JBoss Application Server
 --------------------------------------------------------
 
@@ -238,9 +233,6 @@ You can access the HTTP administration console and deploy you files using this i
 
 **Using JBoss CLI**     
 You can access the container via SSH and copy the applciation to deploy into a temporal folder in the container (using <code>scp</code>) and deploy it using JBoss CLI
-
-**Using docker shared volumes**      
-TODO
 
 Logging
 -------
@@ -269,26 +261,26 @@ To stop the previous image container run using <code>start.sh</code> script just
 JBoss startup scripts
 ----------------------
 
-**Init**
-In order to execute your custom scripts, this container provides
-a mechanism that executes all <code>sh</code> script files located at <code>/jboss/scripts/jboss-appserver/init</code> 
-before starting the application server.
-
 **Startup**
+
 In order to execute your custom JBoss Command Line Interface (CLI) commands, this container provides
 a mechanism that executes all <code>sh</code> script files located at <code>/jboss/scripts/jboss-appserver/startup</code> 
-once the application server has been started.
+once the application server has been started.     
 
-**Notes**     
-* Scripts will be executed in alphabetically ascendant sort order
+These scripts will be executed only once (on first container run), in order to allow the image developer to add custom 
+initial configurations for JBoss Wildfly/EAP before doing any deploy.
+
+NOTE that scripts will be executed using filename alphabetically ascendant sort order
 
 Notes
 -----
 **JBoss Wildfly/EAP:**     
-- The default admin password for Wildfly is <code>admin123!</code>
-- The web interface address is bind by default to <code>0.0.0.0</code>     
-- The management interface address is bind by default to the docker container IP address
-- There is a MySQL JBDC driver module pre-installed      
+* The default admin password for Wildfly is <code>admin123!</code>
+* The web interface address is bind by default to <code>0.0.0.0</code>     
+* The management interface address is bind by default to the docker container IP address
+* There is a MySQL JBDC driver module pre-installed      
+* There is no support for domain mode
+* There is no support for clustering
 
 **EAP:**      
-- As EAP is a non-community product, in order to build the JBoss EAP image you have to manualy add JBoss EAP ZIP file into <code>bin/</code> directory before building the JBoss EAP docker container image. See the [README.md](bin/README.md)
+* As EAP is a non-community product, in order to build the JBoss EAP image you have to manualy add JBoss EAP ZIP file into <code>bin/</code> directory before building the JBoss EAP docker container image. See the [README.md](bin/README.md)

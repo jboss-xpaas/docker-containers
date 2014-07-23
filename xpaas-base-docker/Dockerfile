@@ -23,7 +23,7 @@ MAINTAINER "JBoss XPaaS Team" "xpass-eng@redhat.com"
 
 ####### BASE VARIABLES ############
 ENV JAVA_HOME /usr/lib/jvm/jre
-ENV ENV_COMMANDS_FILE /etc/profile
+ENV ENV_COMMANDS_FILE /etc/profile.d/jboss.sh
 ENV M2 /opt/apache-maven/bin
 ENV M2_HOME /opt/apache-maven
 ENV MAVEN_HOME /opt/apache-maven
@@ -76,6 +76,9 @@ RUN echo "export MAVEN_OPTS='-Xms256m -Xmx512m'" >> $ENV_COMMANDS_FILE
 # useful aliases for ALL users
 RUN echo "alias ll='ls -l --color=auto'" >> $ENV_COMMANDS_FILE
 RUN echo "alias grep='grep --color=auto'" >> $ENV_COMMANDS_FILE
+
+# Do the profile script executable
+RUN chmod +x $ENV_COMMANDS_FILE
 
 ####### PORT EXPOSING ###########
 # SSH daemon port

@@ -6,6 +6,7 @@
 # located at $STARTUP_DIRECTORY ( /jboss/scripts/jboss-appserver/startup )
 # NOTE: This script run the custom startup scripts once JBoss EAP/Wildfly has started,
 # before deploying web applications.
+# NOTE: The scripts will be executed only once (at first container run).
 ######################################################################################
 
 # Script arguments
@@ -30,13 +31,17 @@ if [ "$IS_STARTED" == "" ]; then
 fi
 
 # Jboss is started. Execute all related CLI and scripts.
-echo "JBoss app-server is started. Executing scripts in $STARTUP_DIRECTORY"
+echo "JBoss app-server is started. Running not previouly executed scripts in $STARTUP_DIRECTORY"
 pushd .
 cd $STARTUP_DIRECTORY
 for script in *.sh
 do
- echo "Running jboss custom startup script '$script'"
- ./$script
+    if [ ! -f "$script.executed" ]; then
+        echo "Running jboss custom startup script '$script'"
+        ./$script
+        # Mark this script as already executed, so do not execute it any more.
+        touch "$script.executed"
+    fi
 done
 popd
 

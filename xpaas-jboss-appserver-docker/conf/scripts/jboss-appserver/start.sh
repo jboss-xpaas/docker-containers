@@ -20,18 +20,6 @@ echo "Using '$JBOSS_APPSERVER_ADMIN_PASSWORD' as JBoss Application Server admin 
 # Obtain the container IP address
 DOCKER_IP=$(/bin/sh /jboss/scripts/docker-ip.sh)
 
-# Execute custom scripts before starting JBoss Application Server
-INIT_DIRECTORY=/jboss/scripts/jboss-appserver/init
-echo "Executing custom scripts in $INIT_DIRECTORY..."
-pushd .
-cd $INIT_DIRECTORY
-for script in *.sh
-do
- echo "Running jboss custom init script '$script'"
- ./$script
-done
-popd
-
 # Starts JBoss Application Server using $RUN_ARGUMENTS, specified when running the container, if any.
 /jboss/scripts/jboss-appserver/start-jboss.sh $DOCKER_IP
 
