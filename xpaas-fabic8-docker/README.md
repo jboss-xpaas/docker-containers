@@ -13,6 +13,7 @@ Table of contents
 * **[Building the docker container](#building-the-docker-container)**
 * **[Running the container](#running-the-container)**
 * **[Connection to a container using SSH](#connection-to-a-container-using-SSH)**
+* **[Connection to Fabric8 web console (HawtIO)](#Connection-to-Fabric8-web-console-HawtIO)**
 * **[Starting, stopping and restarting the SSH daemon](#starting,-stopping-and-restarting-the-SSH-daemon)**
 * **[Starting, stopping and restarting Fabric8](#starting,-stopping-and-restarting-Fabric8)**
 * **[Logging](#logging)**
@@ -92,6 +93,27 @@ So if the port number is 49001 then you can type something like this:
 * By default, the <code>root</code> user password is <code>xpaas</code>     
 * By default, the <code>fabric8</code> user password is <code>fabric8</code>     
 * You can change the default <code>root</code> password when running the container. See **[Running the container](#running-the-container)**      
+
+Connection to Fabric8 web console (HawtIO)
+------------------------------------------
+
+When running a new container over this docker image, the Fabric8 web console (HawtIO based)  is started by default and waiting for connections.     
+
+In order to connect to the container using Fabric8 web console you must know the container binding port for internal <code>8181</code> port. If you type:
+
+    docker ps
+    
+you should see the port mappings for each docker container. For example you may see something like this in the PORTS section....
+
+    0.0.0.0:49156->8181/tcp
+    
+This means that from outside the docker container; you need to use port 49156 to access port 8181 inside the container.     
+
+So if the port number is 49156 then you can navigate to:
+
+    http://localhost:49156/
+
+The default user is <code>admin</code> with <code>admin</code> as password.
 
 Starting, stopping and restarting the SSH daemon
 ------------------------------------------------
