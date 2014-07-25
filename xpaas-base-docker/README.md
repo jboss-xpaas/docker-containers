@@ -5,7 +5,10 @@ This project builds a [docker](http://docker.io/) container for running XPaaS ba
 
 This image is based on a <code>fedora</code> version <code>20</code> and provides a container including:     
 * Supervisor daemon     
-* Telnet client     
+* Git client      
+* Python PIP      
+* Telnet client   
+* Net tools       
 * Open SSH server & client     
 * wget tool     
 * Java 1.7     
