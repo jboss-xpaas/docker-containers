@@ -19,9 +19,12 @@
         - BPMS Wildfly container is not starting up as well -> https://issues.jboss.org/browse/WFLY-3355 
         - Clustering
     - BRMS docker image
-        - TODO -> Neus
+        - Clustering
+    - Fabric8
+        - Change fabric8 password on container run (env variable)
+        - Test all fabric8 services (maven, git, etc)
+        - clustering (zookeeper)
             
-- Fabric8 integration 
 - Review OpenShift3 integration with docker
 - Continuous build integration: On each new release, automatically generate the docker image (new tag) and upload to DockerHub
     - Create dockerhub "JBoss XPaaS" account ant upload the images?
