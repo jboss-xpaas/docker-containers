@@ -15,14 +15,18 @@
         - Domain mode support
         - Clustering (standalone & domain modes)
         - When running httpd, a warning about internal IP address is shown
+        - Configure EAP standalone xml files using mvel templates insteadof jboss CLI scripts?
     - BPMS docker image
         - BPMS Wildfly container is not starting up as well -> https://issues.jboss.org/browse/WFLY-3355 
         - Clustering
+        - Configure EAP standalone xml files using mvel templates insteadof jboss CLI scripts?
     - BRMS docker image
         - Clustering
+        - Configure EAP standalone xml files using mvel templates insteadof jboss CLI scripts?
     - Fabric8
         - Change fabric8 password on container run (env variable)
         - Test all fabric8 services (maven, git, etc)
+        - Test joolokia management is working -> http://localhost:8181/jolokia
         - clustering (zookeeper)
             
 - Review OpenShift3 integration with docker
