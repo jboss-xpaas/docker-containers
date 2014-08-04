@@ -24,7 +24,7 @@ Table of contents
 * **[Stopping the container](#stopping-the-container)**
 * **[JBoss startup scripts](#JBoss-startup-scripts)**
 * **[Experimenting](#Experimenting)**
-* **[Extending this docker image](#Extending-this-docker-image)**
+* **[Extending this docker image](#extending-this-docker-image)**
 * **[Notes](#notes)**
 
 Control scripts
@@ -288,7 +288,8 @@ Extending this docker image
 
 You can create a new container that uses this docker image as base:
 
-    FROM xpaas/xpaas_eap:<version>
+    FROM xpaas/xpaas_eap:<version> # For EAP case
+    FROM xpaas/xpaas_wildfly:<version> # For Wildfly case
     
 As extending this image, the JBoss Wildfly/EAP container is run by default, you can add your custom configuration changes
 or deployments via CLI.     
