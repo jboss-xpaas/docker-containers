@@ -114,7 +114,7 @@ By default JBoss Wildfly/EAP is run using:
     
 You can override the way it's started up by overriding this script inside the docker container:
 
-    conf/scripts/jboss-appserver/start-jboss.sh
+    /jboss/scripts/jboss-appserver/start-jboss.sh
 
 **Disabling autostart for JBoss Wildfly/EAP**      
 
@@ -316,6 +316,8 @@ or deployments via CLI.
 
 You can place a <code>sh</code> that runs some JBoss CLI commands in the following path: <code>/jboss/scripts/jboss-appserver/startup</code>.
 This script will be executed only once just after container has been started for first time.
+
+In addition, you can modify the way that JBoss server is started by default by modifying the startup script located inside the container at directory <code>/jboss/scripts/jboss-appserver/start-jboss.sh</code>       
 
 Notes
 -----

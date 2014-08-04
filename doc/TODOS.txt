@@ -1,8 +1,6 @@
 - Docker images
     - All images
         - Image size is to big (GB)??
-        - README's
-            - Code tags -> underscore character is not visible as well 
     - Supervisor
         - Create program groups?
         - Review program restarts and exit codes
