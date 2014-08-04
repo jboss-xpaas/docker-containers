@@ -24,6 +24,7 @@ Table of contents
 * **[Stopping the container](#stopping-the-container)**
 * **[JBoss startup scripts](#JBoss-startup-scripts)**
 * **[Experimenting](#Experimenting)**
+* **[Extending this docker image](#Extending-this-docker-image)**
 * **[Notes](#notes)**
 
 Control scripts
@@ -281,6 +282,19 @@ To spin up a shell in one of the containers try:
     docker run -P -i -t xpaas/xpaas_eap /bin/bash # For JBoss EAP distribution
     
 You can then noodle around the container and run stuff & look at files etc.
+
+Extending this docker image
+---------------------------
+
+You can create a new container that uses this docker image as base:
+
+    FROM xpaas/xpaas_eap:<version>
+    
+As extending this image, the JBoss Wildfly/EAP container is run by default, you can add your custom configuration changes
+or deployments via CLI.     
+
+You can place a <code>sh</code> that runs some JBoss CLI commands in the following path: <code>/jboss/scripts/jboss-appserver/startup</code>.
+This script will be executed only once just after container has been started for first time.
 
 Notes
 -----
