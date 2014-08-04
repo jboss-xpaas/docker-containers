@@ -315,9 +315,9 @@ As extending this image, the JBoss Wildfly/EAP container is run by default, you 
 or deployments via CLI.     
 
 You can place a <code>sh</code> that runs some JBoss CLI commands in the following path: <code>/jboss/scripts/jboss-appserver/startup</code>.
-This script will be executed only once just after container has been started for first time.
+This script will be executed only once just after container has been started for first time. See **[JBoss startup scripts](#JBoss-startup-scripts)**     
 
-In addition, you can modify the way that JBoss server is started by default by modifying the startup script located inside the container at directory <code>/jboss/scripts/jboss-appserver/start-jboss.sh</code>       
+In addition, you can modify the way that JBoss server is started by default by modifying the startup script located inside the container at directory <code>/jboss/scripts/jboss-appserver/start-jboss.sh</code>. See **[Running the container](#running-the-container)** (section <i>Custom JBoss Wildfly/EAP startup script</i>)       
 
 Notes
 -----
