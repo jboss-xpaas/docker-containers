@@ -22,7 +22,7 @@ fi
 STARTUP_DIRECTORY=$1
 
 # Check if jboss appserver has been started.
-IS_STARTED=$(curl --silent localhost:8080 | grep html)
+IS_STARTED=$(curl --silent $JBOSS_BIND_ADDRESS:$JBOSS_HTTP_PORT | grep html)
 if [ "$IS_STARTED" == "" ]; then
     # Not started yet.
     echo "JBoss app-server not started yet. Retrying..."

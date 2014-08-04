@@ -26,8 +26,8 @@ Control scripts
 
 There are three control scripts:    
 * <code>build.sh</code> Builds the docker image    
-* <code>start.sh</code> Starts a new XPaaS fabric8  docker image container    
-* <code>stop.sh</code>  Stops the runned XPaaS fabric8  docker image container    
+* <code>start.sh</code> Starts a new XPaaS fabric8  docker container based on this image    
+* <code>stop.sh</code>  Stops the runned XPaaS fabric8  docker container    
 
 Building the docker container
 -----------------------------

@@ -33,7 +33,7 @@ Control scripts
 
 There are three control scripts:    
 * <code>build.sh</code> Builds the docker image    
-* <code>start.sh</code> Starts a new XPaaS base  docker image container    
+* <code>start.sh</code> Starts a new XPaaS base  docker container based on this image    
 * <code>stop.sh</code>  Stops the runned XPaaS base  docker image container    
 
 Building the docker container

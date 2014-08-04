@@ -10,6 +10,8 @@
 #                           If not specified, defaults to "xpaas"
 # -ap | --admin-password:        The JBoss App Server admin user password 
 #                           If not specified, defaults to "admin123!"
+# -conf-file | --config-file:      The default config file when running in standalone mode. 
+#                           If not specified, defaults to standalone.xml
 # -args | --arguments:      The arguments for running standalone.sh 
 #                           If not specified, defaults to empty
 # -h | --help;              Show the script usage
@@ -17,9 +19,10 @@
 
 CONTAINER_NAME="xpaas-wildfly"
 ROOT_PASSWORD="xpaas"
-JBOSS_APPSERVER_ADMIN_PASSWORD="admin123!"
+JBOSS_ADMIN_PASSWORD="admin123!"
 IMAGE_NAME="xpaas/xpaas_wildfly"
 IMAGE_TAG="1.0"
+JBOSS_CONF_FILE="standalone.xml"
 RUN_ARGUMENTS=
 
 function usage
@@ -56,10 +59,13 @@ while [ "$1" != "" ]; do
                                 ROOT_PASSWORD=$1
                                 ;;
         -ap | --admin-password )  shift
-                                JBOSS_APPSERVER_ADMIN_PASSWORD=$1
+                                JBOSS_ADMIN_PASSWORD=$1
                                 ;;
         -args | --arguments )  shift
                                 RUN_ARGUMENTS=$1
+                                ;;
+        -conf-file | --config-file )  shift
+                                JBOSS_CONF_FILE=$1
                                 ;;
         -h | --help )           usage
                                 exit
@@ -84,9 +90,9 @@ fi
 echo "Starting $CONTAINER_NAME docker container using:"
 echo "** Container name: $CONTAINER_NAME"
 echo "** Root password: $ROOT_PASSWORD"
-echo "** JBoss Admin password: $JBOSS_APPSERVER_ADMIN_PASSWORD"
+echo "** JBoss Admin password: $JBOSS_ADMIN_PASSWORD"
 echo "** JBoss run arguments: $RUN_ARGUMENTS"
-image_xpaas_wildfly=$(docker run -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e JBOSS_APPSERVER_ADMIN_PASSWORD="$JBOSS_APPSERVER_ADMIN_PASSWORD" -e JBOSS_APPSERVER_ARGUMENTS="$RUN_ARGUMENTS" $IMAGE_NAME:$IMAGE_TAG)
+image_xpaas_wildfly=$(docker run -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e JBOSS_ADMIN_PASSWORD="$JBOSS_ADMIN_PASSWORD" -e JBOSS_STANDALONE_CONF_FILE="$JBOSS_CONF_FILE" -e JBOSS_ARGUMENTS="$RUN_ARGUMENTS" $IMAGE_NAME:$IMAGE_TAG)
 ip_wildfly=$(docker inspect $image_xpaas_wildfly | grep IPAddress | awk '{print $2}' | tr -d '",')
 echo $image_xpaas_wildfly > docker.pid
 

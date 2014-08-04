@@ -29,7 +29,7 @@ Control scripts
 
 There are three control scripts:    
 * <code>build.sh</code> Builds the JBoss BPMS docker image    
-* <code>start.sh</code> Starts a new XPaaS JBoss BPMS docker image container    
+* <code>start.sh</code> Starts a new XPaaS JBoss BPMS docker container based on this image    
 * <code>stop.sh</code>  Stops the runned XPaaS JBoss BPMS docker image container    
 
 Building the docker container

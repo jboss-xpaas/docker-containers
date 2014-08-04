@@ -27,6 +27,7 @@ ENV ENV_COMMANDS_FILE /etc/profile.d/jboss.sh
 ENV M2 /opt/apache-maven/bin
 ENV M2_HOME /opt/apache-maven
 ENV MAVEN_HOME /opt/apache-maven
+ENV ROOT_PASSWORD xpaas
 
 ####### BASE SOFTWARE ############
 # telnet is required by some fabric command. without it you have silent failures
