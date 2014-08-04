@@ -325,8 +325,8 @@ Notes
 * The default admin password for Wildfly is <code>admin123!</code>      
 * The web interface address is bind by default to <code>0.0.0.0</code>, you can change it using the environemnt variable <code>JBOSS_BIND_ADDRESS</code>     
 * There is a MySQL JBDC driver module pre-installed      
-* There is no support for domain mode
-* There is no support for clustering
+* There is no support for domain mode     
+* There is no support for clustering      
 
 **JBoss Wildfly/EAP ports:**            
 * The HTTP port by default is <code>8080</code>, you can change it using the environemnt variable <code>JBOSS_HTTP_PORT</code>      
@@ -334,7 +334,7 @@ Notes
 * The AJP port by default is <code>8009</code>, you can change it using the environemnt variable <code>JBOSS_AJP_PORT</code>      
 * The management HTTP port by default is <code>9990</code> (Wildfly) or <code>9999</code> (EAP) , you can change it using the environemnt variable <code>JBOSS_MGMT_HTTP_PORT</code>      
 * The management HTTPS port by default is <code>9993</code> (Wildfly) or <code>9443</code> (EAP) , you can change it using the environemnt variable <code>JBOSS_MGMT_HTTPS_PORT</code>      
-* The management interface address is bind by default to the docker container IP address
+* The management interface address is bind by default to the docker container IP address       
 * NOTE: This ports can be changed for internal use, but the docker container always exposes ports: <code>80,8080,8443,9990,9999</code>        
 
 **EAP:**      
