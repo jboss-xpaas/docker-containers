@@ -67,7 +67,7 @@ In order to run a JBoss Wildfly/EAP docker container you have two options:
 * Running using the <code>start.sh</code> control script and using the applicable script arguments       
 * Running the <code>docker</code> command directly and setting the applicable environment variables       
 
-It's important to note that this container supports JBoss Wildfly/EAP docker container running in three modes:     
+It's important to note that this container supports the startup of JBoss Wildfly/EAP intance in one of these three modes:     
 
 * **STANDALONE mode** - Single server instance, single process, not managed by others       
 * **DOMAIN CONTROLLER mode** - Single server domain controller instance. This instance, by default, does not run any server. It's used to manage the other server host instances in the managed domain       
@@ -142,10 +142,10 @@ Notes about domain mode:
 
 * A JBoss Wildfly/EAP JMX administration user is automatically created for domain controller/hosts authentication/authorization. The username is <code>adminjmx</code> and the password is <code>adminjmx123!</code>       
 * The domain controller, master host and managed hosts are configured using the default configuration, feel free to change it. See next bullets to get the details        
-* A single domain controller host is started with two server groups: <code>main-server-group</code> (<code>full</code> profile) and <code>other-server-group</code> (<code>full-ha</code> profile)        
-* The domain controller does not start any server (by default uses <code>%lt;JBOSS_HOME&gt;/domain/configuration/host-master.xml</code>)    
+* By default, a single domain controller host is started with two server groups: <code>main-server-group</code> (<code>full</code> profile) and <code>other-server-group</code> (<code>full-ha</code> profile)        
+* By default, the domain controller does not start any server (by default uses <code>%lt;JBOSS_HOME&gt;/domain/configuration/host-master.xml</code>)    
 * The domain managed hosts must specify the domain controller host IP address and port when running the container in order to connect to that controller instance      
-* Each domain managed host starts two servers by default: <code>server-one</code> (group <code>main-server-group</code>) and <code>server-two</code> (group <code>other-server-group</code>) (by default uses <code>%lt;JBOSS_HOME&gt;/domain/configuration/host-slave.xml</code>)         
+* By default, each domain managed host starts two servers by default: <code>server-one</code> (group <code>main-server-group</code>) and <code>server-two</code> (group <code>other-server-group</code>) (by default uses <code>%lt;JBOSS_HOME&gt;/domain/configuration/host-slave.xml</code>)         
     
 **Running a domain controller host**
 
@@ -186,7 +186,7 @@ Or you can try it out via docker command directly:
 
 **Running a domain managed host**
 
-Once a JBoss Wildfly/EAP domain controller host container has been started, you can run several JBoss Wildfly/EAP container used as domain managed hosts.        
+Once a JBoss Wildfly/EAP domain controller host container has been started, you can run several JBoss Wildfly/EAP container used as domain managed hosts by setting the IP address and native management port of the controller         
 
 Now you can run several domain host instances that are managed by the previously started domain controller host in address <code>172.17.0.35</code> and default port <code>9999</code>:      
 
@@ -280,7 +280,7 @@ To run the cluster you will have to setup manually the docker containers that wi
 * The profile for the standalone instances or the server group instances (domain mode) must be changed to <code>ha</code> or <code>full-ha</code>       
 * Optional - The jgroups subsystem by default uses multicast discovery protocol to find out all the cluster nodes. If this protocol is not working in your environment you have to change it to <code>TCPPING</code> and set all the cluster node IP addresses.       
 
-**Notes**           
+**Other Notes**           
 * If no container name argument is set and image to build is <code>wildfly</code>, it defaults to <code>xpaas-wildfly</code>        
 * If no container name argument is set and image to build is <code>eap</code>, it defaults to <code>xpaas-eap</code>
 * If no root password argument is set, it defaults to <code>xpaas</code>    
@@ -347,6 +347,9 @@ To restart JBoss Wildfly/EAP run:
 You can modify the way it's started by overriding this script inside the docker container:
 
     conf/scripts/jboss-appserver/start-jboss.sh
+
+Notes:         
+* If you are running server in a managed domain, you start/stop/restart the server instances from the domain controller hosts, either using management HTTP interface or native management interface      
 
 Acessing JBoss Application Server HTTP interface
 ------------------------------------------------
@@ -419,7 +422,7 @@ You can access the HTTP administration console and deploy you files using this i
 You can access the container via SSH and copy the application to deploy into a temporal folder in the container (using <code>scp</code>) and deploy it using JBoss CLI
 
 Notes:      
-* If running the containers in domain mode, you can deploy to several server instances by doing a server-group deploy      
+* If running the containers in domain mode, you can deploy/undeploy to several server instances at same time by doing a server-group deploy      
 
 Logging
 -------
