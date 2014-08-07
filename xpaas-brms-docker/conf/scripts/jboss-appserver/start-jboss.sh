@@ -7,6 +7,9 @@
 #First argument is the current container IP address
 DOCKER_IP=$1
 
+# Starts JBoss Application Server using $JBOSS_ARGUMENTS, specified when running the container, if any.
+JBOSS_COMMON_ARGS="-Djboss.bind.address=$JBOSS_BIND_ADDRESS -Djboss.bind.address.management=$DOCKER_IP -Djboss.management.native.port=$JBOSS_MGMT_NATIVE_PORT -Djboss.http.port=$JBOSS_HTTP_PORT -Djboss.https.port=$JBOSS_HTTPS_PORT -Djboss.ajp.port=$JBOSS_AJP_PORT -Djboss.management.http.port=$JBOSS_MGMT_HTTP_PORT -Djboss.management.https.port=$JBOSS_MGMT_HTTPS_PORT "
+
 # MySQL docker container integartion.
 # Default database name, if not set
 if [[ -z "$BRMS_DATABASE" ]] ; then
@@ -24,7 +27,9 @@ if [ -n "$MYSQL_PORT_3306_TCP_ADDR" ] &&  [ -n "$MYSQL_PORT_3306_TCP_PORT" ] && 
 fi
 
 # Starts JBoss Application Server using $JBOSS_APPSERVER_ARGUMENTS, specified when running the container, if any.
-echo "Starting JBoss Application Server in address $JBOSS_BIND_ADDRESS:$JBOSS_HTTP_PORT / $JBOSS_BIND_ADDRESS:$JBOSS_HTTPS_PORT (SSL) and management in address $DOCKER_IP:$JBOSS_MGMT_HTTP_PORT / $DOCKER_IP:$JBOSS_MGMT_HTTPS_PORT"
-/opt/jboss-appserver/bin/standalone.sh --server-config=$JBOSS_STANDALONE_CONF_FILE -b $JBOSS_BIND_ADDRESS -Djboss.http.port=$JBOSS_HTTP_PORT -Djboss.https.port=$JBOSS_HTTPS_PORT -Djboss.ajp.port=$JBOSS_AJP_PORT -Djboss.management.http.port=$JBOSS_MGMT_HTTP_PORT -Djboss.management.https.port=$JBOSS_MGMT_HTTPS_PORT -Djboss.bind.address.management=$DOCKER_IP -Djboss.brms.connection_url="$BRMS_CONNECTION_URL" -Djboss.brms.driver="$BRMS_CONNECTION_DRIVER" -Djboss.brms.username="$BRMS_CONNECTION_USER" -Djboss.brms.password="$BRMS_CONNECTION_PASSWORD"  $JBOSS_APPSERVER_ARGUMENTS
+echo "Starting JBoss Application Server in standalone mode"
+echo "Using HTTP address $JBOSS_BIND_ADDRESS:$JBOSS_HTTP_PORT / $JBOSS_BIND_ADDRESS:$JBOSS_HTTPS_PORT (SSL)"
+echo "Using management address $DOCKER_IP:$JBOSS_MGMT_NATIVE_PORT"
+/opt/jboss-appserver/bin/standalone.sh --server-config=$JBOSS_STANDALONE_CONF_FILE -b $JBOSS_BIND_ADDRESS $JBOSS_COMMON_ARGS -Djboss.brms.connection_url="$BRMS_CONNECTION_URL" -Djboss.brms.driver="$BRMS_CONNECTION_DRIVER" -Djboss.brms.username="$BRMS_CONNECTION_USER" -Djboss.brms.password="$BRMS_CONNECTION_PASSWORD" $JBOSS_ARGUMENTS
 
 exit 0

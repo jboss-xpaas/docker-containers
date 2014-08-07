@@ -17,6 +17,9 @@ fi
 echo "Using '$JBOSS_ADMIN_PASSWORD' as JBoss Application Server admin password"
 /opt/jboss-appserver/bin/add-user.sh admin $JBOSS_ADMIN_PASSWORD --silent
 
+# Special user for JMX remote administration (domain mode support)
+/opt/jboss-appserver/bin/add-user.sh adminjmx adminjmx123! --silent
+
 # Obtain the container IP address
 DOCKER_IP=$(/bin/sh /jboss/scripts/docker-ip.sh)
 

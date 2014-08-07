@@ -8,18 +8,22 @@
         - There are some yum errors during image build
         - When running sshd, a warning about internal IP address is shown
     - xpaas-jboss-appserver-docker
-        - Other databse modules preinstalled?
-        - Domain mode support
-        - Clustering (standalone & domain modes)
+        - Other databse modules preinstalled? (currently only mysql)
+        - Domain mode & Clustering support (standalone & domain modes)
+            - The second instance of DOMAIN-HOST does not starts successfully. Only one domain host instance supported now.
+            - JBOSS_MODE value must be passed in uppercase, if not, does not work - Fix it.
+            - Container linking
+            - Clustering support
+                - Change jgropus subsystem configuration -> remove multicast autodiscovery to TCPPING and set the other servers IP address automatically.
         - When running httpd, a warning about internal IP address is shown
         - Configure EAP standalone xml files using mvel templates insteadof jboss CLI scripts?
     - BPMS docker image
-        - BPMS Wildfly container is not starting up as well -> https://issues.jboss.org/browse/WFLY-3355 
+        - BPMS Wildfly container is not starting up as well -> https://issues.jboss.org/browse/WFLY-3355
+        - Change the way jboss is started -> do not override start-jboss.sh??
         - Clustering
-        - Configure EAP standalone xml files using mvel templates insteadof jboss CLI scripts?
     - BRMS docker image
+        - Change the way jboss is started -> do not override start-jboss.sh??
         - Clustering
-        - Configure EAP standalone xml files using mvel templates insteadof jboss CLI scripts?
     - Fabric8
         - Change fabric8 password on container run (env variable)
         - Test all fabric8 services (maven, git, etc)

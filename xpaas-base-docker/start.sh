@@ -56,7 +56,6 @@ ip_xpaas_base=$(docker inspect $image_xpaas_base | grep IPAddress | awk '{print 
 echo $image_xpaas_base > docker.pid
 
 # End
-echo "Installation of xpaas-base docker image container finished"
 echo ""
 echo "Server started in $ip_xpaas_base"
 

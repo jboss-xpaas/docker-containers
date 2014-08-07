@@ -20,9 +20,13 @@ ENV JBOSS_BIND_ADDRESS 0.0.0.0
 ENV JBOSS_HTTP_PORT 8080
 ENV JBOSS_HTTPS_PORT 8443
 ENV JBOSS_AJP_PORT 8009
+ENV JBOSS_MGMT_NATIVE_PORT 9999
 ENV JBOSS_MGMT_HTTP_PORT 9990
 ENV JBOSS_MGMT_HTTPS_PORT 9993
-
+ENV JBOSS_MODE STANDALONE
+ENV JBOSS_DOMAIN_CLUSTER_PASSWORD jboss
+ENV JBOSS_DOMAIN_MASTER_ADDR 127.0.0.1
+ENV JBOSS_DOMAIN_MASTER_PORT 9999
 
 ####### BASE SOFTWARE ############
 # HTTP daemon
@@ -36,6 +40,7 @@ RUN unzip -q wildfly.zip
 RUN mv wildfly-8.1.0.Final/ jboss-appserver/
 RUN mv jboss-appserver/ /opt/
 RUN rm -rf wildfly.zip
+ADD conf/jboss-appserver/host-slave-wf.xml /opt/jboss-appserver/domain/configuration/host-slave.xml
 
 ####### ADDITIONAL WILDFLY MODULES ############
 #MySQL driver module

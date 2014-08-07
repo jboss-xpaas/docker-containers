@@ -124,10 +124,10 @@ ip_wildfly=$(docker inspect $image_xpaas_wildfly | grep IPAddress | awk '{print 
 echo $image_xpaas_wildfly > docker.pid
 
 # End
-echo "Installation of $CONTAINER_NAME docker image container finished"
 echo ""
 echo "Server starting in $ip_wildfly"
-
+echo "You can access the server root context in http://$ip_wildfly:8080"
+echo "You can access the server HTTP administration console in http://$ip_wildfly:9990/console"
 echo "The bpms is running at http://$ip_wildfly:8080/kie-wb"
 
 exit 0
