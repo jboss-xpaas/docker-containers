@@ -23,6 +23,8 @@ ENV BRMS_CONNECTION_USER sa
 ENV BRMS_CONNECTION_PASSWORD sa
 # BRMS requires the full profile
 ENV JBOSS_STANDALONE_CONF_FILE standalone-full.xml
+# Currently the domain/clustering mode is not supported. Force standalone mode. 
+ENV JBOSS_MODE STANDALONE
 
 ####### SCRIPTS ############
 WORKDIR /
