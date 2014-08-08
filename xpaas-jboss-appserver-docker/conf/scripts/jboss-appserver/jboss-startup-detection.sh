@@ -25,8 +25,9 @@ STARTUP_DIRECTORY=$1
 DOCKER_IP=$(/bin/sh /jboss/scripts/docker-ip.sh)
 
 # Check if jboss appserver has been started.
-# Do not check home page on HTTP port, as if server is started in domain mode with no hosts, this URL will never return a 200. So the check is done by trying to access to management HTTP interface.
-IS_STARTED=$(curl --silent $DOCKER_IP:$JBOSS_MGMT_HTTP_PORT/management | grep html)
+# The check is done by trying to access to management console interface.
+# NOTE: Do not check home page on HTTP port, as if server is started in domain mode with no hosts, this URL will never return a 200. 
+IS_STARTED=$(/opt/jboss-appserver/bin/jboss-cli.sh -c --controller=$DOCKER_IP:$JBOSS_MGMT_NATIVE_PORT --command=ls)
 if [ "$IS_STARTED" == "" ]; then
     # Not started yet.
     echo "JBoss app-server not started yet. Retrying..."

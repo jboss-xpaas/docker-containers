@@ -465,7 +465,8 @@ These scripts allows to configure the JBoss server once being run by first time.
 
 NOTES:     
 * Those scripts will be executed using filename alphabetically ascendant sort order       
-* The reason why CLI commands are executed once JBoss is up is because the configuration file that CLI commands will modify depends on the startup script (profile). In addition, note that is JBoss server is not up, the CLI interface is not available too.      
+* The reason why CLI commands are executed once JBoss is up is because the configuration file that CLI commands will modify depends on the startup script (profile). In addition, note that is JBoss server is not up, the CLI interface is not available too       
+* IMPORTANT: These scripts are executed once JBoss server management interface is up. So if you extend this docker image and add a deployment in the <code>deployments/</code> directory, these scripts will be executed before your application is deployed        
 
 Experimenting
 -------------

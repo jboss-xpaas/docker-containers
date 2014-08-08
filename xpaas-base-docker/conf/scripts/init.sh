@@ -8,4 +8,4 @@
 # Welcome message
 echo "Welcome to XPaaS Base docker container"
 
-exit $?
+exit 0

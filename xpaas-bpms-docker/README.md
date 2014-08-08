@@ -16,13 +16,13 @@ Table of contents
 * **[Control scripts](#control-scripts)**
 * **[Building the docker container](#building-the-docker-container)**
 * **[Running the container](#running-the-container)**
-* **[Using JBoss BPMS](#using-JBoss-BPMS)**
-* **[BPMS Users and roles](#BPMS-Users-and-roles)**
+* **[Using JBoss BPMS](#using-jboss-bpms)**
+* **[BPMS Users and roles](#bpms-users-and-roles)**
 * **[Logging](#logging)**
 * **[Stopping the container](#stopping-the-container)**
-* **[Using external database](#Using-external-database)**
-* **[Experimenting](#Experimenting)**
-* **[Notes](#Notes)**
+* **[Using external database](#using-external-database)**
+* **[Experimenting](#experimenting)**
+* **[Notes](#notes)**
 
 Control scripts
 ---------------
@@ -256,7 +256,13 @@ To spin up a shell in one of the containers try:
     
 You can then noodle around the container and run stuff & look at files etc.
 
+In order to run all container services provided by this image, you have to run the following command:
+
+    supervisord -c /etc/supervisord.conf
+
 Notes
 -----
 * This container overrides the default JBoss Wildfly/EAP start command (from XPaaS JBoss Wildfly/EAP image), adding some custom system properties     
-* There is no support for clustering     
+* This container forces to start JBoss server using <code>full</code> profile       
+* There is no support for clustering       
+* Currently the BPMS version for JBoss Wildfly is now working due to -> https://issues.jboss.org/browse/WFLY-3355        

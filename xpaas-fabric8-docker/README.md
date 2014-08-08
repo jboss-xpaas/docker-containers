@@ -12,13 +12,13 @@ Table of contents
 * **[Control scripts](#control-scripts)**
 * **[Building the docker container](#building-the-docker-container)**
 * **[Running the container](#running-the-container)**
-* **[Connection to a container using SSH](#connection-to-a-container-using-SSH)**
-* **[Connection to Fabric8 web console (HawtIO)](#Connection-to-Fabric8-web-console-HawtIO)**
-* **[Starting, stopping and restarting the SSH daemon](#starting,-stopping-and-restarting-the-SSH-daemon)**
-* **[Starting, stopping and restarting Fabric8](#starting,-stopping-and-restarting-Fabric8)**
+* **[Connection to a container using SSH](#connection-to-a-container-using-ssh)**
+* **[Connection to Fabric8 web console (HawtIO)](#Connection-to-fabric8-web-console-hawtio)**
+* **[Starting, stopping and restarting the SSH daemon](#starting,-stopping-and-restarting-the-ssh-daemon)**
+* **[Starting, stopping and restarting Fabric8](#starting,-stopping-and-restarting-fabric8)**
 * **[Logging](#logging)**
 * **[Stopping the container](#stopping-the-container)**
-* **[Experimenting](#Experimenting)**
+* **[Experimenting](#experimenting)**
 * **[Notes](#notes)**
 
 Control scripts
@@ -174,6 +174,10 @@ To spin up a shell in one of the containers try:
     docker run -P -i -t xpaas/xpaas_fabric8 /bin/bash
     
 You can then noodle around the container and run stuff & look at files etc.
+
+In order to run all container services provided by this image, you have to run the following command:
+
+    supervisord -c /etc/supervisord.conf
     
 Notes
 -----

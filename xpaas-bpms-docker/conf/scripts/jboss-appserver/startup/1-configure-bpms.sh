@@ -46,4 +46,4 @@ touch /opt/jboss-appserver/standalone/deployments/dashbuilder.war.dodeploy
 
 echo "End of JBoss BPMS web application configuration."
 
-exit $?
+exit 0

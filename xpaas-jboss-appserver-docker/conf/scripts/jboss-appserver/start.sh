@@ -31,4 +31,4 @@ fi
 # Starts JBoss Application Server using $RUN_ARGUMENTS, specified when running the container, if any.
 /jboss/scripts/jboss-appserver/start-jboss.sh $DOCKER_IP
 
-exit $?
+exit 0

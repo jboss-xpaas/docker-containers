@@ -9,3 +9,5 @@ echo Using bindaddress: $FABRIC8_BINDADDRESS
 
 # Run fabric8 in server mode.
 /opt/fabric8-karaf/bin/fabric8 server
+
+exit 0

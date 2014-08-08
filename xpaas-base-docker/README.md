@@ -137,7 +137,11 @@ To spin up a shell in one of the containers try:
     docker run -P -i -t xpaas/xpaas_base /bin/bash
     
 You can then noodle around the container and run stuff & look at files etc.
-    
+
+In order to run all container services provided by this image, you have to run the following command:
+
+    supervisord -c /etc/supervisord.conf
+
 Notes
 -----
 

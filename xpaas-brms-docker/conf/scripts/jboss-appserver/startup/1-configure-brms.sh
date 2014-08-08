@@ -40,4 +40,4 @@ touch /opt/jboss-appserver/standalone/deployments/kie-drools-wb.war.dodeploy
 
 echo "End of JBoss BRMS web application configuration."
 
-exit $?
+exit 0

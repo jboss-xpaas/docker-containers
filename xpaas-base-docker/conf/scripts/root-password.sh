@@ -14,4 +14,4 @@ fi
 echo "Using '$ROOT_PASSWORD' as root password"
 echo "root:$ROOT_PASSWORD" | chpasswd
 
-exit $?
+exit 0

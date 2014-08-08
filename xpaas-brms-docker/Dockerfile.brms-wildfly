@@ -15,6 +15,15 @@ MAINTAINER "JBoss XPaaS Team" "xpass-eng@redhat.com"
 ####### BRMS for Wildfly 8 ############
 RUN curl --silent --output /tmp/kie-drools-wb.war http://repository.jboss.org/nexus/content/groups/public-jboss/org/kie/kie-drools-wb-distribution-wars/6.1.0.CR2/kie-drools-wb-distribution-wars-6.1.0.CR2-wildfly.war
 
+####### ENVIRONEMNT ############
+# Default values for database connection variables
+ENV BRMS_CONNECTION_URL "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
+ENV BRMS_CONNECTION_DRIVER h2
+ENV BRMS_CONNECTION_USER sa
+ENV BRMS_CONNECTION_PASSWORD sa
+# BRMS requires the full profile
+ENV JBOSS_STANDALONE_CONF_FILE standalone-full.xml
+
 ####### SCRIPTS ############
 WORKDIR /
 RUN mkdir -p /jboss/scripts/brms
