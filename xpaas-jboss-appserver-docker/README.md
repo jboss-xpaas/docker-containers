@@ -421,6 +421,9 @@ You can access the HTTP administration console and deploy you files using this i
 **Using JBoss CLI**       
 You can access the container via SSH and copy the application to deploy into a temporal folder in the container (using <code>scp</code>) and deploy it using JBoss CLI
 
+**Using the deployment scanner**       
+In JBoss Wildfly/EAP this method is enabled by default, and you only need to place your application inside <code>deployments/</code> directory.       
+
 Notes:      
 * If running the containers in domain mode, you can deploy/undeploy to several server instances at same time by doing a server-group deploy      
 
@@ -490,6 +493,12 @@ or deployments via CLI.
 
 You can place a <code>sh</code> that runs some JBoss CLI commands in the following path: <code>/jboss/scripts/jboss-appserver/startup</code>.
 This script will be executed only once just after container has been started for first time. See **[JBoss startup scripts](#JBoss-startup-scripts)**     
+
+Note that when extending this image, you can copy your application into the <code>deployments/</code> directory for the server, for example you can do in your docker file:
+
+    ADD mycustomwebapp.war /opt/jboss-appserver/standalone/deployments/mycustomwebapp.war
+    
+But be careful if you to the deploy this way, because this container provides the **[JBoss startup scripts](#jboss-startup-scripts)**, but these are executed once the server is up, before deploying any application located at <code>deployments/</code> directory, just keep in mind that. So the best way to deploy your applications is using CLI scripts as **[JBoss startup scripts](#jboss-startup-scripts)**.         
 
 In addition, you can modify the way that JBoss server is started by default by modifying the startup script located inside the container at directory <code>/jboss/scripts/jboss-appserver/start-jboss.sh</code>. See **[Running the container](#running-the-container)** (section <i>Custom JBoss Wildfly/EAP startup script</i>)       
 
