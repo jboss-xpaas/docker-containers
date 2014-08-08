@@ -5,13 +5,14 @@
         - There are some yum errors during image build
         - When running sshd, a warning about internal IP address is shown
     - xpaas-jboss-appserver-docker
-        - Other databse modules preinstalled? (currently only mysql)
+        - jboss-startup-detection.sh -> is printing the connection expcetions to stdout until jboss server is up -> Do not print them?
         - Domain mode & Clustering support (standalone & domain modes)
             - The second instance of DOMAIN-HOST does not starts successfully. Only one domain host instance supported now.
             - Container linking
             - Clustering support
                 - Profiles for cluster set automatically?
                 - Change jgropus subsystem configuration -> remove multicast autodiscovery to TCPPING and set the other servers IP address automatically.
+        - Other databse modules preinstalled? (currently only mysql)
         - When running httpd, a warning about internal IP address is shown
     - BPMS docker image
         - BPMS Wildfly container is not starting up as well -> https://issues.jboss.org/browse/WFLY-3355
