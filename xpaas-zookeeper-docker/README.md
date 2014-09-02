@@ -1,4 +1,4 @@
-XPasS Zookeeper Docker Image
+XPaaS Zookeeper Docker Image
 ===========================
 
 This project builds a [docker](http://docker.io/) container for running XPaaS Zookeeper.
