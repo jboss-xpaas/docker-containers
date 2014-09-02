@@ -41,7 +41,7 @@ If you are on OS X then see [How to use Docker on OS X](DockerOnOSX.md).
 
 First, clone the repository:
     
-    git clone git@github.com:pzapataf/xpaas-docker-containers.git
+    git clone git@github.com:jboss-xpaas/docker-containers.git
     cd xpaas-docker-containers/xpaas-bpms-docker
     
 **Creating the JBoss BPMS for Wildly container**

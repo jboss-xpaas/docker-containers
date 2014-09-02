@@ -1,10 +1,10 @@
-XPaaS Fabric8 Docker Image
+XPasS Zookeeper Docker Image
 ===========================
 
-This project builds a [docker](http://docker.io/) container for running XPaaS Fabric8.
+This project builds a [docker](http://docker.io/) container for running XPaaS Zookeeper.
 
 This image is based on a <code>xpaas/xpaas_base</code> version <code>1.0</code> and provides a container including:     
-* Fabric8 IO version <code>1.1.0.CR5</code>   
+* Fabric8 IO version <code>3.4.6</code>
 
 Table of contents
 ------------------
@@ -13,9 +13,8 @@ Table of contents
 * **[Building the docker container](#building-the-docker-container)**
 * **[Running the container](#running-the-container)**
 * **[Connection to a container using SSH](#connection-to-a-container-using-ssh)**
-* **[Connection to Fabric8 web console (HawtIO)](#Connection-to-fabric8-web-console-hawtio)**
 * **[Starting, stopping and restarting the SSH daemon](#starting,-stopping-and-restarting-the-ssh-daemon)**
-* **[Starting, stopping and restarting Fabric8](#starting,-stopping-and-restarting-fabric8)**
+* **[Starting, stopping and restarting Zookeeper](#starting,-stopping-and-restarting-zookeeper)**
 * **[Logging](#logging)**
 * **[Stopping the container](#stopping-the-container)**
 * **[Experimenting](#experimenting)**
@@ -26,36 +25,36 @@ Control scripts
 
 There are three control scripts:    
 * <code>build.sh</code> Builds the docker image    
-* <code>start.sh</code> Starts a new XPaaS fabric8  docker container based on this image    
-* <code>stop.sh</code>  Stops the runned XPaaS fabric8  docker container    
+* <code>start.sh</code> Starts a new XPaaS zookeeper  docker container based on this image
+* <code>stop.sh</code>  Stops the runned XPaaS zookeeper  docker container
 
 Building the docker container
 -----------------------------
 
-We have a Docker Index trusted build setup to automatically rebuild the xpass/xpass-fabric8 container whenever the
-[Dockerfile](https://github.com/pzapataf/xpaas-docker-containers/blob/master/xpaas-fabric8-docker/Dockerfile) is updated, so you shouldn't have to rebuild it locally. But if you want to, here's now to do it...
+We have a Docker Index trusted build setup to automatically rebuild the xpass/xpass-zookeeper container whenever the
+[Dockerfile](https://github.com/pzapataf/xpaas-docker-containers/blob/master/xpaas-zookeeper-docker/Dockerfile) is updated, so you shouldn't have to rebuild it locally. But if you want to, here's now to do it...
 
 Once you have [installed docker](https://www.docker.io/gettingstarted/#h_installation) you should be able to create the containers via the following:
 
 If you are on OS X then see [How to use Docker on OS X](DockerOnOSX.md).
 
     git clone git@github.com:jboss-xpaas/docker-containers.git
-    cd xpaas-docker-containers/xpaas-fabric8-docker
+    cd xpaas-docker-containers/xpaas-zookeeper-docker
     ./build.sh
 
 Running the container
 ---------------------
 
-To run a new container from XPaaS fabric8 run:
+To run a new container from XPaaS zookeeper run:
     
     ./start.sh [-c <container_name>] [-p <root_password>]
 
 
 Or you can try it out via docker command directly:
 
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"] xpaas/xpaas_fabric8:<version>
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"] xpaas/xpaas_zookeeper:<version>
 
-These commands will start a new XPaas fabric8 container with Fabric8 services enabled     
+These commands will start a new XPaas zookeeper container with Zookeeper services enabled
 
 **Environment variables**
 
@@ -64,9 +63,9 @@ These are the environment variables supported when running the JBoss Wildfly/EAP
 - <code>ROOT_PASSWORD</code> - The root password for <code>root</code> system user. Useful to connect via SSH
 
 **Notes**           
-* If no container name argument is set, it defaults to <code>xpaas-fabric8</code>       
+* If no container name argument is set, it defaults to <code>xpaas-zookeeper</code>
 * If no root password argument is set, it defaults to <code>xpaas</code>    
-* An specific user for fabric8 is created in the container: <code>fabric8/fabric8</code>    
+* An specific user for fabric8 is created in the container: <code>zookeeper/zookeeper</code>
 
 Connection to a container using SSH
 -----------------------------------

@@ -1,4 +1,4 @@
-XPasS Base Docker Image
+XPaaS Base Docker Image
 =======================
 
 This project builds a [docker](http://docker.io/) container for running XPaaS based applications.
@@ -46,7 +46,7 @@ Once you have [installed docker](https://www.docker.io/gettingstarted/#h_install
 
 If you are on OS X then see [How to use Docker on OS X](DockerOnOSX.md).
 
-    git clone git@github.com:pzapataf/xpaas-docker-containers.git
+    git clone git@github.com:jboss-xpaas/docker-containers.git
     cd xpaas-docker-containers/xpaas-base-docker
     ./build.sh
 
