@@ -7,15 +7,20 @@
 # -p | --root-password:        The root password 
 #                           If not specified, defaults to "xpaas"
 # -h | --help;              Show the script usage
+# -zServers | --zookeeperServers:  server.1=zoo1:2888:3888\nserver.2=zoo2:2888:3888\nserver.3=zoo3:2888:3888
+#                           Other zookeeper server to ensure HA
+
 #
 # Example: sh start.sh -c "xpaas-fabric8" -p "mypass"
 
 CONTAINER_NAME="xpaas-zookeeper"
 ROOT_PASSWORD="xpaas"
+ZSERVERS="#"
+
 
 function usage
 {
-    echo "usage: start.sh [[[-c <container_name> ] [-p <root_password>]] | [-h]]"
+    echo "usage: start.sh [[[-c <container_name> ] [-p <root_password>]] | [-h]]  -zServers [server.1=zServer1_IP:zooServer1_Port1:zooServer1_Port2\\\\nserver.2=zServer2_IP:zooServer2_Port1:zooServer2_Port2]"
 }
 
 while [ "$1" != "" ]; do
@@ -26,6 +31,9 @@ while [ "$1" != "" ]; do
         -p | --root-password )  shift
                                 ROOT_PASSWORD=$1
                                 ;;
+        -zServers | --zookeeperServers )  shift
+                                        ZSERVERS=$1
+                                        ;;
         -h | --help )           usage
                                 exit
                                 ;;
@@ -51,7 +59,8 @@ fi
 echo "Starting xpaas-zookeeper docker container using:"
 echo "** Container name: $CONTAINER_NAME"
 echo "** Root password: $ROOT_PASSWORD"
-image_xpaas_base=$(docker run -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" $IMAGE_NAME:$IMAGE_TAG)
+echo "** ZServers: $ZSERVERS"
+image_xpaas_base=$(docker run -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e ZOOKEEPER_REGISTERED_SERVERS="$ZSERVERS" $IMAGE_NAME:$IMAGE_TAG)
 ip_xpaas_base=$(docker inspect $image_xpaas_base | grep IPAddress | awk '{print $2}' | tr -d '",')
 echo $image_xpaas_base > docker.pid
 

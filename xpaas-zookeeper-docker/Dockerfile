@@ -17,6 +17,10 @@ ENV ZOOKEEPER_NAME root
 ENV ZOOKEEPER_BINDADDRESS 0.0.0.0
 ENV ZOOKEEPER_PROFILES docker
 
+ENV ZOOKEEPER_DATA_DIR /tmp/data/zookeeper
+ENV ZOOKEEPER_CLIENT_PORT 2181
+ENV ZOOKEEPER_REGISTERED_SERVERS #
+
 ####### USERS ############
 RUN useradd -m zookeeper ; echo zookeeper: | chpasswd ; usermod -a -G wheel zookeeper
 
@@ -50,7 +54,8 @@ RUN echo log4j.rootLogger=INFO, stdout, osgi:* >> org.ops4j.pax.logging.cfg
 WORKDIR /
 RUN mkdir -p /jboss/scripts/zookeeper
 ADD conf/scripts/zookeeper/startup.sh /jboss/scripts/zookeeper/startup.sh
-ADD conf/scripts/zookeeper/zoo.cfg /opt/zookeeper/conf/zoo.cfg
+
+
 
 ####### ADD THE SUPERVISOR DAEMON PROGRAMS ###########
 WORKDIR /
