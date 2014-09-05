@@ -63,6 +63,8 @@ ADD conf/supervisord/zookeeper.sv.conf /etc/supervisord/conf.d/zookeeper.sv.conf
 
 ####### PORT EXPOSING ###########
 EXPOSE 2181
+EXPOSE 2888
+EXPOSE 3888
 
 ####### DEFAULT RUN COMMAND###########
 CMD ["/usr/bin/supervisord","-c","/etc/supervisord.conf"]
