@@ -1,0 +1,38 @@
+#####################################################################
+# Dockerfile to build xpaas-bpms-wildfly-docker container image including:
+#   - http daemon
+#   - wildfly 8.1
+# Based on XPaaS JBoss Wildfly docker image
+# Version: 1.0
+######################################################################
+
+####### BASE ############
+FROM xpaas/xpaas_wildfly:1.0
+
+####### MAINTAINER ############
+MAINTAINER "JBoss XPaaS Team" "xpass-eng@redhat.com"
+
+####### BPMS for Wildfly 8 ############
+RUN curl --silent --output /tmp/kie-wb.war http://repository.jboss.org/nexus/content/groups/public-jboss/org/kie/kie-wb-distribution-wars/6.1.0.CR2/kie-wb-distribution-wars-6.1.0.CR2-wildfly.war
+RUN curl --silent --output /tmp/dashbuilder.war http://repository.jboss.org/nexus/content/repositories/releases/org/jbpm/dashboard/jbpm-dashboard-distributions/6.1.0.CR2/jbpm-dashboard-distributions-6.1.0.CR2-jboss-as7.war
+
+####### ENVIRONEMNT ############
+# Default values for database connection variables
+ENV BPMS_CONNECTION_URL "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
+ENV BPMS_CONNECTION_DRIVER h2
+ENV BPMS_CONNECTION_USER sa
+ENV BPMS_CONNECTION_PASSWORD sa
+# BPMS requires the full profile
+ENV JBOSS_STANDALONE_CONF_FILE standalone-full.xml
+# Currently the domain/clustering mode is not supported. Force standalone mode. 
+ENV JBOSS_MODE STANDALONE
+
+####### SCRIPTS ############
+WORKDIR /
+RUN mkdir -p /jboss/scripts/bpms
+ADD conf/scripts/jboss-appserver/startup/1-configure-bpms.sh /jboss/scripts/jboss-appserver/startup/1-configure-bpms.sh
+ADD conf/scripts/jboss-appserver/start-jboss.sh /jboss/scripts/jboss-appserver/start-jboss.sh
+ADD conf/scripts/bpms/bpms.cli /jboss/scripts/bpms/bpms.cli
+ADD conf/scripts/bpms/change-hibernate-dialect.sh /jboss/scripts/bpms/change-hibernate-dialect.sh
+ADD conf/bpms-roles.properties /opt/jboss-appserver/standalone/configuration/bpms-roles.properties
+ADD conf/bpms-users.properties /opt/jboss-appserver/standalone/configuration/bpms-users.properties

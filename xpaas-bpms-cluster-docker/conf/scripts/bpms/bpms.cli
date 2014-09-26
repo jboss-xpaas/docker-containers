@@ -1,0 +1,42 @@
+# System properties
+/core-service=system-properties=property:write-attribute(name=org.uberfire.cluster.local.id,value=$HOST_ID)
+/core-service=system-properties=property:write-attribute(name=org.uberfire.cluster.vfs.lock,value=${jboss.server.data.dir}/repositories)
+/core-service=system-properties=property:write-attribute(name=org.uberfire.cluster.autostart,value=false)
+
+/core-service=system-properties=property:write-attribute(name=org.uberfire.nio.git.daemon.host,value=127.0.0.1)
+/core-service=system-properties=property:write-attribute(name=org.uberfire.nio.git.ssh.host,value=127.0.0.1)
+/core-service=system-properties=property:write-attribute(name=org.uberfire.nio.git.daemon.port,value=9520)
+/core-service=system-properties=property:write-attribute(name=org.uberfire.nio.git.ssh.port,value=9521)
+        <property name="org.uberfire.cluster.local.id" value="HOST1" />
+        <property name="org.uberfire.cluster.vfs.lock" value="vfs-repo"/>
+        <property name="org.uberfire.cluster.autostart" value="false"/>
+
+/core-service=system-properties=property:write-attribute(name=org.uberfire.nio.git.daemon.upload,value=true)
+/core-service=system-properties=property:write-attribute(name=org.uberfire.metadata.index.dir,value=${jboss.server.data.dir})
+/core-service=system-properties=property:write-attribute(name=org.uberfire.nio.git.ssh.cert.dir,value=${jboss.server.data.dir})
+/core-service=system-properties=property:write-attribute(name=org.uberfire.nio.git.ssh.enabled,value=true)
+/core-service=system-properties=property:write-attribute(name=org.kie.demo,value=false)
+/core-service=system-properties=property:write-attribute(name=org.kie.example,value=false)
+/core-service=system-properties=property:write-attribute(name=,value=)
+
+
+
+# Datasource configuration
+/subsystem=datasources/data-source=ExampleDS:write-attribute(name=connection-url,value="${jboss.bpms.connection_url:jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}")
+/subsystem=datasources/data-source=ExampleDS:write-attribute(name=driver-name,value="${jboss.bpms.driver:h2}")
+/subsystem=datasources/data-source=ExampleDS:write-attribute(name=user-name,value="${jboss.bpms.username:sa}")
+/subsystem=datasources/data-source=ExampleDS:write-attribute(name=password,value="${jboss.bpms.password:sa}")
+
+# Management - Security Realms
+/core-service=management/security-realm=ApplicationRealm/authentication=properties:write-attribute(name=path,value=bpms-users.properties)
+/core-service=management/security-realm=ApplicationRealm/authorization=properties:write-attribute(name=path,value=bpms-roles.properties)
+
+# Subsystem - Security
+/subsystem=security/security-domain=other/authentication=classic/login-module=RealmDirect:remove
+/subsystem=security/security-domain=other/authentication=classic/login-module=Remoting:remove
+/subsystem=security/security-domain=other/authentication=classic/login-module=UsersRoles:add(code=UsersRoles,flag=required,module-options={"usersProperties" => "${jboss.server.config.dir}/bpms-users.properties","rolesProperties" => "${jboss.server.config.dir}/bpms-roles.properties"})
+
+
+# Reload configuration
+/:reload
+
