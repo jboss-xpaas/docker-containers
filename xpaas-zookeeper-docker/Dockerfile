@@ -21,6 +21,10 @@ ENV ZOOKEEPER_DATA_DIR /tmp/data/zookeeper
 ENV ZOOKEEPER_CLIENT_PORT 2181
 ENV ZOOKEEPER_REGISTERED_SERVERS #
 
+ENV CLUSTER_NAME jbpm-cluster
+ENV VFS_REPO vfs-repo
+ENV HELIX_VERSION 0.6.3
+
 ####### USERS ############
 RUN useradd -m zookeeper ; echo zookeeper: | chpasswd ; usermod -a -G wheel zookeeper
 
@@ -31,6 +35,15 @@ RUN tar zxf zookeeper.tar.gz
 RUN mv zookeeper-$ZOOKEEPER_VERSION zookeeper
 RUN mv zookeeper/ /opt/
 RUN rm zookeeper.tar.gz
+
+
+####### HELIX ############
+RUN curl --silent --output helix.tar http://ftp.cixug.es/apache/helix/$HELIX_VERSION/binaries/helix-core-$HELIX_VERSION-pkg.tar
+RUN tar -xvf helix.tar
+RUN mv helix-core-$HELIX_VERSION helix
+RUN mv helix/ /opt/
+RUN rm helix.tar
+
 
 
 ####### ZOOKEEPER CONFIGURATION ############

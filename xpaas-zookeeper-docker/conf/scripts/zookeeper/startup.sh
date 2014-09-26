@@ -8,6 +8,7 @@ echo ZOOKEEPER_BINDADDRESS $ZOOKEEPER_BINDADDRESS
 echo ZOOKEEPER_DATA_DIR: $ZOOKEEPER_DATA_DIR
 echo ENV ZOOKEEPER_CLIENT_PORT: $ENV ZOOKEEPER_CLIENT_PORT
 echo ZOOKEEPER_REGISTERED_SERVERS: $ZOOKEEPER_REGISTERED_SERVERS
+echo CLUSTER_NAME: $CLUSTER_NAME
 
 
 # Generating zookeeper zoo.cfg
@@ -44,5 +45,22 @@ echo -e "$ZOOKEEPER_REGISTERED_SERVERS">> /opt/zookeeper/conf/zoo.cfg
 
 # Run Zookeeper in server mode.
 /opt/zookeeper/bin/zkServer.sh start
+
+
+echo 'helix addCluster'
+/opt/helix/bin/helix-admin.sh --zkSvr localhost:2181 --addCluster $CLUSTER_NAME
+
+
+
+echo 'helix addNodeToCluster host2'
+/opt/helix/bin/helix-admin.sh --zkSvr localhost:2181 --addNode $CLUSTER_NAME HOST2
+
+
+echo 'helix Adding vfs-repo as resource'
+/opt/helix/bin/helix-admin.sh --zkSvr localhost:2181 --addResource $CLUSTER_NAME $VFS_REPO 1 LeaderStandby AUTO_REBALANCE
+
+echo 'helix Rebalance the clusterhelix'
+/opt/helix/bin/helix-admin.sh --zkSvr localhost:2181 --rebalance $CLUSTER_NAME $VFS_REPO 2
+
 
 exit 0
