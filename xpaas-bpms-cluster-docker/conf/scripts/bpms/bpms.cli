@@ -7,9 +7,7 @@
 /core-service=system-properties=property:write-attribute(name=org.uberfire.nio.git.ssh.host,value=127.0.0.1)
 /core-service=system-properties=property:write-attribute(name=org.uberfire.nio.git.daemon.port,value=9520)
 /core-service=system-properties=property:write-attribute(name=org.uberfire.nio.git.ssh.port,value=9521)
-        <property name="org.uberfire.cluster.local.id" value="HOST1" />
-        <property name="org.uberfire.cluster.vfs.lock" value="vfs-repo"/>
-        <property name="org.uberfire.cluster.autostart" value="false"/>
+
 
 /core-service=system-properties=property:write-attribute(name=org.uberfire.nio.git.daemon.upload,value=true)
 /core-service=system-properties=property:write-attribute(name=org.uberfire.metadata.index.dir,value=${jboss.server.data.dir})
