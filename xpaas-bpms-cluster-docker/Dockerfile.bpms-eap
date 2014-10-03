@@ -14,8 +14,8 @@ MAINTAINER "JBoss XPaaS Team" "xpass-eng@redhat.com"
 
 
 ####### BPMS for EAP 6.1 ############
-RUN curl --silent --output /tmp/kie-wb.war https://repository.jboss.org/nexus/service/local/repositories/releases/content/org/kie/kie-wb-distribution-wars/6.1.0.CR2/kie-wb-distribution-wars-6.1.0.CR2-eap-6_1.war
-RUN curl --silent --output /tmp/dashbuilder.war http://repository.jboss.org/nexus/content/repositories/releases/org/jbpm/dashboard/jbpm-dashboard-distributions/6.1.0.CR2/jbpm-dashboard-distributions-6.1.0.CR2-jboss-as7.war
+RUN curl --silent --output /opt/jboss-appserver/standalone/deployments/kie-wb.war https://repository.jboss.org/nexus/service/local/repositories/releases/content/org/kie/kie-wb-distribution-wars/6.1.0.CR2/kie-wb-distribution-wars-6.1.0.CR2-eap-6_1.war
+RUN curl --silent --output /opt/jboss-appserver/standalone/deployments/dashbuilder.war http://repository.jboss.org/nexus/content/repositories/releases/org/jbpm/dashboard/jbpm-dashboard-distributions/6.1.0.CR2/jbpm-dashboard-distributions-6.1.0.CR2-jboss-as7.war
 
 
 ####### ENVIRONEMNT ############
@@ -50,3 +50,5 @@ ADD conf/scripts/bpms/bpms.cli /jboss/scripts/bpms/bpms.cli
 ADD conf/scripts/bpms/change-hibernate-dialect.sh /jboss/scripts/bpms/change-hibernate-dialect.sh
 ADD conf/bpms-roles.properties /opt/jboss-appserver/standalone/configuration/bpms-roles.properties
 ADD conf/bpms-users.properties /opt/jboss-appserver/standalone/configuration/bpms-users.properties
+
+
