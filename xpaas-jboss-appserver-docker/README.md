@@ -84,7 +84,7 @@ If more than one standalone instance is launched and multi-server management is 
 To run a new container from XPaaS JBoss Wildfly/EAP in standalone mode run:
     
     # NOTE: Type "./start.sh -h" to see all available script arguments.
-    ./start.sh [-i [wildfly,eap]] [-c <container_name>] [-p <root_password>] [-ap <admin_password>] [-args <run_arguments>] [ --conf-file <conf_file>] 
+    ./start.sh [-i [wildfly,eap]] [-c <container_name>] [-name <node_name>] [-p <root_password>] [-ap <admin_password>] [-args <run_arguments>] [ --conf-file <conf_file>] 
     
     # Example: Running a JBoss Wildfly container named "xpaas_wildfly" using all default arguments 
     ./start.sh -i wildfly -c xpaas_wildfly
@@ -98,8 +98,8 @@ To run a new container from XPaaS JBoss Wildfly/EAP in standalone mode run:
 Or you can try it out via docker command directly:
 
     # Note: See environment variables section to discover the available environment variables when running this docker container
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] xpaas/xpaas_wildfly
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] xpaas/xpaas_eap
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_NODE_NAME="<node_name>"] xpaas/xpaas_wildfly
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_NODE_NAME="<node_name>"] xpaas/xpaas_eap
     
     # Example: Running a JBoss Wildfly container named "xpaas_wildfly" using all default arguments 
     docker run -P -d --name xpaas_wildfly xpaas/xpaas_wildfly
@@ -146,22 +146,23 @@ Notes about domain mode:
 * By default, the domain controller does not start any server (by default uses <code>%lt;JBOSS_HOME&gt;/domain/configuration/host-master.xml</code>)    
 * The domain managed hosts must specify the domain controller host IP address and port when running the container in order to connect to that controller instance      
 * By default, each domain managed host starts two servers by default: <code>server-one</code> (group <code>main-server-group</code>) and <code>server-two</code> (group <code>other-server-group</code>) (by default uses <code>%lt;JBOSS_HOME&gt;/domain/configuration/host-slave.xml</code>)         
+* Please remember to set different node names to each server instance (using the environment variable <code>JBOSS_NODE_NAME</code>)         
     
 **Running a domain controller host**
 
 So first run a new container from XPaaS JBoss Wildfly/EAP in domain mode used as a domain controller host:      
     
     # NOTE: Type "./start.sh -h" to see all available script arguments.
-    ./start.sh [-i [wildfly,eap]] -d [-c <container_name>] [-p <root_password>] [-ap <admin_password>] [-args <run_arguments>]  
+    ./start.sh [-i [wildfly,eap]] -d [-c <container_name>] [-p <root_password>] [-ap <admin_password>] [-name <node_name>] [-args <run_arguments>]  
     
     # Example: Running a JBoss Wildfly domain controller host instance named "domain-controller" using all default arguments 
-    ./start.sh -i wildfly -c domain-controller -d
+    ./start.sh -i wildfly -c domain-controller -name node-controller -d
     
     # Example: Running a JBoss EAP domain controller host instance named "domain-controller" using all default arguments 
-    ./start.sh -i eap -c domain-controller -d
+    ./start.sh -i eap -c domain-controller -name node-controller -d
     
     # Example: Running a JBoss Wildfly domain controller host instance named "domain-controller" using a custom root and server administration password 
-    ./start.sh -i wildfly -c domain-controller -d -p "myrootpass" -ap "myadminpass"
+    ./start.sh -i wildfly -c domain-controller -name node-controller -d -p "myrootpass" -ap "myadminpass"
 
 Running this command will start a domain host controller instance, and the container IP address will be displayed as script output:       
 
@@ -171,17 +172,17 @@ Or you can try it out via docker command directly:
 
     # Note: See environment variables section to discover the available environment variables when running this docker container
     # Note: To run the container as a domain controller you must set the environment variable JBOSS_MODE the value DOMAIN
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_MODE="DOMAIN"] xpaas/xpaas_wildfly
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_MODE="DOMAIN"] xpaas/xpaas_eap
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_MODE="DOMAIN"] [-e JBOSS_NODE_NAME="<node_name>"] xpaas/xpaas_wildfly
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_MODE="DOMAIN"] [-e JBOSS_NODE_NAME="<node_name>"] xpaas/xpaas_eap
     
     # Example: Running a JBoss Wildfly domain controller host named "domain-controller" using all default arguments 
-    docker run -P -d --name domain-controller -e JBOSS_MODE="DOMAIN" xpaas/xpaas_wildfly
+    docker run -P -d --name domain-controller -e JBOSS_MODE="DOMAIN" -e JBOSS_NODE_NAME="node-controller" xpaas/xpaas_wildfly
     
     # Example: Running a JBoss EAP domain controller host named "domain-controller" using all default arguments 
-    docker run -P -d --name domain-controller -e JBOSS_MODE="DOMAIN" xpaas/xpaas_eap
+    docker run -P -d --name domain-controller -e JBOSS_MODE="DOMAIN" -e JBOSS_NODE_NAME="node-controller" xpaas/xpaas_eap
     
     # Example: Running a JBoss Wildfly container named "domain-controller" using a custom root and server administration password
-    docker run -P -d --name domain-controller -e ROOT_PASSWORD="myrootpass" -e JBOSS_ADMIN_PASSWORD="myadminpass" -e JBOSS_MODE="DOMAIN" xpaas/xpaas_wildfly
+    docker run -P -d --name domain-controller -e ROOT_PASSWORD="myrootpass" -e JBOSS_ADMIN_PASSWORD="myadminpass" -e JBOSS_MODE="DOMAIN" -e JBOSS_NODE_NAME="node-controller" xpaas/xpaas_wildfly
 
 
 **Running a domain managed host**
@@ -190,32 +191,32 @@ Once a JBoss Wildfly/EAP domain controller host container has been started, you 
 
 Now you can run several domain host instances that are managed by the previously started domain controller host in address <code>172.17.0.35</code> and default port <code>9999</code>:      
 
-    ./start.sh [-i [wildfly,eap]] -dh <controller_ip>:<controller_port> [-c <container_name>] [-p <root_password>] [-ap <admin_password>] [-args <run_arguments>]  
+    ./start.sh [-i [wildfly,eap]] -dh <controller_ip>:<controller_port> [-c <container_name>] [-name <node_name>] [-p <root_password>] [-ap <admin_password>] [-args <run_arguments>]  
     
     # Example: Running a JBoss Wildfly domain host instance named "domain-host1" using all default arguments 
-    ./start.sh -i wildfly -c domain-host1 -dh 172.17.0.35:9999
+    ./start.sh -i wildfly -c domain-host1 -name node1 -dh 172.17.0.35:9999
     
     # Example: Running a JBoss EAP domain host instance named "domain-host1" using all default arguments 
-    ./start.sh -i eap -c domain-host1 -dh 172.17.0.35:9999
+    ./start.sh -i eap -c domain-host1 -name node1 -dh 172.17.0.35:9999
     
     # Example: Running a JBoss Wildfly domain host instance named "domain-host1" using a custom root and server administration password 
-    ./start.sh -i wildfly -c domain-host1 -dh 172.17.0.35:9999 -p "myrootpass" -ap "myadminpass"
+    ./start.sh -i wildfly -c domain-host1 -name node1 -dh 172.17.0.35:9999 -p "myrootpass" -ap "myadminpass"
 
 Or you can try it out via docker command directly:
 
     # Note: See environment variables section to discover the available environment variables when running this docker container
     # Note: To run the container as a domain controller you must set the environment variable JBOSS_MODE the value DOMAIN-HOST and set the controller IP address and port too using JBOSS_DOMAIN_MASTER_ADDR and JBOSS_DOMAIN_MASTER_PORT respectively
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_MODE="DOMAIN-HOST"] [-e JBOSS_DOMAIN_MASTER_ADDR=<controller_address>] [ -e JBOSS_DOMAIN_MASTER_PORT=<controller_port>] xpaas/xpaas_wildfly
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_MODE="DOMAIN-HOST"] [-e JBOSS_DOMAIN_MASTER_ADDR=<controller_address>] [ -e JBOSS_DOMAIN_MASTER_PORT=<controller_port>] xpaas/xpaas_eap
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_MODE="DOMAIN-HOST"] [-e JBOSS_DOMAIN_MASTER_ADDR=<controller_address>] [ -e JBOSS_DOMAIN_MASTER_PORT=<controller_port>] [-e JBOSS_NODE_NAME="<node_name>"] xpaas/xpaas_wildfly
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_MODE="DOMAIN-HOST"] [-e JBOSS_DOMAIN_MASTER_ADDR=<controller_address>] [ -e JBOSS_DOMAIN_MASTER_PORT=<controller_port>] [-e JBOSS_NODE_NAME="<node_name>"] xpaas/xpaas_eap
     
     # Example: Running a JBoss Wildfly domain host named "domain-host1" using all default arguments 
-    docker run -P -d --name domain-host1 -e JBOSS_MODE="DOMAIN-HOST" -e JBOSS_DOMAIN_MASTER_ADDR=172.17.0.35 -e JBOSS_DOMAIN_MASTER_PORT=9999 xpaas/xpaas_wildfly
+    docker run -P -d --name domain-host1 -e JBOSS_NODE_NAME="node1" -e JBOSS_MODE="DOMAIN-HOST" -e JBOSS_DOMAIN_MASTER_ADDR=172.17.0.35 -e JBOSS_DOMAIN_MASTER_PORT=9999 xpaas/xpaas_wildfly
     
     # Example: Running a JBoss EAP domain  host named "domain-host1" using all default arguments 
-    docker run -P -d --name domain-host1 -e JBOSS_MODE="DOMAIN-HOST" -e JBOSS_DOMAIN_MASTER_ADDR=172.17.0.35 -e JBOSS_DOMAIN_MASTER_PORT=9999 xpaas/xpaas_eap
+    docker run -P -d --name domain-host1 -e JBOSS_NODE_NAME="node1" -e JBOSS_MODE="DOMAIN-HOST" -e JBOSS_DOMAIN_MASTER_ADDR=172.17.0.35 -e JBOSS_DOMAIN_MASTER_PORT=9999 xpaas/xpaas_eap
     
     # Example: Running a JBoss Wildfly domain host instance named "domain-host1" using a custom root and server administration password
-    docker run -P -d --name domain-host1 -e ROOT_PASSWORD="myrootpass" -e JBOSS_ADMIN_PASSWORD="myadminpass" -e JBOSS_MODE="DOMAIN-HOST" -e JBOSS_DOMAIN_MASTER_ADDR=172.17.0.35 -e JBOSS_DOMAIN_MASTER_PORT=9999 xpaas/xpaas_wildfly
+    docker run -P -d --name domain-host1 -e JBOSS_NODE_NAME="node1" -e ROOT_PASSWORD="myrootpass" -e JBOSS_ADMIN_PASSWORD="myadminpass" -e JBOSS_MODE="DOMAIN-HOST" -e JBOSS_DOMAIN_MASTER_ADDR=172.17.0.35 -e JBOSS_DOMAIN_MASTER_PORT=9999 xpaas/xpaas_wildfly
 
 **Environment variables**
 
@@ -229,20 +230,21 @@ These are global for all container run modes:
             - STANDALONE - Use standalone mode. This is the default value for this variable if not set       
             - DOMAIN - Use domain mode. This server instance will be the domain controller       
             - DOMAIN-HOST - Use domain mode. This server instance will be a domain host       
-
+            
+* <code>JBOSS_NODE_NAME</code> - The name for the server instance, defaults to <code>node1</code>     
 * <code>JBOSS_ARGUMENTS</code> - The arguments to pass when executing <code>standalone.sh</code> startup script     
-* <code>JBOSS_BIND_ADDRESS</code> - The server bind address, default to <code>0.0.0.0</code>     
+* <code>JBOSS_BIND_ADDRESS</code> - The server bind address, defaults to <code>0.0.0.0</code>     
 
 These are specific for server ports:     
-* <code>JBOSS_HTTP_PORT</code> - The server HTTP port, default to <code>8080</code>     
-* <code>JBOSS_HTTPS_PORT</code> - The server HTTPS port, default to <code>8443</code>     
-* <code>JBOSS_AJP_PORT</code> - The server AJP port, default to <code>8009</code>     
-* <code>JBOSS_MGMT_NATIVE_PORT</code> - The server native management port, default to <code>9999</code>      
-* <code>JBOSS_MGMT_HTTP_PORT</code> - The server HTTP management port, default to <code>9990</code>      
-* <code>JBOSS_MGMT_HTTPS_PORT</code> - The server HTTPS management port, default to <code>9993</code> (Wildly) or <code>9443</code> (EAP)      
+* <code>JBOSS_HTTP_PORT</code> - The server HTTP port, defaults to <code>8080</code>     
+* <code>JBOSS_HTTPS_PORT</code> - The server HTTPS port, defaults to <code>8443</code>     
+* <code>JBOSS_AJP_PORT</code> - The server AJP port, defaults to <code>8009</code>     
+* <code>JBOSS_MGMT_NATIVE_PORT</code> - The server native management port, defaults to <code>9999</code>      
+* <code>JBOSS_MGMT_HTTP_PORT</code> - The server HTTP management port, defaults to <code>9990</code>      
+* <code>JBOSS_MGMT_HTTPS_PORT</code> - The server HTTPS management port, defaults to <code>9993</code> (Wildly) or <code>9443</code> (EAP)      
 
 These are specific for standalone mode:     
-* <code>JBOSS_STANDALONE_CONF_FILE</code> - The JBoss configuration file, default to <code>standalone.xml</code> (default profile)       
+* <code>JBOSS_STANDALONE_CONF_FILE</code> - The JBoss configuration file, defaults to <code>standalone.xml</code> (default profile)       
 
 These are specific for domain controller mode:     
 * <code>JBOSS_DOMAIN_CLUSTER_PASSWORD</code> - The JBoss domain cluster password. If not set, defaults to <code>jboss</code>        
@@ -285,7 +287,8 @@ To run the cluster you will have to setup manually the docker containers that wi
 * If no container name argument is set and image to build is <code>eap</code>, it defaults to <code>xpaas-eap</code>
 * If no root password argument is set, it defaults to <code>xpaas</code>    
 * If no JBoss server mode is set, it defaults to <code>STANDALONE</code>         
-* If no JBoss Wildfly/EAP admin user password argument is set, it defaults to <code>admin123!</code>
+* If no JBoss Wildfly/EAP admin user password argument is set, it defaults to <code>admin123!</code>        
+* If running several server instances in domain mode or in a standalone clustered environment, please remember to set different node names to each server instance (using the environment variable <code>JBOSS_NODE_NAME</code>)       
 
 Connection to a container using SSH
 -----------------------------------

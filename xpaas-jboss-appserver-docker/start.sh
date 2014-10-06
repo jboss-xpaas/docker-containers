@@ -8,6 +8,8 @@
 #                           If not specified, defaults to "xpaas-wildfly" or "xpaas-eap" depending on image argument
 # -p | --root-password:        The root password 
 #                           If not specified, defaults to "xpaas"
+# -name | --node-name:      The name for the JBoss server node. 
+#                           If not specified, defaults to "node1"
 # -ap | --admin-password:        The JBoss App Server admin user password 
 #                           If not specified, defaults to "admin123!"
 # -d | --domain:        The jboss container starts as a domain controller host. 
@@ -26,6 +28,7 @@
 CONTAINER_NAME="xpaas-wildfly"
 ROOT_PASSWORD="xpaas"
 JBOSS_ADMIN_PASSWORD="admin123!"
+JBOSS_NODE_NAME="node1"
 IMAGE_NAME="xpaas/xpaas_wildfly"
 IMAGE_TAG="1.0"
 JBOSS_CONF_FILE="standalone.xml"
@@ -55,6 +58,9 @@ while [ "$1" != "" ]; do
                                 ;;
         -args | --arguments )  shift
                                 RUN_ARGUMENTS=$1
+                                ;;
+        -name | --node-name )   shift
+                                JBOSS_NODE_NAME=$1
                                 ;;
         -conf-file | --config-file )  shift
                                 JBOSS_CONF_FILE=$1
@@ -120,7 +126,7 @@ elif [ "$JBOSS_MODE" == "DOMAIN-HOST" ]; then
     ALL_ARGUMENTS="$ALL_ARGUMENTS  -e JBOSS_DOMAIN_MASTER_ADDR=$JBOSS_DOMAIN_CONTROLLER_IP -e JBOSS_DOMAIN_MASTER_PORT=$JBOSS_DOMAIN_CONTROLLER_PORT " 
 fi
 ALL_ARGUMENTS="$ALL_ARGUMENTS -e JBOSS_ARGUMENTS=\"$RUN_ARGUMENTS\" "
-image_xpaas_wildfly=$(docker run -P -d -e ROOT_PASSWORD="$ROOT_PASSWORD" -e JBOSS_ADMIN_PASSWORD="$JBOSS_ADMIN_PASSWORD" $ALL_ARGUMENTS $IMAGE_NAME:$IMAGE_TAG)
+image_xpaas_wildfly=$(docker run -P -d -e ROOT_PASSWORD="$ROOT_PASSWORD" -e JBOSS_ADMIN_PASSWORD="$JBOSS_ADMIN_PASSWORD" -e JBOSS_NODE_NAME="$JBOSS_NODE_NAME" $ALL_ARGUMENTS $IMAGE_NAME:$IMAGE_TAG)
 ip_wildfly=$(docker inspect $image_xpaas_wildfly | grep IPAddress | awk '{print $2}' | tr -d '",')
 echo $image_xpaas_wildfly > $PID
 

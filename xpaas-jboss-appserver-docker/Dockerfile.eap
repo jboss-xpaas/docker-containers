@@ -29,6 +29,7 @@ ENV JBOSS_MGMT_NATIVE_PORT 9999
 ENV JBOSS_MGMT_HTTP_PORT 9990
 ENV JBOSS_MGMT_HTTPS_PORT 9443
 ENV JBOSS_MODE STANDALONE
+ENV JBOSS_NODE_NAME node1
 ENV JBOSS_DOMAIN_CLUSTER_PASSWORD jboss
 ENV JBOSS_DOMAIN_MASTER_ADDR 127.0.0.1
 ENV JBOSS_DOMAIN_MASTER_PORT 9999
@@ -63,7 +64,7 @@ ADD conf/scripts/jboss-appserver/start.sh /jboss/scripts/jboss-appserver/start.s
 ADD conf/scripts/jboss-appserver/start-jboss.sh /jboss/scripts/jboss-appserver/start-jboss.sh
 ADD conf/scripts/jboss-appserver/jboss-startup-detection.sh /jboss/scripts/jboss-appserver/jboss-startup-detection.sh
 ADD conf/scripts/jboss-appserver/jboss-cli.sh /jboss/scripts/jboss-appserver/jboss-cli.sh
-ADD conf/scripts/jboss-appserver/startup/0-create-drivers.sh /jboss/scripts/jboss-appserver/startup/0-create-drivers.sh
+ADD conf/scripts/jboss-appserver/startup/0-jboss-configure.sh /jboss/scripts/jboss-appserver/startup/0-jboss-configure.sh
 
 ####### ADD THE SUPERVISOR DAEMON PROGRAMS ###########
 WORKDIR /
