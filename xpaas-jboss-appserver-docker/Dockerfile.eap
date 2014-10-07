@@ -14,8 +14,8 @@ MAINTAINER "JBoss XPaaS Team" "xpass-eng@redhat.com"
 
 ####### BASE SOFTWARE ############
 # HTTP daemon
-RUN yum install -y httpd
-RUN yum clean all
+RUN yum install -y httpd; \ 
+yum clean all
 
 ####### ENVIRONEMNT ############
 ENV JBOSS_ADMIN_PASSWORD admin123!
@@ -38,10 +38,10 @@ ENV JBOSS_DOMAIN_MASTER_PORT 9999
 ADD bin/jboss-eap-6.1.1.zip /tmp/
 
 WORKDIR /tmp
-RUN unzip -q jboss-eap-6.1.1.zip
-RUN mv jboss-eap-6.1/ jboss-appserver/
-RUN mv jboss-appserver/ /opt/
-RUN rm -rf jboss-eap-6.1.1.zip
+RUN unzip -q jboss-eap-6.1.1.zip; \
+mv jboss-eap-6.1/ jboss-appserver/; \
+mv jboss-appserver/ /opt/; \
+rm -rf jboss-eap-6.1.1.zip
 ADD conf/jboss-appserver/host-slave-eap.xml /opt/jboss-appserver/domain/configuration/host-slave.xml
 
 ####### ADDITIONAL EAP MODULES ############
@@ -58,8 +58,7 @@ EXPOSE 9999
 
 ####### HELPER SCRIPTS ###########
 WORKDIR /
-RUN mkdir -p /jboss/scripts/jboss-appserver/startup
-RUN mkdir -p /jboss/scripts/jboss-appserver/init
+RUN mkdir -p /jboss/scripts/jboss-appserver/startup /jboss/scripts/jboss-appserver/init
 ADD conf/scripts/jboss-appserver/start.sh /jboss/scripts/jboss-appserver/start.sh
 ADD conf/scripts/jboss-appserver/start-jboss.sh /jboss/scripts/jboss-appserver/start-jboss.sh
 ADD conf/scripts/jboss-appserver/jboss-startup-detection.sh /jboss/scripts/jboss-appserver/jboss-startup-detection.sh

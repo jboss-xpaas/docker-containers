@@ -31,32 +31,32 @@ ENV ROOT_PASSWORD xpaas
 
 ####### BASE SOFTWARE ############
 # telnet is required by some fabric command. without it you have silent failures
-RUN yum install -y net-tools java-1.7.0-openjdk java-devel which telnet unzip openssh-server sudo openssh-clients supervisor wget python-pip git
-RUN yum clean all
-RUN pip install supervisor-stdout
+RUN yum install -y net-tools java-1.7.0-openjdk java-devel which telnet unzip openssh-server sudo openssh-clients supervisor wget python-pip git; \ 
+yum clean all; \ 
+pip install supervisor-stdout
 
 ####### BASE SOFTWARE CONFIGURATION ############
 
 # Configure the SSH daemon
 RUN mkdir -p /var/run/sshd
-RUN ssh-keygen -b 1024 -t rsa -f /etc/ssh/ssh_host_key
-RUN ssh-keygen -b 1024 -t rsa -f /etc/ssh/ssh_host_rsa_key 
-RUN ssh-keygen -b 1024 -t dsa -f /etc/ssh/ssh_host_dsa_key
+RUN ssh-keygen -b 1024 -t rsa -f /etc/ssh/ssh_host_key; \ 
+ssh-keygen -b 1024 -t rsa -f /etc/ssh/ssh_host_rsa_key; \ 
+ssh-keygen -b 1024 -t dsa -f /etc/ssh/ssh_host_dsa_key
 
 # Configure supervisor
-RUN mkdir -p /var/log/supervisord
-RUN mkdir -p /etc/supervisord/conf.d
+RUN mkdir -p /var/log/supervisord /etc/supervisord/conf.d
 ADD conf/supervisord/supervisord.conf /etc/supervisord.conf
 
 ####### MAVEN ############
 RUN curl --silent --output /tmp/maven.tar.gz http://apache.rediris.es/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz
 WORKDIR /tmp
-RUN tar -xzvf maven.tar.gz
-RUN mv apache-maven-3.0.5/ apache-maven/
-RUN mv apache-maven/ /opt/
+RUN tar -xzvf maven.tar.gz; \ 
+mv apache-maven-3.0.5/ apache-maven/; \ 
+mv apache-maven/ /opt/; \ 
+rm -rf maven.tar.gz
+
 # Add the custom settings.xml file with JBoss Nexus repositories configured as well.
 ADD conf/maven/settings.xml /opt/apache-maven/conf/settings.xml
-RUN rm -rf maven.tar.gz
 
 ####### SYSTEM PRIVILEGES CONFIGURATION ############
 WORKDIR /
@@ -68,18 +68,16 @@ RUN sed -i 's/.*requiretty$/#Defaults requiretty/' /etc/sudoers
 ####### SYSTEM CONFIGURATION ############
 WORKDIR /
 # environment variables for ALL users
-RUN echo "export JAVA_HOME=/usr/lib/jvm/jre" >> $ENV_COMMANDS_FILE
-RUN echo "export M2_HOME=$M2_HOME" >> $ENV_COMMANDS_FILE
-RUN echo "export M2=$M2" >> $ENV_COMMANDS_FILE
-RUN echo "export PATH=$MAVEN_HOME/bin:$JAVA_HOME/bin:$PATH" >> $ENV_COMMANDS_FILE
-RUN echo "export MAVEN_OPTS='-Xms256m -Xmx512m'" >> $ENV_COMMANDS_FILE
+RUN echo "export JAVA_HOME=/usr/lib/jvm/jre" >> $ENV_COMMANDS_FILE; \ 
+echo "export M2_HOME=$M2_HOME" >> $ENV_COMMANDS_FILE; \ 
+echo "export M2=$M2" >> $ENV_COMMANDS_FILE; \ 
+echo "export PATH=$MAVEN_HOME/bin:$JAVA_HOME/bin:$PATH" >> $ENV_COMMANDS_FILE; \ 
+echo "export MAVEN_OPTS='-Xms256m -Xmx512m'" >> $ENV_COMMANDS_FILE
 
 # useful aliases for ALL users
-RUN echo "alias ll='ls -l --color=auto'" >> $ENV_COMMANDS_FILE
-RUN echo "alias grep='grep --color=auto'" >> $ENV_COMMANDS_FILE
-
-# Do the profile script executable
-RUN chmod +x $ENV_COMMANDS_FILE
+RUN echo "alias ll='ls -l --color=auto'" >> $ENV_COMMANDS_FILE; \ 
+echo "alias grep='grep --color=auto'" >> $ENV_COMMANDS_FILE; \ 
+chmod +x $ENV_COMMANDS_FILE
 
 ####### PORT EXPOSING ###########
 # SSH daemon port

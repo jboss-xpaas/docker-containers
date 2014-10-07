@@ -31,16 +31,16 @@ ENV JBOSS_DOMAIN_MASTER_PORT 9999
 
 ####### BASE SOFTWARE ############
 # HTTP daemon
-RUN yum install -y httpd
-RUN yum clean all
+RUN yum install -y httpd; \ 
+yum clean all
 
 ####### WILDFLY ############
 RUN curl --silent --output /tmp/wildfly.zip http://download.jboss.org/wildfly/8.1.0.Final/wildfly-8.1.0.Final.zip
 WORKDIR /tmp
-RUN unzip -q wildfly.zip
-RUN mv wildfly-8.1.0.Final/ jboss-appserver/
-RUN mv jboss-appserver/ /opt/
-RUN rm -rf wildfly.zip
+RUN unzip -q wildfly.zip; \ 
+mv wildfly-8.1.0.Final/ jboss-appserver/; \ 
+mv jboss-appserver/ /opt/; \ 
+rm -rf wildfly.zip
 ADD conf/jboss-appserver/host-slave-wf.xml /opt/jboss-appserver/domain/configuration/host-slave.xml
 
 ####### ADDITIONAL WILDFLY MODULES ############
@@ -57,8 +57,7 @@ EXPOSE 9999
 
 ####### HELPER SCRIPTS ###########
 WORKDIR /
-RUN mkdir -p /jboss/scripts/jboss-appserver/startup
-RUN mkdir -p /jboss/scripts/jboss-appserver/init
+RUN mkdir -p /jboss/scripts/jboss-appserver/startup /jboss/scripts/jboss-appserver/init
 ADD conf/scripts/jboss-appserver/start.sh /jboss/scripts/jboss-appserver/start.sh
 ADD conf/scripts/jboss-appserver/start-jboss.sh /jboss/scripts/jboss-appserver/start-jboss.sh
 ADD conf/scripts/jboss-appserver/jboss-startup-detection.sh /jboss/scripts/jboss-appserver/jboss-startup-detection.sh
