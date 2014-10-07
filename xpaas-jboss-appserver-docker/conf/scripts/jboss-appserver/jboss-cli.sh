@@ -25,10 +25,10 @@ function usage
 while [ "$1" != "" ]; do
     case $1 in
         -c | --command )        shift
-                                COMMAND="--command=$1"
+                                COMMAND=$1
                                 ;;
         -f | --file )           shift
-                                FILE="--file=$1"
+                                FILE=$1
                                 ;;
         -h | --help )           usage
                                 exit
@@ -43,6 +43,13 @@ done
 DOCKER_IP=$(/bin/sh /jboss/scripts/docker-ip.sh)
 
 # Connect to JBoss CLI using management IP as DOCKER_IP
-/opt/jboss-appserver/bin/jboss-cli.sh -c --controller=$DOCKER_IP:$JBOSS_MGMT_NATIVE_PORT $COMMAND $FILE
+if [[ ! -z $COMMAND ]]; then
+        /opt/jboss-appserver/bin/jboss-cli.sh -c --controller=$DOCKER_IP:$JBOSS_MGMT_NATIVE_PORT --command="$COMMAND"
+fi
+
+if [ ! -z $FILE ]; then
+        /opt/jboss-appserver/bin/jboss-cli.sh -c --controller=$DOCKER_IP:$JBOSS_MGMT_NATIVE_PORT --file="$FILE"
+fi
+
 
 exit $?
