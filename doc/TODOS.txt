@@ -1,10 +1,16 @@
 - Docker images
     - All images
         - Image size is to big (GB)??
+        - encode env variables that are passwords
+        - reduce the number of RUN commands (by concatenating commands) due to docker max parent containers limitation (#147)
+        
     - XPaas Base docker image
         - There are some yum errors during image build
         - When running sshd, a warning about internal IP address is shown
+        - Extend from a newer fedora version?
+    
     - xpaas-jboss-appserver-docker
+        - Fail if building "eap" image and the EAP ZIP file is not present
         - jboss-startup-detection.sh -> is printing the connection expcetions to stdout until jboss server is up -> Do not print them?
         - Domain mode & Clustering support (standalone & domain modes)
             - The second instance of DOMAIN-HOST does not starts successfully. Only one domain host instance supported now.
@@ -14,16 +20,36 @@
                 - Change jgropus subsystem configuration -> remove multicast autodiscovery to TCPPING and set the other servers IP address automatically.
         - Other databse modules preinstalled? (currently only mysql)
         - When running httpd, a warning about internal IP address is shown
+    
     - BPMS docker image
         - BPMS Wildfly container is not starting up as well -> https://issues.jboss.org/browse/WFLY-3355
         - Clustering
+            - Helix
+                - Do not download the full helix client? Use from zk docker container?
+                - Run helix admin/controller on start-jboss.sh? It runs every time the container starts....
+                    - register node,etc using supervisord script?
+                    - de-register cluster node/resource on container shutdown? supervisord event hook on program exit? 
+                    - addCluster just once
+                    - addResource just once
+                    - BPMS_CLUSTER_NODES env -> can be automatically calculated?
+            - Automatic ZK / HELIX port mapping if using docker container linking??
+            - /opt/jboss/bpms/quartz-db.properties -> driverDelegateClass should be overriden depending on the target db system
+            - Test in wildfly
+            - Domain mode support
+            - 1-configure-bpms.sh -> Sometimes these cli commands are not executed... probably due to last jboss reload is not finished?
+            - README.md
+            
     - BRMS docker image
         - Clustering
+    
     - Fabric8
         - Change fabric8 password on container run (env variable)
         - Test all fabric8 services (maven, git, etc)
         - Test joolokia management is working -> http://localhost:8181/jolokia
         - clustering (zookeeper)
+        
+    - Other
+        - Merge BPMS / BRMS into a single image?
             
 - Review OpenShift3 integration with docker
 - Continuous build integration: On each new release, automatically generate the docker image (new tag) and upload to DockerHub

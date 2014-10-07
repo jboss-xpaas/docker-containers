@@ -27,22 +27,27 @@ if [ "$BPMS_CONNECTION_DRIVER" == "mysql" ]; then
 	/jboss/scripts/bpms/change-hibernate-dialect.sh -war $BPMS_WAR -d "$DIALECT"
 fi
 
+# TODO: Sometimes these cli commands are not executed... probably due to last jboss reload is not finished? 
+sleep 10
+
 # Server datasource configuration & security parameters
 echo "Configuring server datasource & security parameters..."
 /jboss/scripts/jboss-appserver/jboss-cli.sh -f /jboss/scripts/bpms/bpms.cli
 
+# BPMS cluster configuration
+if [[ ! -z "$BPMS_CLUSTER_NAME" ]] ; then
+    echo "Configuring BPMS clustering parameters..."
+    # Execute the cluster required CLI commands.
+    /jboss/scripts/jboss-appserver/jboss-cli.sh -f /jboss/scripts/bpms/bpms-cluster.cli
+fi
+
 # Deploy BPMS webapp
-# TODO: Deploy via CLI?
 echo "Deploying BPMS webapp..."
-cp -f /tmp/kie-wb.war /opt/jboss-appserver/standalone/deployments/
-touch /opt/jboss-appserver/standalone/deployments/kie-wb.war.dodeploy
+/jboss/scripts/jboss-appserver/jboss-cli.sh -c "deploy /tmp/kie-wb.war"
 
 # Deploy Dashbuilder webapp
-# TODO: Deploy via CLI?
 echo "Deploying Dashbuilder webapp..."
-cp -f /tmp/dashbuilder.war /opt/jboss-appserver/standalone/deployments/
-touch /opt/jboss-appserver/standalone/deployments/dashbuilder.war.dodeploy
-
+/jboss/scripts/jboss-appserver/jboss-cli.sh -c "deploy /tmp/dashbuilder.war"
 
 echo "End of JBoss BPMS web application configuration."
 

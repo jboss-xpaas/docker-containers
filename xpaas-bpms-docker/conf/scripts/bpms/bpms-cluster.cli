@@ -1,0 +1,34 @@
+# Git and Git SSH related properties.
+/system-property=org.uberfire.nio.git.daemon.host:add(value="${jboss.bpms.git.host}")
+/system-property=org.uberfire.nio.git.daemon.port:add(value="${jboss.bpms.git.port}")
+/system-property=org.uberfire.nio.git.dir:add(value="${jboss.bpms.git.dir}")
+/system-property=org.uberfire.nio.git.ssh.host:add(value="${jboss.bpms.ssh.host}")
+/system-property=org.uberfire.nio.git.ssh.port:add(value="${jboss.bpms.ssh.port}")
+/system-property=org.uberfire.metadata.index.dir:add(value="${jboss.bpms.index.dir}")
+/system-property=org.uberfire.nio.git.ssh.enabled:add(value=true)
+/system-property=org.uberfire.nio.git.daemon.upload:add(value=true)
+# /system-property=org.uberfire.nio.git.ssh.cert.dir:add(value=)
+ 
+# Uberfire clustering.
+/system-property=org.uberfire.cluster.id:add(value="${jboss.bpms.cluster.id}")
+/system-property=org.uberfire.cluster.zk:add(value="${jboss.bpms.cluster.zk}")
+/system-property=org.uberfire.cluster.local.id:add(value="${jboss.bpms.cluster.node}")
+/system-property=org.uberfire.cluster.vfs.lock:add(value="${jboss.bpms.vfs.lock}")
+/system-property=org.uberfire.cluster.autostart:add(value=false)
+
+# Quartz clustering.
+/system-property=org.quartz.properties:add(value="${jboss.bpms.quartz.properties}")
+
+# Add the quartz additional datasource (jboss/datasources/quartzNotManagedDS) and enable it
+/subsystem=datasources/data-source=quartzNotManagedDS:add( \
+    driver-name="${jboss.bpms.driver:h2}", \
+    connection-url="${jboss.bpms.connection_url:jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}", \
+    jndi-name="java:/jboss/datasources/quartzNotManagedDS", \
+    user-name="${jboss.bpms.username:sa}", \
+    password="${jboss.bpms.password:sa}", \
+    enabled=true, \
+    use-java-context=true \ 
+)
+
+# Reload configuration
+/:reload

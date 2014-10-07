@@ -12,7 +12,3 @@
 /subsystem=security/security-domain=other/authentication=classic/login-module=RealmDirect:remove
 /subsystem=security/security-domain=other/authentication=classic/login-module=Remoting:remove
 /subsystem=security/security-domain=other/authentication=classic/login-module=UsersRoles:add(code=UsersRoles,flag=required,module-options={"usersProperties" => "${jboss.server.config.dir}/bpms-users.properties","rolesProperties" => "${jboss.server.config.dir}/bpms-roles.properties"})
-
-# Reload configuration
-/:reload
-
