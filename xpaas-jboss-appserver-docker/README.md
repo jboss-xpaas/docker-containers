@@ -444,8 +444,7 @@ You can see only the HTTP daemon logs by running this command:
 
 You can see only JBoss Wildfly/EAP logs by running this command:
 
-    ssh root@localhost -p <ssh_port> tail -f /var/log/supervisord/jboss-appserver-stdout.log
-    ssh root@localhost -p <ssh_port> tail -f /var/log/supervisord/jboss-appserver-stderr.log
+    ssh root@localhost -p <ssh_port> tail -f /opt/jboss-appserver/standalone/log/server.log
 
 Stopping the container
 ----------------------
