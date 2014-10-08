@@ -233,7 +233,7 @@ These are global for all container run modes:
             
 * <code>JBOSS_NODE_NAME</code> - The name for the server instance, defaults to <code>node1</code>     
 * <code>JBOSS_ARGUMENTS</code> - The arguments to pass when executing <code>standalone.sh</code> startup script     
-* <code>JBOSS_BIND_ADDRESS</code> - The server bind address, defaults to <code>0.0.0.0</code>     
+* <code>JBOSS_BIND_ADDRESS</code> - The server bind address, defaults to <code>127.0.0.1</code>     
 
 These are specific for server ports:     
 * <code>JBOSS_HTTP_PORT</code> - The server HTTP port, defaults to <code>8080</code>     
@@ -357,7 +357,7 @@ Notes:
 Acessing JBoss Application Server HTTP interface
 ------------------------------------------------
 
-By default, the JBoss Wildfly/EAP HTTP interface bind address points to <code>0.0.0.0</code>, so you can discover your container port mapping for port <code>8080</code> 
+By default, the JBoss Wildfly/EAP HTTP interface bind address points to <code>127.0.0.1</code>, so you can discover your container port mapping for port <code>8080</code> 
 and type in you browser:
  
     http://localhost:<binding_port>
@@ -467,7 +467,8 @@ These scripts allows to configure the JBoss server once being run by first time.
 
 NOTES:     
 * Those scripts will be executed using filename alphabetically ascendant sort order       
-* The reason why CLI commands are executed once JBoss is up is because the configuration file that CLI commands will modify depends on the startup script (profile). In addition, note that is JBoss server is not up, the CLI interface is not available too       
+* The reason why CLI commands are executed once JBoss is up is because the configuration file that CLI commands will modify depends on the startup script (profile). In addition, note that is JBoss server is not up, the CLI interface is not available too      
+* NOTE: After all startup scripts have been executed, the container perfoms a server reload automatically. It's NOT recomended to perform server reloads in the startup scripts.       
 * IMPORTANT: These scripts are executed once JBoss server management interface is up. So if you extend this docker image and add a deployment in the <code>deployments/</code> directory, these scripts will be executed before your application is deployed        
 
 Experimenting
@@ -514,7 +515,7 @@ Notes
 -----
 **JBoss Wildfly/EAP:**     
 * The default admin password for Wildfly is <code>admin123!</code>      
-* The web interface address is bind by default to <code>0.0.0.0</code>, you can change it using the environemnt variable <code>JBOSS_BIND_ADDRESS</code>     
+* The web interface address is bind by default to <code>127.0.0.1</code>, you can change it using the environemnt variable <code>JBOSS_BIND_ADDRESS</code>     
 * There is a MySQL JBDC driver module pre-installed      
 
 **JBoss Wildfly/EAP ports:**            

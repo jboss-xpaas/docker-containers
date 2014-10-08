@@ -21,6 +21,4 @@ elif [ $JBOSS_MODE == "DOMAIN" ]; then
 	/jboss/scripts/jboss-appserver/jboss-cli.sh -c "/profile=ha/subsystem=datasources/jdbc-driver=mysql:add(driver-name=mysql,driver-module-name=com.mysql)"
 fi
 
-echo "Reloading JBoss configuration..."
-/jboss/scripts/jboss-appserver/jboss-cli.sh -c ":reload"
 exit $?

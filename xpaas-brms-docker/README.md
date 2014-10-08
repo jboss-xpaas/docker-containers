@@ -91,7 +91,7 @@ For running brms, you need to specify some database connection JBoss Wildfly/EAP
 
 Using JBoss BRMS
 ----------------
-By default, the JBoss Wildfly/EAP HTTP interface bind address points to <code>0.0.0.0</code>, so you can discover your container port mapping for port <code>8080</code> 
+By default, the JBoss Wildfly/EAP HTTP interface bind address points to <code>127.0.0.1</code>, so you can discover your container port mapping for port <code>8080</code> 
 and type in you browser:
  
     http://localhost:<binding_port>/kie-drools-wb
