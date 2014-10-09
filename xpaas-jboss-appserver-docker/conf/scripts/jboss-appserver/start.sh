@@ -28,6 +28,12 @@ if [ $JBOSS_ARGUMENTS=="" ]; then
     unset JBOSS_ARGUMENTS
 fi
 
+# Check if the bind address have been set when running the container. If not, assign it the current container's IP address.
+if [[ -z "$JJBOSS_BIND_ADDRESS" ]] ; then
+    echo "Not custom JBoss Application Server bind address set. Using the current container's IP address '$DOCKER_IP'."
+    export JBOSS_BIND_ADDRESS=$DOCKER_IP
+fi
+
 # Starts JBoss Application Server using $RUN_ARGUMENTS, specified when running the container, if any.
 /jboss/scripts/jboss-appserver/start-jboss.sh $DOCKER_IP
 

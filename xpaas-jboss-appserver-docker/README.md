@@ -233,7 +233,7 @@ These are global for all container run modes:
             
 * <code>JBOSS_NODE_NAME</code> - The name for the server instance, defaults to <code>node1</code>     
 * <code>JBOSS_ARGUMENTS</code> - The arguments to pass when executing <code>standalone.sh</code> startup script     
-* <code>JBOSS_BIND_ADDRESS</code> - The server bind address, defaults to <code>127.0.0.1</code>     
+* <code>JBOSS_BIND_ADDRESS</code> - The server bind address, defaults to the current container's IP address       
 
 These are specific for server ports:     
 * <code>JBOSS_HTTP_PORT</code> - The server HTTP port, defaults to <code>8080</code>     
@@ -357,7 +357,7 @@ Notes:
 Acessing JBoss Application Server HTTP interface
 ------------------------------------------------
 
-By default, the JBoss Wildfly/EAP HTTP interface bind address points to <code>127.0.0.1</code>, so you can discover your container port mapping for port <code>8080</code> 
+By default, the JBoss Wildfly/EAP HTTP interface bind address points to the current container's IP address, so you can discover your container port mapping for port <code>8080</code> 
 and type in you browser:
  
     http://localhost:<binding_port>
@@ -515,7 +515,7 @@ Notes
 -----
 **JBoss Wildfly/EAP:**     
 * The default admin password for Wildfly is <code>admin123!</code>      
-* The web interface address is bind by default to <code>127.0.0.1</code>, you can change it using the environemnt variable <code>JBOSS_BIND_ADDRESS</code>     
+* The web interface address is bind by default to the current container's IP address, you can change it using the environemnt variable <code>JBOSS_BIND_ADDRESS</code>     
 * There is a MySQL JBDC driver module pre-installed      
 
 **JBoss Wildfly/EAP ports:**            
