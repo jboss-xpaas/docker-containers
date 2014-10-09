@@ -41,17 +41,9 @@ if [[ ! -z "$BPMS_CLUSTER_NAME" ]] ; then
     # Force to use full-ha profile.
     export JBOSS_STANDALONE_CONF_FILE="standalone-full-ha.xml"
     
-    # Register the cluster.
-    # TODO: Do it only once?
-    $HELIX_HOME/bin/helix-admin.sh --zkSvr $BPMS_ZOOKEEPER_SERVER --addCluster $BPMS_CLUSTER_NAME
-    
     # Register the node.
     $HELIX_HOME/bin/helix-admin.sh --zkSvr $BPMS_ZOOKEEPER_SERVER --addNode $BPMS_CLUSTER_NAME $JBOSS_NODE_NAME
     
-    # Register the vfs resource.
-    # TODO: Do it only once?
-    $HELIX_HOME/bin/helix-admin.sh --zkSvr $BPMS_ZOOKEEPER_SERVER --addResource $BPMS_CLUSTER_NAME $BPMS_VFS_LOCK 1 LeaderStandby AUTO_REBALANCE
-        
     # Rebalance the cluster resource.
     $HELIX_HOME/bin/helix-admin.sh --zkSvr $BPMS_ZOOKEEPER_SERVER --rebalance $BPMS_CLUSTER_NAME $BPMS_VFS_LOCK $BPMS_CLUSTER_NODES
 fi

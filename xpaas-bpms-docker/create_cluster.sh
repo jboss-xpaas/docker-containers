@@ -1,6 +1,17 @@
 #!/bin/sh
 
+# **********************************************************************************************************
+# Script information
+# ------------------
+# This script is used to run several BPMS instances in a clustered environment.
+# The BPMS cluster environment consists of:
+# - Several JBoss EAP/Wildfly instances with BPMS web application deployed (kie-wb & jbpm-dashbuilder)
+# - An external existing database to share across all server instances
+# - An external existing Zookeeper server up & running
+# - An external existing Helix cluster and resource created in the Zookeeper server
+# **********************************************************************************************************
 
+# **********************************************************************************************************
 # Program arguments
 #
 # -name | --cluster-name:           Cluster name
@@ -16,6 +27,7 @@
 # -db-user | --database-user:       The database username
 # -db-pwd| --database-password:     The database password
 # -h | --help:                      Script usage
+# **********************************************************************************************************
 
 CLUSTER_NAME="bpms-cluster"
 VFS_LOCK="jbpm-vfs-repo"
