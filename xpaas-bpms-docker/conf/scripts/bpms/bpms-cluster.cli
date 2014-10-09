@@ -29,6 +29,3 @@
     enabled=true, \
     use-java-context=true \ 
 )
-
-# Reload configuration
-/:reload
