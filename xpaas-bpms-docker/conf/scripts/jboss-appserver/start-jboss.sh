@@ -29,13 +29,21 @@ fi
 export JBOSS_CLUSTER_ARGUMENTS=""
 # BPMS cluster configuration
 if [[ ! -z "$BPMS_CLUSTER_NAME" ]] ; then
+    
+    if [[ -z "$BPMS_GIT_HOST" ]] ; then
+        echo "Assigning GIT host adress using current container's ip address '$DOCKER_IP'"
+        export BPMS_GIT_HOST=$DOCKER_IP
+    fi
+    
+    if [[ -z "$BPMS_SSH_HOST" ]] ; then
+        echo "Assigning SSH host adress using current container's ip address '$DOCKER_IP'"
+        export BPMS_SSH_HOST=$DOCKER_IP                
+    fi
+    
     JBOSS_CLUSTER_ARGUMENTS=" -Djboss.bpms.git.host=$BPMS_GIT_HOST -Djboss.bpms.git.port=$BPMS_GIT_PORT -Djboss.bpms.git.dir=$BPMS_GIT_DIR -Djboss.bpms.ssh.host=$BPMS_SSH_HOST -Djboss.bpms.ssh.port=$BPMS_SSH_PORT "
     JBOSS_CLUSTER_ARGUMENTS=" $JBOSS_CLUSTER_ARGUMENTS -Djboss.bpms.index.dir=$BPMS_INDEX_DIR -Djboss.bpms.cluster.id=$BPMS_CLUSTER_NAME -Djboss.bpms.cluster.zk=$BPMS_ZOOKEEPER_SERVER -Djboss.bpms.cluster.node=$JBOSS_NODE_NAME"
     JBOSS_CLUSTER_ARGUMENTS=" $JBOSS_CLUSTER_ARGUMENTS -Djboss.bpms.vfs.lock=$BPMS_VFS_LOCK -Djboss.bpms.quartz.properties=$BPMS_QUARTZ_PROPERTIES -Djboss.messaging.cluster.password=$BPMS_CLUSTER_PASSWORD "
-fi
 
-# Cluster related.
-if [[ ! -z "$BPMS_CLUSTER_NAME" ]] ; then
     echo "Configuring HELIX client for BPMS server instance '$JBOSS_NODE_NAME' into cluster '$BPMS_CLUSTER_NAME'"
     
     # Force to use full-ha profile.
@@ -46,12 +54,14 @@ if [[ ! -z "$BPMS_CLUSTER_NAME" ]] ; then
     
     # Rebalance the cluster resource.
     $HELIX_HOME/bin/helix-admin.sh --zkSvr $BPMS_ZOOKEEPER_SERVER --rebalance $BPMS_CLUSTER_NAME $BPMS_VFS_LOCK $BPMS_CLUSTER_NODES
+    
 fi
 
 # Starts JBoss Application Server using $JBOSS_APPSERVER_ARGUMENTS, specified when running the container, if any.
 echo "Starting JBoss Application Server in standalone mode"
 echo "Using HTTP address $JBOSS_BIND_ADDRESS:$JBOSS_HTTP_PORT / $JBOSS_BIND_ADDRESS:$JBOSS_HTTPS_PORT (SSL)"
 echo "Using management address $DOCKER_IP:$JBOSS_MGMT_NATIVE_PORT"
+echo "Starting JBoss using the following command: /opt/jboss-appserver/bin/standalone.sh --server-config=$JBOSS_STANDALONE_CONF_FILE -b $JBOSS_BIND_ADDRESS $JBOSS_COMMON_ARGS -Djboss.bpms.connection_url="$BPMS_CONNECTION_URL" -Djboss.bpms.driver="$BPMS_CONNECTION_DRIVER" -Djboss.bpms.username="$BPMS_CONNECTION_USER" -Djboss.bpms.password="$BPMS_CONNECTION_PASSWORD" $JBOSS_ARGUMENTS $JBOSS_CLUSTER_ARGUMENTS"
 /opt/jboss-appserver/bin/standalone.sh --server-config=$JBOSS_STANDALONE_CONF_FILE -b $JBOSS_BIND_ADDRESS $JBOSS_COMMON_ARGS -Djboss.bpms.connection_url="$BPMS_CONNECTION_URL" -Djboss.bpms.driver="$BPMS_CONNECTION_DRIVER" -Djboss.bpms.username="$BPMS_CONNECTION_USER" -Djboss.bpms.password="$BPMS_CONNECTION_PASSWORD" $JBOSS_ARGUMENTS $JBOSS_CLUSTER_ARGUMENTS
 
 exit 0

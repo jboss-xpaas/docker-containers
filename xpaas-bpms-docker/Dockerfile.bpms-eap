@@ -33,10 +33,10 @@ ENV JBOSS_MODE STANDALONE
 # ENV BPMS_CLUSTER_NAME // Not set by default
 # ENV BPMS_ZOOKEEPER_SERVER // Not set by default
 ENV BPMS_VFS_LOCK bpms-vfs-repo
-ENV BPMS_GIT_HOST 127.0.0.1
+# ENV BPMS_GIT_HOST // Set by default to the container's ip address
 ENV BPMS_GIT_PORT 9520
 ENV BPMS_GIT_DIR /opt/jboss/bpms/vfs
-ENV BPMS_SSH_HOST 127.0.0.1
+# ENV BPMS_SSH_HOST // Set by default to the container's ip address
 ENV BPMS_SSH_PORT 9521
 ENV BPMS_INDEX_DIR /opt/jboss/bpms/index
 ENV BPMS_QUARTZ_PROPERTIES /opt/jboss/bpms/quartz-db.properties
