@@ -27,10 +27,12 @@ Table of contents
 Control scripts
 ---------------
 
-There are three control scripts:    
+There are three control scripts for running BPMS with no clustering support:    
 * <code>build.sh</code> Builds the JBoss BPMS docker image    
 * <code>start.sh</code> Starts a new XPaaS JBoss BPMS docker container based on this image    
 * <code>stop.sh</code>  Stops the runned XPaaS JBoss BPMS docker container    
+
+# TODO: List the scripts for clustering
 
 Building the docker container
 -----------------------------
@@ -46,19 +48,19 @@ First, clone the repository:
     
 **Creating the JBoss BPMS for Wildly container**
     
-    ./build.sh bpms-wildfly
+    ./scripts/build.sh bpms-wildfly
 
 **Creating the JBoss BPMS for EAP container**
     
-    ./build.sh bpms-eap
+    ./scripts/build.sh bpms-eap
 
 Running the container
 ---------------------
 
 To run a new container from XPaaS JBoss Wildfly/EAP run:
     
-    ./start.sh [-i [bpms-wildfly,bpms-eap]] [-c <container_name>] [-p <root_password>] [-ap <admin_password>] [-d <connection_driver>] [-url <connection_url>] [-user <connection_user>] [-password <connection_password>] [-l <container_linking>]
-    Example: ./start.sh -i bpms-wildfly -c xpaas_bpms-wildfly -p "root123!" -ap "root123!" -d "h2" -url "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE" -user sa -password sa
+    ./scripts/start.sh [-i [bpms-wildfly,bpms-eap]] [-c <container_name>] [-p <root_password>] [-ap <admin_password>] [-d <connection_driver>] [-url <connection_url>] [-user <connection_user>] [-password <connection_password>] [-l <container_linking>]
+    Example: ./scripts/start.sh -i bpms-wildfly -c xpaas_bpms-wildfly -p "root123!" -ap "root123!" -d "h2" -url "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE" -user sa -password sa
 
 Or you can try it out via docker command directly:
 
@@ -87,7 +89,7 @@ For running BPMS in a clustered environment, you need to specify some other para
 - <code>HELIX_VERSION</code> - The Apache Helix version to use, defaults to <code>0.6.3</code>           
 - <code>BPMS_ZOOKEEPER_SERVER</code> - The Apache Zookeeper server URL in a format as <ocde>&lt;server:port&gt;</code>, not set by default          
 - <code>BPMS_CLUSTER_NAME</code> - The Apache helix cluster name to use, not set by default          
-- <code>BPMS_CLUSTER_NODES</code> - The number of nodes that will compose the cluster, defaults to <code>1</code>          
+- <code>BPMS_CLUSTER_NODE</code> - The number of nodes that will compose the cluster, defaults to <code>1</code>          
 - <code>BPMS_VFS_LOCK</code> -  The Apache helix VFS repository lock name to use, defaults to <code>bpms-vfs-repo</code>           
 - <code>BPMS_GIT_HOST</code> - The Git daemon host, defaults to the current container's IP address       
 - <code>BPMS_GIT_DIR</code> - The Git daemon working directory, defaults to <code>/opt/jboss/bpms/vfs</code>       
@@ -190,7 +192,7 @@ Stopping the container
 
 To stop the previous container run using <code>start.sh</code> script just type:
 
-    ./stop.sh
+    ./scripts/stop.sh
 
 Using external database
 -----------------------
@@ -218,7 +220,7 @@ For example, you can use the  to run a MySQL docker container and use the databa
 
 4.- Run the JBoss BPMS docker image
 
-    ./start.sh -i bpms-wildfly -c xpaas_bpms-wildfly -p "root123!" -ap "root123!" -d "mysql" -url "jdbc:mysql://<mysql_container_ip>:<mysql_port>/<database>" -user <username> -password <password>
+    ./scripts/start.sh -i bpms-wildfly -c xpaas_bpms-wildfly -p "root123!" -ap "root123!" -d "mysql" -url "jdbc:mysql://<mysql_container_ip>:<mysql_port>/<database>" -user <username> -password <password>
 
 Where <code>mysql_container_ip</code> - Can be found by running:
     
@@ -252,7 +254,7 @@ Take a look at the following example:
 
 4.- Run the JBoss BPMS docker image (with container linking support)
 
-    ./start.sh -i bpms-wildfly -c xpaas_bpms-wildfly -l bpms-mysql:mysql -db bpms # Using start.sh script
+    ./scripts/start.sh -i bpms-wildfly -c xpaas_bpms-wildfly -l bpms-mysql:mysql -db bpms # Using start.sh script
      
      docker run --link bpms-mysql:mysql -P -d -e BPMS_DATABASE="bpms" xpaas/xpaas_bpms-wildfly # Using docker command
      
@@ -288,7 +290,7 @@ Clustering
 - only standalone mode supported for clustering
 - if clustering enabled, the standalone server forces to use the "standalone-full-ha" config file
 - zookeeper server must be up & ready before running the bpms container
-- set BPMS_CLUSTER_NODES using the number of the current cluster instance that will compose the cluster environment
+- set BPMS_CLUSTER_NODE using the number of the current cluster instance that will compose the cluster environment
 - database
     - MUST specify an external (already created) database to use
     - quartz tables MUST be previously created on DB?

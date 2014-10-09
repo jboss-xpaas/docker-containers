@@ -24,6 +24,10 @@ IMAGE=$1
 IMAGE_NAME="xpaas/xpaas_$IMAGE"
 IMAGE_TAG="1.0"
 
+# Work on parent directory.
+pushd .
+cd ..
+
 # Generate the dockerfile for the given image to build.
 echo "Generating the dockerfile for $IMAGE"
 if [ -f Dockerfile ]; then
@@ -39,3 +43,5 @@ rm -f Dockerfile
 
 # Create the latest tag
 docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_NAME:latest
+
+popd

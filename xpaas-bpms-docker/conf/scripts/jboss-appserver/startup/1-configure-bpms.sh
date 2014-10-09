@@ -27,9 +27,6 @@ if [ "$BPMS_CONNECTION_DRIVER" == "mysql" ]; then
 	/jboss/scripts/bpms/change-hibernate-dialect.sh -war $BPMS_WAR -d "$DIALECT"
 fi
 
-# TODO: Sometimes these cli commands are not executed... probably due to last jboss reload is not finished? 
-sleep 10
-
 # Server datasource configuration & security parameters
 echo "Configuring server datasource & security parameters..."
 /jboss/scripts/jboss-appserver/jboss-cli.sh -f /jboss/scripts/bpms/bpms.cli

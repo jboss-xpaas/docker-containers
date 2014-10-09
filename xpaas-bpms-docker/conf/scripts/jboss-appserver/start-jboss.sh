@@ -50,10 +50,12 @@ if [[ ! -z "$BPMS_CLUSTER_NAME" ]] ; then
     export JBOSS_STANDALONE_CONF_FILE="standalone-full-ha.xml"
     
     # Register the node.
+    echo "Registering cluster node #$BPMS_CLUSTER_NODE named '$JBOSS_NODE_NAME' into '$BPMS_CLUSTER_NAME'"
     $HELIX_HOME/bin/helix-admin.sh --zkSvr $BPMS_ZOOKEEPER_SERVER --addNode $BPMS_CLUSTER_NAME $JBOSS_NODE_NAME
     
     # Rebalance the cluster resource.
-    $HELIX_HOME/bin/helix-admin.sh --zkSvr $BPMS_ZOOKEEPER_SERVER --rebalance $BPMS_CLUSTER_NAME $BPMS_VFS_LOCK $BPMS_CLUSTER_NODES
+    echo "Rebalacing clustered resource '$BPMS_VFS_LOCK' in cluster '$BPMS_CLUSTER_NAME' using $BPMS_CLUSTER_NODE replicas"
+    $HELIX_HOME/bin/helix-admin.sh --zkSvr $BPMS_ZOOKEEPER_SERVER --rebalance $BPMS_CLUSTER_NAME $BPMS_VFS_LOCK $BPMS_CLUSTER_NODE
     
 fi
 
