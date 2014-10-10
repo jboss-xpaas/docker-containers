@@ -62,49 +62,15 @@ function usage
 # TODO: Run the zookeeper server using the xpaas zookeeper docker container.
 function run_zk_helix() {
 
-    echo "*************************************************************************************************************"
-    echo "Zookeeper / Helix "
-    echo "*************************************************************************************************************"
+    # Create the BPMS container.
+    CONTAINER_NAME="xpaas-zookeeper"
+    ROOT_PASSWORD="xpaas"
 
-    ZK_HOME=/home/romartin/development/jboss/bpms6-clustering/tools/zookeeper-3.3.4
-    HELIX_HOME=/home/romartin/development/jboss/bpms6-clustering/tools/helix-core-0.6.4
+    IMAGE_NAME="xpaas/xpaas_zookeeper"
+    IMAGE_TAG="1.0"
 
-    echo "ZK Server - Stopping previously started server"
-    $ZK_HOME/bin/zkServer.sh stop
-
-    # Clean the Zookeeper temp directory 
-    echo "Cleaning Zookeeper temp directory at '$ZK_TEMP_DIR'"
-    rm -rf $ZK_TEMP_DIR/*
-    
-    ZK_HOST=localhost
-    ZK_PORT=2181
-    
-    echo "ZK Server - Starting the server"
-    $ZK_HOME/bin/zkServer.sh start
-    echo "ZK Server - Started at $ZK_HOST:$ZK_PORT"
-    
-    exit 0
-    
-    echo "Helix - Adding the cluster '$CLUSTER_NAME'" 
-    echo "$HELIX_HOME/bin/helix-admin.sh --zkSvr $ZK_HOST:$ZK_PORT --addCluster $CLUSTER_NAME"
-    $HELIX_HOME/bin/helix-admin.sh --zkSvr $ZK_HOST:$ZK_PORT --addCluster $CLUSTER_NAME
-    
-    echo "Helix - Adding clustered resource '$VFS_LOCK'"
-    echo "$HELIX_HOME/bin/helix-admin.sh --zkSvr $ZK_HOST:$ZK_PORT --addResource $CLUSTER_NAME $VFS_LOCK 1 LeaderStandby AUTO_REBALANCE"
-    $HELIX_HOME/bin/helix-admin.sh --zkSvr $ZK_HOST:$ZK_PORT --addResource $CLUSTER_NAME $VFS_LOCK 1 LeaderStandby AUTO_REBALANCE
-    
-    
-    echo 'Helix - Starting the Helix controller'
-    $HELIX_HOME/bin/run-helix-controller.sh --zkSvr $ZK_HOST:$ZK_PORT --cluster $CLUSTER_NAME 2>&1 > $ZK_TEMP_DIR/controller.log &
-    
-    echo 'Helix - Listing existing clusters'
-    $HELIX_HOME/bin/helix-admin.sh --zkSvr $ZK_HOST:$ZK_PORT --listClusters
-    
-    echo 'Helix - Listing existing $CLUSTER_NAME cluster resources'
-    $HELIX_HOME/bin/helix-admin.sh --zkSvr $ZK_HOST:$ZK_PORT --listResources $CLUSTER_NAME
-    
-    # The ZK host for internal docker containers will be the default gateway.
-    ZK_HOST=172.17.42.1
+    image_xpaas_zookeeper=$(docker run -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e CLUSTER_NAME="$CLUSTER_NAME" -e VFS_REPO="$VFS_LOCK" $IMAGE_NAME:$IMAGE_TAG)
+    ZK_HOST=$(docker inspect $image_xpaas_base | grep IPAddress | awk '{print $2}' | tr -d '",')
 
     echo ""
     echo ""
