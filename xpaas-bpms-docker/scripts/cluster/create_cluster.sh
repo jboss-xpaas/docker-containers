@@ -36,6 +36,8 @@ CLUSTER_INSTANCES=2
 ZK_HOST=
 ZK_PORT=2181
 ZK_TEMP_DIR=/tmp
+ZK_IMAGE_NAME="xpaas/xpaas_zookeeper"
+ZK_IMAGE_VERSION="1.0"
 MYSQ_IMAGE_NAME="mysql"
 MYSQ_IMAGE_VERSION="5.6"
 MYSQL_CONTAINER_IP=
@@ -59,19 +61,19 @@ function usage
 # *************************************************************************************************************
 # Zookeeper / Helix
 # *************************************************************************************************************
-# TODO: Run the zookeeper server using the xpaas zookeeper docker container.
 function run_zk_helix() {
 
+    echo "*************************************************************************************************************"
+    echo "Zookeeper / Helix"
+    echo "*************************************************************************************************************"
+    
     # Create the BPMS container.
-    CONTAINER_NAME="xpaas-zookeeper"
+    CONTAINER_NAME="bpms-zookeeper"
     ROOT_PASSWORD="xpaas"
-
-    IMAGE_NAME="xpaas/xpaas_zookeeper"
-    IMAGE_TAG="1.0"
-
-    image_xpaas_zookeeper=$(docker run -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e CLUSTER_NAME="$CLUSTER_NAME" -e VFS_REPO="$VFS_LOCK" $IMAGE_NAME:$IMAGE_TAG)
+    image_xpaas_zookeeper=$(docker run -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e CLUSTER_NAME="$CLUSTER_NAME" -e VFS_REPO="$VFS_LOCK" $ZK_IMAGE_NAME:$ZK_IMAGE_VERSION)
     ZK_HOST=$(docker inspect $image_xpaas_base | grep IPAddress | awk '{print $2}' | tr -d '",')
-
+    echo "Zookeeper - Container started at $ZK_HOST:2181"
+    
     echo ""
     echo ""
 }
@@ -202,14 +204,14 @@ run_zk_helix
 # *************************************************************************************************************
 # Database
 # *************************************************************************************************************
-# run_mysql
+run_mysql
 
 # *************************************************************************************************************
 # BPMS
 # *************************************************************************************************************
 for (( bpms_instance=0; bpms_instance<$CLUSTER_INSTANCES; bpms_instance++ ))
 do
-   # run_bpms $bpms_instance
+   run_bpms $bpms_instance
 done
 
 # Exit with no errors
