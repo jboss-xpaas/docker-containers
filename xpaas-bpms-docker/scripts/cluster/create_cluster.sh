@@ -18,7 +18,7 @@
 # Program arguments
 #
 # -name | --cluster-name:           Cluster name
-#                                   If not set defaults to "jbpm-cluster"
+#                                   If not set defaults to "bpms-cluster"
 # -vfs | --vfs-lock:                The cluster vfs lock name
 #                                   If not set defaults to "jbpm-vfs-repo"
 # -n | --num-instances:             The number of server instances in the cluster 
