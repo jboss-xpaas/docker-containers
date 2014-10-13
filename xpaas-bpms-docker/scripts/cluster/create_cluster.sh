@@ -20,7 +20,7 @@
 # -name | --cluster-name:           Cluster name
 #                                   If not set defaults to "bpms-cluster"
 # -vfs | --vfs-lock:                The cluster vfs lock name
-#                                   If not set defaults to "jbpm-vfs-repo"
+#                                   If not set defaults to "bpms-vfs-repo"
 # -n | --num-instances:             The number of server instances in the cluster 
 #                                   If not set defaults to "2"
 # -db-root-pwd:                     The root password for the MySQL database
@@ -29,7 +29,7 @@
 # **********************************************************************************************************
 
 CLUSTER_NAME="bpms-cluster"
-VFS_LOCK="jbpm-vfs-repo"
+VFS_LOCK="bpms-vfs-repo"
 CLUSTER_INSTANCES=2
 ZK_HOST=
 ZK_PORT=2181
@@ -39,7 +39,7 @@ MYSQ_IMAGE_NAME="mysql"
 MYSQ_IMAGE_VERSION="5.6"
 MYSQL_CONTAINER_IP=
 MYSQL_CONTAINER_PORT=3306
-MYSQL_DB_NAME="jbpmclustering"
+MYSQL_DB_NAME="bpmsclustering"
 MYSQL_ROOT_PWD="mysql"
 MYSQ_DB_URL=
 QUARTZ_MYSQL_SCRIPT=quartz_tables_mysql.sql
@@ -109,21 +109,30 @@ function run_mysql() {
     # Create the MySQL container.
     mysql_container_id=$(docker run --name bpms-mysql -e MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PWD -P -d $MYSQ_IMAGE_NAME:$MYSQ_IMAGE_VERSION)
     MYSQL_CONTAINER_IP=$(docker inspect $mysql_container_id | grep IPAddress | awk '{print $2}' | tr -d '",')
-    echo "MySQL container started at $MYSQL_CONTAINER_IP with the following credentials: root / $MYSQL_ROOT_PWD"
+    echo "MySQL - Container started at $MYSQL_CONTAINER_IP with the following credentials: root / $MYSQL_ROOT_PWD"
 
     # Setting the database JDBC URL.
     MYSQ_DB_URL="jdbc:mysql://$MYSQL_CONTAINER_IP:3306/$MYSQL_DB_NAME"
-    echo "The JDBC URL for the database is '$MYSQ_DB_URL'"
+    echo "MySQL -The JDBC URL for the database is '$MYSQ_DB_URL'"
 
     # TODO: Improve by waiting unitl port 3306 is available.
+    echo "MySQL - Waiting for port 3306 available..."
     sleep 10
     
     # Import the quartz tables required for clustering.
     echo "MySQL - Creating database '$MYSQL_DB_NAME'"
     mysql -u root -p$MYSQL_ROOT_PWD --host=$MYSQL_CONTAINER_IP --execute="create database $MYSQL_DB_NAME;"
-        
+
+    # TODO: The docker network IP should NOT be a hardcoded one. It depedens on each docker daemon configuration.
+    MYSQL_GRANT_IPS="172.17.%.%"
+    MYSQL_GRANT_QUERY="GRANT ALL PRIVILEGES ON $MYSQL_DB_NAME.* TO 'root'@'$MYSQL_GRANT_IPS' IDENTIFIED BY '$MYSQL_ROOT_PWD' WITH GRANT OPTION;"
+    echo "MySQL - Grant acces for user 'root' into database '$MYSQL_DB_NAME' for the following IP mask '$MYSQL_GRANT_IPS' using password '$MYSQL_ROOT_PWD' "
+    mysql -u root -p$MYSQL_ROOT_PWD --host=$MYSQL_CONTAINER_IP --execute="$MYSQL_GRANT_QUERY"
+    
     echo "MySQL - Importing Quartz tables into '$MYSQL_DB_NAME'"
     mysql -u root -p$MYSQL_ROOT_PWD --host=$MYSQL_CONTAINER_IP  $MYSQL_DB_NAME < $QUARTZ_MYSQL_SCRIPT
+    
+    echo "MySQL - Installation & configuration finished successfully"
     
     echo ""
     echo ""
@@ -151,8 +160,10 @@ function run_bpms() {
     BPMS_CONTAINER_ARGUMENTS="$BPMS_CONTAINER_ARGUMENTS -e JBOSS_NODE_NAME=node$BPMS_NODE_INSTANCE "
     
     echo "BPMS - Starting container using the folowing arguments: $BPMS_CONTAINER_ARGUMENTS"
-    bpms_container_id=$(docker run -d -P $BPMS_CONTAINER_ARGUMENTS --name node$BPMS_NODE_INSTANCE $BPMS_IMAGE_NAME:$BPMS_IMAGE_VERSION)
+    bpms_container_id=$(docker run -d -P $BPMS_CONTAINER_ARGUMENTS --name bpms-node$BPMS_NODE_INSTANCE $BPMS_IMAGE_NAME:$BPMS_IMAGE_VERSION)
     BPMS_CONTAINER_IP=$(docker inspect $bpms_container_id | grep IPAddress | awk '{print $2}' | tr -d '",')
+    #echo "BPMS - Run it using: 'docker run -t -i -P $BPMS_CONTAINER_ARGUMENTS --name bpms-node$BPMS_NODE_INSTANCE $BPMS_IMAGE_NAME:$BPMS_IMAGE_VERSION /bin/bash'"
+    
     # TODO: Wait for BPMS webapp started - check $BPMS_CONTAINER_IP:8080/kie-wb
     echo "BPMS - JBoss BPMS container started (server instance #$BPMS_NODE_INSTANCE) at $BPMS_CONTAINER_IP"
     echo "BPMS - You can navigate at URL 'http://$BPMS_CONTAINER_IP:8080/kie-wb'"
