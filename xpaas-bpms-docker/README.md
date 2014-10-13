@@ -90,7 +90,7 @@ For running BPMS in a clustered environment, you need to specify some other para
 - <code>BPMS_ZOOKEEPER_SERVER</code> - The Apache Zookeeper server URL in a format as <ocde>&lt;server:port&gt;</code>, not set by default          
 - <code>BPMS_CLUSTER_NAME</code> - The Apache helix cluster name to use, not set by default          
 - <code>BPMS_CLUSTER_NODE</code> - The number of nodes that will compose the cluster, defaults to <code>1</code>          
-- <code>BPMS_VFS_LOCK</code> -  The Apache helix VFS repository lock name to use, defaults to <code>bpms-vfs-repo</code>           
+- <code>BPMS_VFS_LOCK</code> -  The Apache helix VFS repository lock name to use, defaults to <code>bpms-vfs-lock</code>           
 - <code>BPMS_GIT_HOST</code> - The Git daemon host, defaults to the current container's IP address       
 - <code>BPMS_GIT_DIR</code> - The Git daemon working directory, defaults to <code>/opt/jboss/bpms/vfs</code>       
 - <code>BPMS_GIT_PORT</code> - The Git daemon port, defaults to <code>9520</code>          

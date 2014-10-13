@@ -27,22 +27,20 @@
     - BPMS docker image
         - BPMS Wildfly container is not starting up as well -> https://issues.jboss.org/browse/WFLY-3355
         - Clustering
-                            - Helix
-                                - Do not download the full helix client? Use from zk docker container?
-                                - Run helix admin/controller on start-jboss.sh? It runs every time the container starts....
-                                    - register node,etc using supervisord script?
-                                    - de-register cluster node/resource on container shutdown? supervisord event hook on program exit? 
-                                    - addCluster just once
-                                    - addResource just once
-                                    - BPMS_CLUSTER_NODES env -> can be automatically calculated?
-                                - Handle if cannot connect to helix/zk server
-                            - Automatic ZK / HELIX port mapping if using docker container linking??
-                            - /opt/jboss/bpms/quartz-db.properties -> driverDelegateClass should be overriden depending on the target db system
-                            - Test in wildfly
-                            - Domain mode support
-                            - 1-configure-bpms.sh -> Sometimes these cli commands are not executed... probably due to last jboss reload is not finished?
-                            - Use a "Final" version for kie-wb/jbpm-dashbuilder
-                            - README.md
+            - Helix
+                - Do not download the full helix client? Use from zk docker container?
+                - Run helix admin/controller on start-jboss.sh? It runs every time the container starts....
+                    - register node,etc using supervisord script?
+                    - de-register cluster node/resource on container shutdown? supervisord event hook on program exit? 
+                    - BPMS_CLUSTER_NODES env -> can be automatically calculated?
+                - Handle if cannot connect to helix/zk server
+            - Automatic ZK / HELIX port mapping if using docker container linking??
+            - /opt/jboss/bpms/quartz-db.properties -> driverDelegateClass should be overriden depending on the target db system
+            - Test in wildfly
+            - Domain mode support
+            - Use a "Final" version for kie-wb/jbpm-dashbuilder
+            - create_cluster.sh -> TODOS
+            - README.md
                             
     - BRMS docker image
         - Clustering
@@ -64,3 +62,11 @@
 - Continuous build integration: On each new release, automatically generate the docker image (new tag) and upload to DockerHub
     - Create dockerhub "JBoss XPaaS" account ant upload the images?
     - http://www.wouterdanes.net/2014/04/11/continuous-integration-using-docker-maven-and-jenkins.html
+    
+    
+    
+Pep
+****
+<pep> https://access.redhat.com/articles/1198103
+<pep> qemu-img create -f qcow2 -o backing_file=rhel-atomic-host-cloud-20140923.qcow2 test1.qcow2
+<pep> https://mojo.redhat.com/docs/DOC-28082

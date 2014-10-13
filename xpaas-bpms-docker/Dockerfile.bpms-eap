@@ -32,7 +32,7 @@ ENV JBOSS_MODE STANDALONE
 # Cluster related envs
 # ENV BPMS_CLUSTER_NAME // Not set by default
 # ENV BPMS_ZOOKEEPER_SERVER // Not set by default
-ENV BPMS_VFS_LOCK bpms-vfs-repo
+ENV BPMS_VFS_LOCK bpms-vfs-lock
 # ENV BPMS_GIT_HOST // Set by default to the container's ip address
 ENV BPMS_GIT_PORT 9520
 ENV BPMS_GIT_DIR /opt/jboss/bpms/vfs

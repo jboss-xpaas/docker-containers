@@ -20,7 +20,7 @@
 # -name | --cluster-name:           Cluster name
 #                                   If not set defaults to "bpms-cluster"
 # -vfs | --vfs-lock:                The cluster vfs lock name
-#                                   If not set defaults to "bpms-vfs-repo"
+#                                   If not set defaults to "bpms-vfs-lock"
 # -n | --num-instances:             The number of server instances in the cluster 
 #                                   If not set defaults to "2"
 # -db-root-pwd:                     The root password for the MySQL database
@@ -29,7 +29,7 @@
 # **********************************************************************************************************
 
 CLUSTER_NAME="bpms-cluster"
-VFS_LOCK="bpms-vfs-repo"
+VFS_LOCK="bpms-vfs-lock"
 CLUSTER_INSTANCES=2
 ZK_HOST=
 ZK_PORT=2181
@@ -115,9 +115,9 @@ function run_mysql() {
     MYSQ_DB_URL="jdbc:mysql://$MYSQL_CONTAINER_IP:3306/$MYSQL_DB_NAME"
     echo "MySQL -The JDBC URL for the database is '$MYSQ_DB_URL'"
 
-    # TODO: Improve by waiting unitl port 3306 is available.
+    # TODO: Improve by waiting unitl port 3306 is available. (Including a timeout if startup fails)
     echo "MySQL - Waiting for port 3306 available..."
-    sleep 10
+    sleep 15
     
     # Import the quartz tables required for clustering.
     echo "MySQL - Creating database '$MYSQL_DB_NAME'"
@@ -127,7 +127,9 @@ function run_mysql() {
     MYSQL_GRANT_IPS="172.17.%.%"
     MYSQL_GRANT_QUERY="GRANT ALL PRIVILEGES ON $MYSQL_DB_NAME.* TO 'root'@'$MYSQL_GRANT_IPS' IDENTIFIED BY '$MYSQL_ROOT_PWD' WITH GRANT OPTION;"
     echo "MySQL - Grant acces for user 'root' into database '$MYSQL_DB_NAME' for the following IP mask '$MYSQL_GRANT_IPS' using password '$MYSQL_ROOT_PWD' "
+    # echo "MySQL - Grant query: $MYSQL_GRANT_QUERY"
     mysql -u root -p$MYSQL_ROOT_PWD --host=$MYSQL_CONTAINER_IP --execute="$MYSQL_GRANT_QUERY"
+    mysql -u root -p$MYSQL_ROOT_PWD --host=$MYSQL_CONTAINER_IP --execute="FLUSH PRIVILEGES;"
     
     echo "MySQL - Importing Quartz tables into '$MYSQL_DB_NAME'"
     mysql -u root -p$MYSQL_ROOT_PWD --host=$MYSQL_CONTAINER_IP  $MYSQL_DB_NAME < $QUARTZ_MYSQL_SCRIPT
@@ -160,11 +162,11 @@ function run_bpms() {
     BPMS_CONTAINER_ARGUMENTS="$BPMS_CONTAINER_ARGUMENTS -e JBOSS_NODE_NAME=node$BPMS_NODE_INSTANCE "
     
     echo "BPMS - Starting container using the folowing arguments: $BPMS_CONTAINER_ARGUMENTS"
+    #echo "BPMS - Run it using: 'docker run -t -i -P $BPMS_CONTAINER_ARGUMENTS --name bpms-node$BPMS_NODE_INSTANCE $BPMS_IMAGE_NAME:$BPMS_IMAGE_VERSION /bin/bash'"
     bpms_container_id=$(docker run -d -P $BPMS_CONTAINER_ARGUMENTS --name bpms-node$BPMS_NODE_INSTANCE $BPMS_IMAGE_NAME:$BPMS_IMAGE_VERSION)
     BPMS_CONTAINER_IP=$(docker inspect $bpms_container_id | grep IPAddress | awk '{print $2}' | tr -d '",')
-    #echo "BPMS - Run it using: 'docker run -t -i -P $BPMS_CONTAINER_ARGUMENTS --name bpms-node$BPMS_NODE_INSTANCE $BPMS_IMAGE_NAME:$BPMS_IMAGE_VERSION /bin/bash'"
     
-    # TODO: Wait for BPMS webapp started - check $BPMS_CONTAINER_IP:8080/kie-wb
+    # TODO: Wait for BPMS webapp started - check $BPMS_CONTAINER_IP:8080/kie-wb (Including a timeout if startup fails)
     echo "BPMS - JBoss BPMS container started (server instance #$BPMS_NODE_INSTANCE) at $BPMS_CONTAINER_IP"
     echo "BPMS - You can navigate at URL 'http://$BPMS_CONTAINER_IP:8080/kie-wb'"
     
