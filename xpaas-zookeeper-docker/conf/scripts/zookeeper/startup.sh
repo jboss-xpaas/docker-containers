@@ -43,15 +43,19 @@ echo -e "$ZOOKEEPER_REGISTERED_SERVERS"
 echo -e "$ZOOKEEPER_REGISTERED_SERVERS">> /opt/zookeeper/conf/zoo.cfg
 
 # Run Zookeeper in server mode.
+echo "Zookeeper - Starting server..." 
 /opt/zookeeper/bin/zkServer.sh start
+echo "Zookeeper - Server started"
 
-
-echo 'helix addCluster'
+echo "Helix - Adding cluster '$CLUSTER_NAME' into server 'localhost:2181'"
 /opt/helix/bin/helix-admin.sh --zkSvr localhost:2181 --addCluster $CLUSTER_NAME
 
-
-echo 'helix Adding vfs-repo as resource'
+echo "Helix - Added resource '$VFS_REPO' for cluster '$CLUSTER_NAME' into server 'localhost:2181'" 
 /opt/helix/bin/helix-admin.sh --zkSvr localhost:2181 --addResource $CLUSTER_NAME $VFS_REPO 1 LeaderStandby AUTO_REBALANCE
 
+HELIX_LOGS_FILE=tmp/controller.log
+echo "Helix - Starting helix controller..."
+/opt/helix/bin/run-helix-controller.sh --zkSvr localhost:2181 --cluster $CLUSTER_NAME 2>&1 > $HELIX_LOGS_FILE &
+echo "Helix - Helix controller started. You can find the logs at 'HELIX_LOGS_FILE'"
 
 exit 0
