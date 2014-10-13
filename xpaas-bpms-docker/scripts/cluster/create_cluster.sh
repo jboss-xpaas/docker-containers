@@ -25,8 +25,6 @@
 #                                   If not set defaults to "2"
 # -db-root-pwd:                     The root password for the MySQL database
 #                                   If not set defaults to "mysql"
-# -zk-temp-dir:                     Zookeeper / Helix temp/working path. It's a good idea to set this path as the path of dataDir in zoo.cfg 
-#                                   If not set defaults to "/tmp"
 # -h | --help:                      Script usage
 # **********************************************************************************************************
 
@@ -35,7 +33,6 @@ VFS_LOCK="jbpm-vfs-repo"
 CLUSTER_INSTANCES=2
 ZK_HOST=
 ZK_PORT=2181
-ZK_TEMP_DIR=/tmp
 ZK_IMAGE_NAME="xpaas/xpaas_zookeeper"
 ZK_IMAGE_VERSION="1.0"
 MYSQ_IMAGE_NAME="mysql"
@@ -175,9 +172,6 @@ while [ "$1" != "" ]; do
         -n | --num-instances )      shift
                                     CLUSTER_INSTANCES=$1
                                     ;;
-        -zk-temp-dir )              shift
-                                    ZK_TEMP_DIR=$1
-                                    ;;
         -db-root-pwd )              shift
                                     MYSQL_ROOT_PWD=$1
                                     ;;
@@ -209,7 +203,7 @@ run_mysql
 # *************************************************************************************************************
 # BPMS
 # *************************************************************************************************************
-for (( bpms_instance=0; bpms_instance<$CLUSTER_INSTANCES; bpms_instance++ ))
+for (( bpms_instance=1; bpms_instance<=$CLUSTER_INSTANCES; bpms_instance++ ))
 do
    run_bpms $bpms_instance
 done
