@@ -154,8 +154,8 @@ function run_bpms() {
     BPMS_CONTAINER_ARGUMENTS="$BPMS_CONTAINER_ARGUMENTS -e JBOSS_NODE_NAME=node$BPMS_NODE_INSTANCE "
     
     echo "BPMS - Starting container using the folowing arguments: $BPMS_CONTAINER_ARGUMENTS"
-    #bpms_container_id=$(docker run -d -P $BPMS_CONTAINER_ARGUMENTS --name node$BPMS_NODE_INSTANCE $BPMS_IMAGE_NAME:$BPMS_IMAGE_VERSION)
-    #BPMS_CONTAINER_IP=$(docker inspect $bpms_container_id | grep IPAddress | awk '{print $2}' | tr -d '",')
+    bpms_container_id=$(docker run -d -P $BPMS_CONTAINER_ARGUMENTS --name node$BPMS_NODE_INSTANCE $BPMS_IMAGE_NAME:$BPMS_IMAGE_VERSION)
+    BPMS_CONTAINER_IP=$(docker inspect $bpms_container_id | grep IPAddress | awk '{print $2}' | tr -d '",')
     # TODO: Wait for BPMS webapp started - check $BPMS_CONTAINER_IP:8080/kie-wb
     echo "BPMS - JBoss BPMS container started (server instance #$BPMS_NODE_INSTANCE) at $BPMS_CONTAINER_IP"
     echo "BPMS - You can navigate at URL 'http://$BPMS_CONTAINER_IP:8080/kie-wb'"
