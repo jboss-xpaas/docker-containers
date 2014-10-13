@@ -71,7 +71,7 @@ function run_zk_helix() {
     CONTAINER_NAME="bpms-zookeeper"
     ROOT_PASSWORD="xpaas"
     image_xpaas_zookeeper=$(docker run -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e CLUSTER_NAME="$CLUSTER_NAME" -e VFS_REPO="$VFS_LOCK" $ZK_IMAGE_NAME:$ZK_IMAGE_VERSION)
-    ZK_HOST=$(docker inspect $image_xpaas_base | grep IPAddress | awk '{print $2}' | tr -d '",')
+    ZK_HOST=$(docker inspect $image_xpaas_zookeeper | grep IPAddress | awk '{print $2}' | tr -d '",')
     echo "Zookeeper - Container started at $ZK_HOST:2181"
     
     echo ""
