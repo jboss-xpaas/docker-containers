@@ -1,0 +1,8 @@
+# Reload configuration
+reload
+
+# Deploy BPMS webapp
+deploy /tmp/kie-wb.war
+
+# Deploy Dashbuilder webapp
+deploy /tmp/dashbuilder.war
