@@ -23,7 +23,7 @@ Table of contents
 * **[Deploying web applications into JBoss Application Server](#deploying-web-applications-into-jboss-application-server)**
 * **[Logging](#logging)**
 * **[Stopping the container](#stopping-the-container)**
-* **[JBoss startup scripts](#jboss-startup-scripts)**
+* **[JBoss configuration & deploy scripts](#jboss-configuration-&-deploy-scripts)**
 * **[Experimenting](#experimenting)**
 * **[Extending this docker image](#extending-this-docker-image)**
 * **[Notes](#notes)**
@@ -453,8 +453,12 @@ To stop a running docker container just type:
 
     ./stop.sh <container_name>
 
-JBoss startup scripts
-----------------------
+JBoss configuration & deploy scripts
+------------------------------------
+
+This container provides a mechanism to allow the inherited containers to configure the JBoss application server and deploy web applications once the server has started for first time.        
+
+**Configuration phase**       
 
 In order to execute your custom JBoss Command Line Interface (CLI) commands, this container provides
 a mechanism that executes all <code>sh</code> script files located at <code>/jboss/scripts/jboss-appserver/startup</code> 
@@ -470,6 +474,17 @@ NOTES:
 * The reason why CLI commands are executed once JBoss is up is because the configuration file that CLI commands will modify depends on the startup script (profile). In addition, note that is JBoss server is not up, the CLI interface is not available too      
 * NOTE: After all startup scripts have been executed, the container perfoms a server reload automatically. It's NOT recomended to perform server reloads in the startup scripts.       
 * IMPORTANT: These scripts are executed once JBoss server management interface is up. So if you extend this docker image and add a deployment in the <code>deployments/</code> directory, these scripts will be executed before your application is deployed        
+* You can find some examples in the  [BPMS docker image](../xpaas-bpms-docker)    
+
+**Deploy phase**          
+
+After the configuration phase, where all configuration scripts have been executed, the container perfoms the deploy phase.          
+
+In this phase, the <code>/jboss/scripts/jboss-appserver/startup/jboss-deploy.cli</code> CLI script is executed.        
+By default this script only perform a server reload. You can override it in your container to perform your custom deploys after the reload command.     
+
+NOTES:      
+* You can find some examples in the  [BPMS docker image](../xpaas-bpms-docker)      
 
 Experimenting
 -------------

@@ -38,9 +38,6 @@ if [[ ! -z "$BPMS_CLUSTER_NAME" ]] ; then
     /jboss/scripts/jboss-appserver/jboss-cli.sh -f /jboss/scripts/bpms/bpms-cluster.cli
 fi
 
-# Reload & Deploy webapps
-/jboss/scripts/jboss-appserver/jboss-cli.sh -f /jboss/scripts/bpms/bpms-deploy.cli
-
 echo "End of JBoss BPMS web application configuration."
 
 exit 0

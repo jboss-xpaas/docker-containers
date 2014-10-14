@@ -2,7 +2,6 @@
     - All images
         - Image size is to big (GB)??
         - encode env variables that are passwords
-        - reduce the number of RUN commands (by concatenating commands) due to docker max parent containers limitation (#147)
         - when downloading external software on building the image, set a curl/wget timeout
         - accessing the containers via ssh -> no env variables available
         - Performance problems
@@ -40,9 +39,10 @@
             - /opt/jboss/bpms/quartz-db.properties -> driverDelegateClass should be overriden depending on the target db system
             - Test in wildfly
             - Domain mode support
-            - Use a "Final" version for kie-wb/jbpm-dashbuilder
-            - create_cluster.sh -> TODOS
-            - README.md
+            - create_cluster.sh
+                - TODOS
+                - Error handling
+                    - If container cannot be started
                             
     - BRMS docker image
         - Clustering
@@ -50,6 +50,7 @@
     - BPMS & BRMS docker image
         - Improve 1-configure-bXms.sh
             - Add support for changing the datasource
+        - Merge BPMS / BRMS into a single image?
             
     - Fabric8 docker image
         - Change fabric8 password on container run (env variable)
@@ -57,8 +58,6 @@
         - Test joolokia management is working -> http://localhost:8181/jolokia
         - clustering (zookeeper)
         
-    - Other
-        - Merge BPMS / BRMS into a single image?
             
 - Review OpenShift3 integration with docker
 - Continuous build integration: On each new release, automatically generate the docker image (new tag) and upload to DockerHub

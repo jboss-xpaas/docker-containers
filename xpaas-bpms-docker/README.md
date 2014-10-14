@@ -21,6 +21,7 @@ Table of contents
 * **[Logging](#logging)**
 * **[Stopping the container](#stopping-the-container)**
 * **[Using external database](#using-external-database)**
+* **[BPMS Clustering](#bpms-clustering)**
 * **[Experimenting](#experimenting)**
 * **[Notes](#notes)**
 
@@ -28,11 +29,12 @@ Control scripts
 ---------------
 
 There are three control scripts for running BPMS with no clustering support:    
-* <code>build.sh</code> Builds the JBoss BPMS docker image    
-* <code>start.sh</code> Starts a new XPaaS JBoss BPMS docker container based on this image    
-* <code>stop.sh</code>  Stops the runned XPaaS JBoss BPMS docker container    
+* <code>scripts/build.sh</code> Builds the JBoss BPMS docker image    
+* <code>scripts/start.sh</code> Starts a new XPaaS JBoss BPMS docker container based on this image    
+* <code>scripts/stop.sh</code>  Stops the runned XPaaS JBoss BPMS docker container    
 
-# TODO: List the scripts for clustering
+To run the BPMS using a clustered environment, you can use:        
+* <code>scripts/cluster/create_cluster.sh</code> Creates a clustered environment for BPMS web application. See **[BPMS Clustering](#bpms-clustering)**          
 
 Building the docker container
 -----------------------------
@@ -89,7 +91,7 @@ For running BPMS in a clustered environment, you need to specify some other para
 - <code>HELIX_VERSION</code> - The Apache Helix version to use, defaults to <code>0.6.3</code>           
 - <code>BPMS_ZOOKEEPER_SERVER</code> - The Apache Zookeeper server URL in a format as <ocde>&lt;server:port&gt;</code>, not set by default          
 - <code>BPMS_CLUSTER_NAME</code> - The Apache helix cluster name to use, not set by default          
-- <code>BPMS_CLUSTER_NODE</code> - The number of nodes that will compose the cluster, defaults to <code>1</code>          
+- <code>BPMS_CLUSTER_NODE</code> - The number of the current node that will compose the cluster, defaults to <code>1</code>          
 - <code>BPMS_VFS_LOCK</code> -  The Apache helix VFS repository lock name to use, defaults to <code>bpms-vfs-lock</code>           
 - <code>BPMS_GIT_HOST</code> - The Git daemon host, defaults to the current container's IP address       
 - <code>BPMS_GIT_DIR</code> - The Git daemon working directory, defaults to <code>/opt/jboss/bpms/vfs</code>       
@@ -262,6 +264,65 @@ The JBoss BPMS database connection will automatically link to the MySQL docker c
 
 NOTE: When using MySQL container linking with JBoss BPMS container, the connection envrionment variables <code>BPMS_CONNECTION_URL, BPMS_CONNECTION_DRIVER, BPMS_CONNECTION_USER, BPMS_CONNECTION_PASSWORD</code> have no effect, even if set when running the JBoss BPMS container.
 
+
+BPMS Clustering
+---------------
+
+**BPMS clustered environment**
+
+JBoss BPMS web application can run in a clustered environment.    
+This environment consist of:       
+* An Apache Zookeeper / Helix server & controller - Handle the cluster nodes      
+* An external shared database between all BPMS server instances       
+* Several BPMS server instances      
+* An haproxy load balancer       
+
+**Running BPMS in a clustered environment**
+
+You can run an external Zookeeper/Helix, haproxy and database using Docker containers or system services.      
+In order to run the BPMS container using these services for a clustered environment you have to set these environment variables on container startup:     
+* <code>BPMS_CLUSTER_NAME</code> - The Apache helix cluster name to use, not set by default          
+* <code>BPMS_ZOOKEEPER_SERVER</code> - The Apache Zookeeper server URL in a format as <ocde>&lt;server:port&gt;</code>, not set by default          
+* <code>BPMS_CLUSTER_NODE</code> - The number of the current node that will compose the cluster, defaults to <code>1</code>          
+* <code>BPMS_VFS_LOCK</code> -  The Apache helix VFS repository lock name to use, defaults to <code>bpms-vfs-lock</code>           
+* <code>JBOSS_NODE_NAME</code> - The name for the JBoss server node, defaults to <code>node1</code>. Each server must have an unique JBoss node name.        
+
+And the ones for the external database to use:        
+* <code>BPMS_CONNECTION_URL</code> - The database connection URL. If not set, defaults to <code>jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</code>          
+* <code>BPMS_CONNECTION_DRIVER</code> - The database connection driver. See [Notes] for available database connection drivers. If not set, defaults to <code>h2</code>        
+* <code>BPMS_CONNECTION_USER</code> - The database connection username. If not set, defaults to <code>sa</code>       
+* <code>BPMS_CONNECTION_PASSWORD</code> - The database connection password. If not set, defaults to <code>sa</code>       
+
+NOTES:        
+* Currently the clustering for BPMS only works in standalone mode for all server instances.       
+* The BPMS container configure the cluster parameters if <code>BPMS_CLUSTER_NAME</code> is set.       
+* If clustering enabled, the standalone server forces to use the <code>standalone-full-ha.xml</code> config file
+* Zookeeper server and external database must be configured & ready before running the bpms container.        
+* The external database MUST have the quartz tables created before running the bpms container.      
+* IMPORTANT: Set <code>BPMS_CLUSTER_NODE</code> environment variable using the number of the current cluster instance that will compose the cluster environment. Needed to rebalance the clustered resource.
+
+**Running the pre-defined clustered environment for BPMS**
+
+This BPMS docker container image provides a script to run a pre-defined BPMS clustered environment. It:       
+* Creates and configures a Zookeeper docker container.      
+* Creates and configures a MySQL docker container.      
+* Creates and configures an haproxy docker container.      
+* Creates and configures a several BPMS server instances.      
+
+This script is located at <code>scripts/cluster/create_cluster.sh</code> and has the following input arguments:        
+* <code>-name | --cluster-name</code>: The name for the cluster. If not set, defaults to <code>bpms-cluster</code>.         
+* <code>-vfs | --vfs-lock</code>: The name for VFS resource lock for the cluster. If not set, defaults to <code>bpms-vfs-lock</code>.        
+* <code>-n | --num-instances</code>: The number of BPMS server instances that will compose the cluster. If not set, defaults to <code>2</code>.        
+* <code>-db-root-pwd</code>: The root password for the MySQL database. If not set, defaults to <code>mysql</code>.        
+
+Here is an example of how to run the script:       
+        
+    sudo ./create_cluster.sh -name bpms-cluster -vfs bpms-vfs-lock -n 2 -db-root-pwd mysql
+
+After running it, you can see the created containers by typing:       
+
+    docker ps -a
+    
 Experimenting
 -------------
 To spin up a shell in one of the containers try:
@@ -281,17 +342,3 @@ Notes
 * This container forces to start JBoss server using <code>full</code> profile       
 * There is no support for clustering       
 * Currently the BPMS version for JBoss Wildfly is now working due to -> https://issues.jboss.org/browse/WFLY-3355        
-
-
-
-Clustering
-----------
-- enabled if set BPMS_CLUSTER_NAME
-- only standalone mode supported for clustering
-- if clustering enabled, the standalone server forces to use the "standalone-full-ha" config file
-- zookeeper server must be up & ready before running the bpms container
-- set BPMS_CLUSTER_NODE using the number of the current cluster instance that will compose the cluster environment
-- database
-    - MUST specify an external (already created) database to use
-    - quartz tables MUST be previously created on DB?
-    

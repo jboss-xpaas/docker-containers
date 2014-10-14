@@ -44,8 +44,10 @@ DOCKER_IP=$(/bin/sh /jboss/scripts/docker-ip.sh)
 
 # Connect to JBoss CLI using management IP as DOCKER_IP
 if [[ ! -z $COMMAND ]]; then
+    echo "Executing JBoss CLI command '$COMMAND'"
     /opt/jboss-appserver/bin/jboss-cli.sh -c --controller=$DOCKER_IP:$JBOSS_MGMT_NATIVE_PORT --command="$COMMAND"
 elif [ ! -z $FILE ]; then
+    echo "Executing JBoss CLI file '$FILE'"
     /opt/jboss-appserver/bin/jboss-cli.sh -c --controller=$DOCKER_IP:$JBOSS_MGMT_NATIVE_PORT --file="$FILE"
 else
     /opt/jboss-appserver/bin/jboss-cli.sh -c --controller=$DOCKER_IP:$JBOSS_MGMT_NATIVE_PORT 

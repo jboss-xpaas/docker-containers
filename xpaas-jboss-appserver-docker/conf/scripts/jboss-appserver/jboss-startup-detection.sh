@@ -35,8 +35,13 @@ if [ "$IS_STARTED" == "" ]; then
     exit 1
 fi
 
-# Jboss is started. Execute all related CLI and scripts.
-echo "JBoss app-server is started. Running not previouly executed scripts in $STARTUP_DIRECTORY"
+# Jboss is started.
+# Configuration phase.
+# Execute all related CLI and scripts (only once).
+echo "************************* JBoss **************************"
+echo "JBoss app-server is started. Entering configuration phase."
+echo "**********************************************************"
+echo "Running not previouly executed scripts in '$STARTUP_DIRECTORY'..."
 pushd .
 cd $STARTUP_DIRECTORY
 for script in *.sh
@@ -49,8 +54,16 @@ do
     fi
 done
 
-#echo "Reloading JBoss configuration..."
-#/jboss/scripts/jboss-appserver/jboss-cli.sh -c ":reload"
+# Reload & deploy phase
+# Only exectue the deploy phase once.
+if [ ! -f "jboss-deploy.executed" ]; then
+    echo "*********** JBoss *************"
+    echo "Entering reload & deploy phase."
+    echo "********************************"
+    /jboss/scripts/jboss-appserver/jboss-cli.sh -f /jboss/scripts/jboss-appserver/startup/jboss-deploy.cli
+    # Mark the deploy script as already executed, so do not execute it any more.
+    touch "jboss-deploy.executed"
+fi
 
 popd
 
