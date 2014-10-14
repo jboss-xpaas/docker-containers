@@ -13,8 +13,8 @@ FROM xpaas/xpaas_wildfly:1.0
 MAINTAINER "JBoss XPaaS Team" "xpass-eng@redhat.com"
 
 ####### BPMS for Wildfly 8 ############
-RUN curl --silent --output /tmp/kie-wb.war http://repository.jboss.org/nexus/content/groups/public-jboss/org/kie/kie-wb-distribution-wars/6.2.0.Beta3/kie-wb-distribution-wars-6.2.0.Beta3-wildfly.war; \ 
-curl --silent --output /tmp/dashbuilder.war http://repository.jboss.org/nexus/content/repositories/releases/org/jbpm/dashboard/jbpm-dashboard-distributions/6.2.0.Beta3/jbpm-dashboard-distributions-6.2.0.Beta3-jboss-as7.war
+RUN curl --silent --output /tmp/kie-wb.war http://repository.jboss.org/nexus/content/groups/public-jboss/org/kie/kie-wb-distribution-wars/6.1.0.Final/kie-wb-distribution-wars-6.1.0.Final-wildfly.war; \ 
+curl --silent --output /tmp/dashbuilder.war http://repository.jboss.org/nexus/content/repositories/releases/org/jbpm/dashboard/jbpm-dashboard-distributions/6.1.0.Final/jbpm-dashboard-distributions-6.1.0.Final-jboss-as7.war
 
 ####### ENVIRONEMNT ############
 # Default values for database connection variables
