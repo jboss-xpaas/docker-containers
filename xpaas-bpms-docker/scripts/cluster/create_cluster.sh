@@ -212,6 +212,7 @@ run_zk_helix
 # Database
 # *************************************************************************************************************
 run_mysql
+sleep 5
 
 # *************************************************************************************************************
 # BPMS
@@ -219,6 +220,7 @@ run_mysql
 for (( bpms_instance=1; bpms_instance<=$CLUSTER_INSTANCES; bpms_instance++ ))
 do
    run_bpms $bpms_instance
+   sleep 10
 done
 
 # Exit with no errors
