@@ -5,6 +5,7 @@
         - reduce the number of RUN commands (by concatenating commands) due to docker max parent containers limitation (#147)
         - when downloading external software on building the image, set a curl/wget timeout
         - accessing the containers via ssh -> no env variables available
+        - Performance problems
         
     - XPaas Base docker image
         - There are some yum errors during image build
@@ -13,7 +14,7 @@
     
     - xpaas-jboss-appserver-docker
         - Fail if building "eap" image and the EAP ZIP file is not present
-        - Move to EAP 6.3??
+        - Move to EAP 6.3 / Wildfly XX?
         - jboss-startup-detection.sh
             - If the server does not starts up due to any reason, the script is trying to be executed infinitely
         - Domain mode & Clustering support (standalone & domain modes)
