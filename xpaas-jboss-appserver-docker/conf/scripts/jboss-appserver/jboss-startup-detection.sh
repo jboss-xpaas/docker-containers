@@ -49,8 +49,8 @@ do
     fi
 done
 
-echo "Reloading JBoss configuration..."
-/jboss/scripts/jboss-appserver/jboss-cli.sh -c ":reload"
+#echo "Reloading JBoss configuration..."
+#/jboss/scripts/jboss-appserver/jboss-cli.sh -c ":reload"
 
 popd
 
