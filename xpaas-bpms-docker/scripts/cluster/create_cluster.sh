@@ -44,7 +44,7 @@ MYSQL_ROOT_PWD="mysql"
 MYSQ_DB_URL=
 QUARTZ_MYSQL_SCRIPT=quartz_tables_mysql.sql
 BPMS_IMAGE_NAME="xpaas/xpaas_bpms-eap"
-BPMS_IMAGE_VERSION="3"
+BPMS_IMAGE_VERSION="1.0"
 BPMS_CONTAINER_IP=
 
 # *************************************************************************************************************
