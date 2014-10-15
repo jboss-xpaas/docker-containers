@@ -339,6 +339,5 @@ In order to run all container services provided by this image, you have to run t
 Notes
 -----
 * This container overrides the default JBoss Wildfly/EAP start command (from XPaaS JBoss Wildfly/EAP image), adding some custom system properties     
-* This container forces to start JBoss server using <code>full</code> profile       
-* There is no support for clustering       
+* This container forces to start JBoss server using <code>full</code> profile for no clustered environment, and <code>full-ha</code> profile for a clustered environment.      
 * Currently the BPMS version for JBoss Wildfly is now working due to -> https://issues.jboss.org/browse/WFLY-3355        
