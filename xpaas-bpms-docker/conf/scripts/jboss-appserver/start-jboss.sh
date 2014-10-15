@@ -59,11 +59,17 @@ if [[ ! -z "$BPMS_CLUSTER_NAME" ]] ; then
     
 fi
 
+# Is DEBUG enabled
+JBOSS_DEBUG_ARGUMENT=""
+if [[ ! -z "$JBOSS_DEBUG_PORT" ]] ; then
+    JBOSS_DEBUG_ARGUMENT=" --debug $JBOSS_DEBUG_PORT"        
+fi
+
 # Starts JBoss Application Server using $JBOSS_APPSERVER_ARGUMENTS, specified when running the container, if any.
 echo "Starting JBoss Application Server in standalone mode"
 echo "Using HTTP address $JBOSS_BIND_ADDRESS:$JBOSS_HTTP_PORT / $JBOSS_BIND_ADDRESS:$JBOSS_HTTPS_PORT (SSL)"
 echo "Using management address $DOCKER_IP:$JBOSS_MGMT_NATIVE_PORT"
 echo "Starting JBoss using the following command: /opt/jboss-appserver/bin/standalone.sh --server-config=$JBOSS_STANDALONE_CONF_FILE -b $JBOSS_BIND_ADDRESS $JBOSS_COMMON_ARGS -Djboss.bpms.connection_url="$BPMS_CONNECTION_URL" -Djboss.bpms.driver="$BPMS_CONNECTION_DRIVER" -Djboss.bpms.username="$BPMS_CONNECTION_USER" -Djboss.bpms.password="$BPMS_CONNECTION_PASSWORD" $JBOSS_ARGUMENTS $JBOSS_CLUSTER_ARGUMENTS"
-/opt/jboss-appserver/bin/standalone.sh --server-config=$JBOSS_STANDALONE_CONF_FILE -b $JBOSS_BIND_ADDRESS $JBOSS_COMMON_ARGS -Djboss.bpms.connection_url="$BPMS_CONNECTION_URL" -Djboss.bpms.driver="$BPMS_CONNECTION_DRIVER" -Djboss.bpms.username="$BPMS_CONNECTION_USER" -Djboss.bpms.password="$BPMS_CONNECTION_PASSWORD" $JBOSS_ARGUMENTS $JBOSS_CLUSTER_ARGUMENTS
+/opt/jboss-appserver/bin/standalone.sh --server-config=$JBOSS_STANDALONE_CONF_FILE -b $JBOSS_BIND_ADDRESS $JBOSS_DEBUG_ARGUMENT $JBOSS_COMMON_ARGS -Djboss.bpms.connection_url="$BPMS_CONNECTION_URL" -Djboss.bpms.driver="$BPMS_CONNECTION_DRIVER" -Djboss.bpms.username="$BPMS_CONNECTION_USER" -Djboss.bpms.password="$BPMS_CONNECTION_PASSWORD" $JBOSS_ARGUMENTS $JBOSS_CLUSTER_ARGUMENTS
 
 exit 0

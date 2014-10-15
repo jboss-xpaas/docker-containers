@@ -234,6 +234,7 @@ These are global for all container run modes:
 * <code>JBOSS_NODE_NAME</code> - The name for the server instance, defaults to <code>node1</code>     
 * <code>JBOSS_ARGUMENTS</code> - The arguments to pass when executing <code>standalone.sh</code> startup script     
 * <code>JBOSS_BIND_ADDRESS</code> - The server bind address, defaults to the current container's IP address       
+* <code>JBOSS_DEBUG_PORT</code> - The server debug port, not set by default       
 
 These are specific for server ports:     
 * <code>JBOSS_HTTP_PORT</code> - The server HTTP port, defaults to <code>8080</code>     
@@ -260,6 +261,14 @@ By default this docker image always exposes ports: <code>80,8080,8443,9990,9999<
 As you can see in previous section, you can change the server ports when running the container using environment variables.    
 
 So if you change any of those ports, you will have to run the container uinsg <code>-p &lt;bind_port&gt;:&lt;source_port&gt;</code> in order to bind the new ports used.    
+
+**Debug mode**
+
+You can enable the debug for the JBoss standalone server instance by setting the environment variable <code>JBOSS_DEBUG_PORT</code>, using the debug port number you want to use as the variable value.        
+
+If this <code>JBOSS_DEBUG_PORT</code> environment variable is not set, the debug is not enabled by default.      
+
+NOTE: Debugging is only allowed in standalone mode.     
 
 **Custom JBoss Wildfly/EAP startup script**
  
@@ -532,6 +541,7 @@ Notes
 * The default admin password for Wildfly is <code>admin123!</code>      
 * The web interface address is bind by default to the current container's IP address, you can change it using the environemnt variable <code>JBOSS_BIND_ADDRESS</code>     
 * There is a MySQL JBDC driver module pre-installed      
+* You can enable the debug options for standalone mode by setting the environment variable <code>JBOSS_DEBUG_PORT</code>      
 
 **JBoss Wildfly/EAP ports:**            
 * The HTTP port by default is <code>8080</code>, you can change it using the environment variable <code>JBOSS_HTTP_PORT</code>      

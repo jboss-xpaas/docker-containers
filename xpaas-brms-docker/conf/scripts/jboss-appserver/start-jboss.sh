@@ -26,10 +26,16 @@ if [ -n "$MYSQL_PORT_3306_TCP_ADDR" ] &&  [ -n "$MYSQL_PORT_3306_TCP_PORT" ] && 
     export BRMS_CONNECTION_PASSWORD="$MYSQL_ENV_MYSQL_ROOT_PASSWORD"
 fi
 
+# Is DEBUG enabled
+JBOSS_DEBUG_ARGUMENT=""
+if [[ ! -z "$JBOSS_DEBUG_PORT" ]] ; then
+    JBOSS_DEBUG_ARGUMENT=" --debug $JBOSS_DEBUG_PORT"        
+fi
+
 # Starts JBoss Application Server using $JBOSS_APPSERVER_ARGUMENTS, specified when running the container, if any.
 echo "Starting JBoss Application Server in standalone mode"
 echo "Using HTTP address $JBOSS_BIND_ADDRESS:$JBOSS_HTTP_PORT / $JBOSS_BIND_ADDRESS:$JBOSS_HTTPS_PORT (SSL)"
 echo "Using management address $DOCKER_IP:$JBOSS_MGMT_NATIVE_PORT"
-/opt/jboss-appserver/bin/standalone.sh --server-config=$JBOSS_STANDALONE_CONF_FILE -b $JBOSS_BIND_ADDRESS $JBOSS_COMMON_ARGS -Djboss.brms.connection_url="$BRMS_CONNECTION_URL" -Djboss.brms.driver="$BRMS_CONNECTION_DRIVER" -Djboss.brms.username="$BRMS_CONNECTION_USER" -Djboss.brms.password="$BRMS_CONNECTION_PASSWORD" $JBOSS_ARGUMENTS
+/opt/jboss-appserver/bin/standalone.sh --server-config=$JBOSS_STANDALONE_CONF_FILE -b $JBOSS_BIND_ADDRESS $JBOSS_DEBUG_ARGUMENT $JBOSS_COMMON_ARGS -Djboss.brms.connection_url="$BRMS_CONNECTION_URL" -Djboss.brms.driver="$BRMS_CONNECTION_DRIVER" -Djboss.brms.username="$BRMS_CONNECTION_USER" -Djboss.brms.password="$BRMS_CONNECTION_PASSWORD" $JBOSS_ARGUMENTS
 
 exit 0

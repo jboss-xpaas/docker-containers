@@ -31,7 +31,13 @@ else
     echo "Starting JBoss Application Server in standalone mode"
     echo "Using HTTP address $JBOSS_BIND_ADDRESS:$JBOSS_HTTP_PORT / $JBOSS_BIND_ADDRESS:$JBOSS_HTTPS_PORT (SSL)"
     echo "Using management address $DOCKER_IP:$JBOSS_MGMT_NATIVE_PORT"
-    /opt/jboss-appserver/bin/standalone.sh --server-config=$JBOSS_STANDALONE_CONF_FILE -b $JBOSS_BIND_ADDRESS $JBOSS_COMMON_ARGS $JBOSS_ARGUMENTS
+    
+    # Is DEBUG enabled
+    JBOSS_DEBUG_ARGUMENT=""
+    if [[ ! -z "$JBOSS_DEBUG_PORT" ]] ; then
+        JBOSS_DEBUG_ARGUMENT=" --debug $JBOSS_DEBUG_PORT"        
+    fi
+    /opt/jboss-appserver/bin/standalone.sh --server-config=$JBOSS_STANDALONE_CONF_FILE -b $JBOSS_BIND_ADDRESS $JBOSS_DEBUG_ARGUMENT $JBOSS_COMMON_ARGS $JBOSS_ARGUMENTS
 fi
 
 
