@@ -3,8 +3,7 @@
 # **********************************************************************************************************
 # Script information
 # ------------------
-# This helper script is used to connect via SSH to the BPMS nodes that the "create_cluster.sh" script runs. 
-# This script assumes that each node has as container name "bpms-nodeX" (where X is the number of the node)
+# This helper script is used to attach to the BPMS nodes that the "create_cluster.sh" script runs. 
 # **********************************************************************************************************
 
 # **********************************************************************************************************
@@ -16,14 +15,13 @@
 # **********************************************************************************************************
 
 NODE=1
-SSH_USER=root
 
 # *************************************************************************************************************
 # Usage function
 # *************************************************************************************************************
 function usage
 {
-    echo "usage: ssh_node.sh [-n <node>]"
+    echo "usage: attach_node.sh [-n <node>]"
 }
 
 
@@ -43,20 +41,14 @@ done
 
 NODE_NAME="bpms-node$NODE"
 NODE_ID=$(docker ps -a | grep $NODE_NAME | cut -f1 -d " ")
-NODE_IP=$(docker inspect $NODE_ID | grep IPAddress | awk '{print $2}' | tr -d '",')
 
 if [[ -z "$NODE_ID" ]] ; then
     echo "Not found container id for node with name '$NODE_NAME'. Exiting!"
     exit 1
 fi
 
-if [[ -z "$NODE_IP" ]] ; then
-    echo "Cannot get the IP address for container with name '$NODE_NAME' and id '$NODE_ID'. Exiting!"
-    exit 1
-fi
-
-echo "Connecting to node '$NODE_NAME' with id '$NODE_ID' and IP address '$NODE_IP' via SSH"
-ssh $SSH_USER@$NODE_IP -o StrictHostKeyChecking=no
+echo "Attaching to node '$NODE_NAME' with id '$NODE_ID'"
+docker attach $NODE_ID
 
 # Exit with no errors
 exit 0
