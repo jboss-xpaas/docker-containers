@@ -35,6 +35,7 @@ There are three control scripts for running BPMS with no clustering support:
 
 To run the BPMS using a clustered environment, you can use:        
 * <code>scripts/cluster/create_cluster.sh</code> Creates a clustered environment for BPMS web application. See **[BPMS Clustering](#bpms-clustering)**          
+* <code>scripts/cluster/ssh_node.sh</code>    Helper script used to connect to the running BPMS containers via SSH           
 
 Building the docker container
 -----------------------------
@@ -326,7 +327,18 @@ Here is an example of how to run the script:
 After running it, you can see the created containers by typing:       
 
     docker ps -a
+
+You can connect via SSH (in order to see the logs or perform other operations) to any of the BPMS server instances by using this helper script located at <code>scripts/cluster/ssh_node.sh</code>:         
+
+    # The X is the node instance
+    sudo ./ssh_node.sh -n X
     
+    # Connect to the BPMS server node 1
+    sudo ./ssh_node.sh -n 1
+    
+    # Connect to the BPMS server node 2
+    sudo ./ssh_node.sh -n 2
+
 Experimenting
 -------------
 To spin up a shell in one of the containers try:
