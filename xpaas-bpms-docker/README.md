@@ -307,7 +307,7 @@ This BPMS docker container image provides a script to run a pre-defined BPMS clu
 * Creates and configures a Zookeeper docker container.      
 * Creates and configures a MySQL docker container.      
 * Creates and configures an haproxy docker container.      
-* Creates and configures a several BPMS server instances.      
+* Creates and configures several BPMS server instances.      
 
 This script is located at <code>scripts/cluster/create_cluster.sh</code> and has the following input arguments:        
 * <code>-name | --cluster-name</code>: The name for the cluster. If not set, defaults to <code>bpms-cluster</code>.         
@@ -316,7 +316,11 @@ This script is located at <code>scripts/cluster/create_cluster.sh</code> and has
 * <code>-db-root-pwd</code>: The root password for the MySQL database. If not set, defaults to <code>mysql</code>.        
 
 Here is an example of how to run the script:       
+    
+    # With default arguments 
+    sudo ./create_cluster.sh
         
+    # With arguments 
     sudo ./create_cluster.sh -name bpms-cluster -vfs bpms-vfs-lock -n 2 -db-root-pwd mysql
 
 After running it, you can see the created containers by typing:       
