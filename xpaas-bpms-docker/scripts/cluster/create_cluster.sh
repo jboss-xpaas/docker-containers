@@ -52,7 +52,7 @@ BPMS_CONTAINER_IP=
 # *************************************************************************************************************
 function usage
 {
-    echo "usage: create_cluster.sh [ [-name <cluster_name] [-vfs <vfs_lock_name] [-n <num_instances] [-zk <zk_server] [-db-url <db_url] [-db-driver <db_driver] [-db-user <db_user] [-db-pwd <db_pwd] ]"
+    echo "usage: create_cluster.sh [ [-name <cluster_name>] [-vfs <vfs_lock_name>] [-n <num_instances>] [-zk <zk_server>] [-db-url <db_url>] [-db-driver <db_driver>] [-db-user <db_user>] [-db-pwd <db_pwd>] ]"
 }
 
 # *************************************************************************************************************
