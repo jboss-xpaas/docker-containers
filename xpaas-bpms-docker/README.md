@@ -296,10 +296,10 @@ And the ones for the external database to use:
 NOTES:        
 * Currently the clustering for BPMS only works in standalone mode for all server instances.       
 * The BPMS container configure the cluster parameters if <code>BPMS_CLUSTER_NAME</code> is set.       
-* If clustering enabled, the standalone server forces to use the <code>standalone-full-ha.xml</code> config file
+* If clustering enabled, the standalone server forces to use the <code>standalone-full-ha</code> profile
 * Zookeeper server and external database must be configured & ready before running the bpms container.        
 * The external database MUST have the quartz tables created before running the bpms container.      
-* IMPORTANT: Set <code>BPMS_CLUSTER_NODE</code> environment variable using the number of the current cluster instance that will compose the cluster environment. Needed to rebalance the clustered resource.
+* IMPORTANT: Set <code>BPMS_CLUSTER_NODE</code> environment variable using the number of the current cluster instance that will compose the cluster environment. Needed in order to rebalance the clustered resource.
 
 **Running the pre-defined clustered environment for BPMS**
 
