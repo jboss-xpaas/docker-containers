@@ -3,13 +3,14 @@
 # **********************************************************************************************************
 # Script information
 # ------------------
-# This helper script is used to attach to the BPMS nodes that the "create_cluster.sh" script runs. 
+# This helper script is used to show a BPMS instance container information 
+# This script assumes that each node has as container name "bpms-nodeX" (where X is the number of the node)
 # **********************************************************************************************************
 
 # **********************************************************************************************************
 # Program arguments
 #
-# -n | --node:                      The number of the BPMS node to attach
+# -n | --node:                      The number of the BPMS node to show information
 #                                   If not set defaults to "1"
 # -h | --help:                      Script usage
 # **********************************************************************************************************
@@ -21,7 +22,7 @@ NODE=1
 # *************************************************************************************************************
 function usage
 {
-    echo "usage: attach_node.sh [-n <node>]"
+    echo "usage: node_info.sh [-n <node>]"
 }
 
 
@@ -40,15 +41,25 @@ while [ "$1" != "" ]; do
 done
 
 NODE_NAME="bpms-node$NODE"
-NODE_ID=$(docker ps -a | grep $NODE_NAME | cut -f1 -d " ")
 
+NODE_ID=$(docker ps -a | grep $NODE_NAME | cut -f1 -d " ")
 if [[ -z "$NODE_ID" ]] ; then
     echo "Not found container id for node with name '$NODE_NAME'. Exiting!"
     exit 1
 fi
 
-echo "Attaching to node '$NODE_NAME' with id '$NODE_ID'"
-docker attach $NODE_ID
+NODE_IP=$(docker inspect $NODE_ID | grep IPAddress | awk '{print $2}' | tr -d '",')
+if [[ -z "$NODE_IP" ]] ; then
+    echo "Cannot get the IP address for container with name '$NODE_NAME' and id '$NODE_ID'. Exiting!"
+    exit 1
+fi
+
+echo "*****************************************"
+echo "Node number: $NODE"
+echo "Container name: $NODE_NAME"
+echo "Container id: $NODE_ID"
+echo "Container IP: $NODE_IP"
+echo "*****************************************"
 
 # Exit with no errors
 exit 0

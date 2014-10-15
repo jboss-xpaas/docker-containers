@@ -42,14 +42,14 @@ while [ "$1" != "" ]; do
 done
 
 NODE_NAME="bpms-node$NODE"
-NODE_ID=$(docker ps -a | grep $NODE_NAME | cut -f1 -d " ")
-NODE_IP=$(docker inspect $NODE_ID | grep IPAddress | awk '{print $2}' | tr -d '",')
 
+NODE_ID=$(docker ps -a | grep $NODE_NAME | cut -f1 -d " ")
 if [[ -z "$NODE_ID" ]] ; then
     echo "Not found container id for node with name '$NODE_NAME'. Exiting!"
     exit 1
 fi
 
+NODE_IP=$(docker inspect $NODE_ID | grep IPAddress | awk '{print $2}' | tr -d '",')
 if [[ -z "$NODE_IP" ]] ; then
     echo "Cannot get the IP address for container with name '$NODE_NAME' and id '$NODE_ID'. Exiting!"
     exit 1

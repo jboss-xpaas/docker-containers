@@ -34,9 +34,10 @@ There are three control scripts for running BPMS with no clustering support:
 * <code>scripts/stop.sh</code>  Stops the runned XPaaS JBoss BPMS docker container    
 
 To run the BPMS using a clustered environment, you can use:        
-* <code>scripts/cluster/create_cluster.sh</code> Creates a clustered environment for BPMS web application. See **[BPMS Clustering](#bpms-clustering)**          
-* <code>scripts/cluster/ssh_node.sh</code>    Helper script used to connect to a running BPMS containers via SSH           
-* <code>scripts/cluster/attach_node.sh</code>    Helper script used to attach to a running BPMS containers           
+* <code>scripts/cluster/create_cluster.sh</code>  Creates a clustered environment for BPMS web application. See **[BPMS Clustering](#bpms-clustering)**          
+* <code>scripts/cluster/ssh_node.sh</code>        Helper script used to connect to a running BPMS containers via SSH           
+* <code>scripts/cluster/attach_node.sh</code>     Helper script used to attach to a running BPMS containers           
+* <code>scripts/cluster/node_info.sh</code>       Helper script used to show a running BMPS container usefull information           
 
 Building the docker container
 -----------------------------
