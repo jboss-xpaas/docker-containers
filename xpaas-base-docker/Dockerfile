@@ -23,11 +23,12 @@ MAINTAINER "JBoss XPaaS Team" "xpass-eng@redhat.com"
 
 ####### BASE VARIABLES ############
 ENV JAVA_HOME /usr/lib/jvm/jre
-ENV ENV_COMMANDS_FILE /etc/profile.d/jboss.sh
 ENV M2 /opt/apache-maven/bin
 ENV M2_HOME /opt/apache-maven
 ENV MAVEN_HOME /opt/apache-maven
+ENV MAVEN_OPTS "-Xms256m -Xmx512m"
 ENV ROOT_PASSWORD xpaas
+ENV PATH $MAVEN_HOME/bin:$JAVA_HOME/bin:$PATH
 
 ####### BASE SOFTWARE ############
 # telnet is required by some fabric command. without it you have silent failures
@@ -64,20 +65,6 @@ WORKDIR /
 RUN echo '%wheel ALL=(ALL) ALL' >> /etc/sudoers
 # enabling sudo over ssh
 RUN sed -i 's/.*requiretty$/#Defaults requiretty/' /etc/sudoers
-
-####### SYSTEM CONFIGURATION ############
-WORKDIR /
-# environment variables for ALL users
-RUN echo "export JAVA_HOME=/usr/lib/jvm/jre" >> $ENV_COMMANDS_FILE; \ 
-echo "export M2_HOME=$M2_HOME" >> $ENV_COMMANDS_FILE; \ 
-echo "export M2=$M2" >> $ENV_COMMANDS_FILE; \ 
-echo "export PATH=$MAVEN_HOME/bin:$JAVA_HOME/bin:$PATH" >> $ENV_COMMANDS_FILE; \ 
-echo "export MAVEN_OPTS='-Xms256m -Xmx512m'" >> $ENV_COMMANDS_FILE
-
-# useful aliases for ALL users
-RUN echo "alias ll='ls -l --color=auto'" >> $ENV_COMMANDS_FILE; \ 
-echo "alias grep='grep --color=auto'" >> $ENV_COMMANDS_FILE; \ 
-chmod +x $ENV_COMMANDS_FILE
 
 ####### PORT EXPOSING ###########
 # SSH daemon port
