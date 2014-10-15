@@ -1,4 +1,4 @@
-# This is the Quartz v1.8.6 script for MySQL
+# This is a copy of the the Quartz v1.8.6 schema creation script for MySQL
 #
 # Quartz seems to work best with the driver mm.mysql-2.0.7-bin.jar
 #
