@@ -44,7 +44,7 @@ MYSQL_ROOT_PWD="mysql"
 MYSQ_DB_URL=
 QUARTZ_MYSQL_SCRIPT=quartz_tables_mysql.sql
 BPMS_IMAGE_NAME="xpaas/xpaas_bpms-eap"
-BPMS_IMAGE_VERSION="1.0"
+BPMS_IMAGE_VERSION="3"
 BPMS_CONTAINER_IP=
 
 # *************************************************************************************************************
@@ -162,9 +162,9 @@ function run_bpms() {
     BPMS_CONTAINER_ARGUMENTS="$BPMS_CONTAINER_ARGUMENTS -e JBOSS_NODE_NAME=node$BPMS_NODE_INSTANCE "
     
     echo "BPMS - Starting container using the folowing arguments: $BPMS_CONTAINER_ARGUMENTS"
-    #echo "BPMS - Run it using: 'docker run -t -i -P $BPMS_CONTAINER_ARGUMENTS --name bpms-node$BPMS_NODE_INSTANCE $BPMS_IMAGE_NAME:$BPMS_IMAGE_VERSION /bin/bash'"
-    bpms_container_id=$(docker run -d -P $BPMS_CONTAINER_ARGUMENTS --name bpms-node$BPMS_NODE_INSTANCE $BPMS_IMAGE_NAME:$BPMS_IMAGE_VERSION)
-    BPMS_CONTAINER_IP=$(docker inspect $bpms_container_id | grep IPAddress | awk '{print $2}' | tr -d '",')
+    echo "BPMS - Run it using: 'docker run -t -i -P $BPMS_CONTAINER_ARGUMENTS --name bpms-node$BPMS_NODE_INSTANCE $BPMS_IMAGE_NAME:$BPMS_IMAGE_VERSION /bin/bash'"
+    #bpms_container_id=$(docker run -d -P $BPMS_CONTAINER_ARGUMENTS --name bpms-node$BPMS_NODE_INSTANCE $BPMS_IMAGE_NAME:$BPMS_IMAGE_VERSION)
+    #BPMS_CONTAINER_IP=$(docker inspect $bpms_container_id | grep IPAddress | awk '{print $2}' | tr -d '",')
     
     # TODO: Wait for BPMS webapp started - check $BPMS_CONTAINER_IP:8080/kie-wb (Including a timeout if startup fails)
     echo "BPMS - JBoss BPMS container started (server instance #$BPMS_NODE_INSTANCE) at $BPMS_CONTAINER_IP"
