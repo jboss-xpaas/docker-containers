@@ -30,7 +30,7 @@
 
 CLUSTER_NAME="bpms-cluster"
 VFS_LOCK="bpms-vfs-lock"
-CLUSTER_INSTANCES=1
+CLUSTER_INSTANCES=2
 ZK_HOST=
 ZK_PORT=2181
 ZK_IMAGE_NAME="xpaas/xpaas_zookeeper"
