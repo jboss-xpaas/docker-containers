@@ -2,7 +2,7 @@
 
 ##########################################################################################################
 # This script builds all XPaas Docker Images
-# - XPaas Base
+# - XPaaS Base
 # - XpaaS Fabric8
 # - XpaaS Zookeeper
 # - XpaaS JBoss Application Server - JBoss EAP
@@ -57,15 +57,15 @@ cd ..
 
 # XPaaS BPMS for JBoss EAP
 echo "Buinding XPaaS BPMS for JBoss EAP..."
-cd xpaas-bpms-docker
+cd xpaas-bpms-docker/scripts
 ./build.sh bpms-eap
-cd ..
+cd ../..
 
 # XPaaS BPMS for JBoss Wildfly
 echo "Buinding XPaaS BPMS for JBoss Wildfly..."
-cd xpaas-bpms-docker
+cd xpaas-bpms-docker/scripts
 ./build.sh bpms-wildfly
-cd ..
+cd ../..
 
 # XPaaS BRMS for JBoss EAP
 echo "Buinding XPaaS BRMS for JBoss EAP..."
