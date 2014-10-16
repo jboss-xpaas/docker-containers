@@ -57,9 +57,9 @@ fi
 echo "Starting xpaas-base docker container using:"
 echo "** Container name: $CONTAINER_NAME"
 echo "** Root password: $ROOT_PASSWORD"
-image_xpaas_happroxy=$(docker run -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e HA_HOSTS="$HA_HOSTS" $IMAGE_NAME:$IMAGE_TAG)
-ip_xpaas_happroxy=$(docker inspect $image_xpaas_happroxy | grep IPAddress | awk '{print $2}' | tr -d '",')
-echo $image_xpaas_happroxy > docker.pid
+image_xpaas_haproxy=$(docker run -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e HA_HOSTS="$HA_HOSTS" $IMAGE_NAME:$IMAGE_TAG)
+ip_xpaas_haproxy=$(docker inspect $image_xpaas_happroxy | grep IPAddress | awk '{print $2}' | tr -d '",')
+echo $image_xpaas_haproxy > docker.pid
 
 # End
 echo ""

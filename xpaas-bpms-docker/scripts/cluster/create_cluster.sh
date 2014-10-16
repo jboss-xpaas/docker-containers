@@ -30,7 +30,7 @@
 
 CLUSTER_NAME="bpms-cluster"
 VFS_LOCK="bpms-vfs-lock"
-CLUSTER_INSTANCES=2
+CLUSTER_INSTANCES=1
 ZK_HOST=
 ZK_PORT=2181
 ZK_IMAGE_NAME="xpaas/xpaas_zookeeper"
@@ -46,6 +46,10 @@ QUARTZ_MYSQL_SCRIPT=quartz_tables_mysql.sql
 BPMS_IMAGE_NAME="xpaas/xpaas_bpms-eap"
 BPMS_IMAGE_VERSION="1.0"
 BPMS_CONTAINER_IP=
+HAPROXY_IMAGE_NAME="xpaas/xpaas_haproxy"
+HAPROXY_IMAGE_VERSION="1.0"
+HAPROXY_CONTAINER_IP=
+HA_HOSTS=""
 
 # *************************************************************************************************************
 # Usage function
@@ -53,6 +57,27 @@ BPMS_CONTAINER_IP=
 function usage
 {
     echo "usage: create_cluster.sh [ [-name <cluster_name>] [-vfs <vfs_lock_name>] [-n <num_instances>] [-zk <zk_server>] [-db-url <db_url>] [-db-driver <db_driver>] [-db-user <db_user>] [-db-pwd <db_pwd>] ]"
+}
+
+# *************************************************************************************************************
+# HAproxy
+# *************************************************************************************************************
+function run_haproxy() {
+
+    echo "*************************************************************************************************************"
+    echo "HAproxy"
+    echo "*************************************************************************************************************"
+
+    # Create the HAproxy container.
+    CONTAINER_NAME="bpms-haproxy"
+    ROOT_PASSWORD="xpaas"
+    echo "hahosts: $HA_HOSTS"
+    image_xpaas_haproxy=$(docker run -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e HA_HOSTS="$HA_HOSTS" $HAPROXY_IMAGE_NAME:$HAPROXY_IMAGE_TAG)
+    HAPROXY_CONTAINER_IP=$(docker inspect $image_xpaas_haproxy | grep IPAddress | awk '{print $2}' | tr -d '",')
+    echo "HAProxy - Container started at $HAPROXY_CONTAINER_IP:5000"
+
+    echo ""
+    echo ""
 }
 
 # *************************************************************************************************************
@@ -165,7 +190,12 @@ function run_bpms() {
     #echo "BPMS - Run it using: 'docker run -t -i -P $BPMS_CONTAINER_ARGUMENTS --name bpms-node$BPMS_NODE_INSTANCE $BPMS_IMAGE_NAME:$BPMS_IMAGE_VERSION /bin/bash'"
     bpms_container_id=$(docker run -d -P $BPMS_CONTAINER_ARGUMENTS --name bpms-node$BPMS_NODE_INSTANCE $BPMS_IMAGE_NAME:$BPMS_IMAGE_VERSION)
     BPMS_CONTAINER_IP=$(docker inspect $bpms_container_id | grep IPAddress | awk '{print $2}' | tr -d '",')
-    
+
+    if [ "$BPMS_NODE_INSTANCE" != "1" ]; then
+          HA_HOSTS="$HA_HOSTS,"
+    fi
+    HA_HOSTS="$HA_HOSTS$BPMS_CONTAINER_IP:8080"
+
     # TODO: Wait for BPMS webapp started - check $BPMS_CONTAINER_IP:8080/kie-wb (Including a timeout if startup fails)
     echo "BPMS - JBoss BPMS container started (server instance #$BPMS_NODE_INSTANCE) at $BPMS_CONTAINER_IP"
     echo "BPMS - You can navigate at URL 'http://$BPMS_CONTAINER_IP:8080/kie-wb'"
@@ -222,6 +252,8 @@ do
    run_bpms $bpms_instance
    sleep 10
 done
+
+run_haproxy
 
 # Exit with no errors
 exit 0
