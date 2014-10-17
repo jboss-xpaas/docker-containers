@@ -23,10 +23,10 @@ MAINTAINER "JBoss XPaaS Team" "xpass-eng@redhat.com"
 
 ####### BASE VARIABLES ############
 ENV JAVA_HOME /usr/lib/jvm/jre
-ENV M2 /opt/apache-maven/bin
-ENV M2_HOME /opt/apache-maven
-ENV MAVEN_HOME /opt/apache-maven
-ENV MAVEN_OPTS "-Xms256m -Xmx512m"
+#ENV M2 /opt/apache-maven/bin
+#ENV M2_HOME /opt/apache-maven
+#ENV MAVEN_HOME /opt/apache-maven
+#ENV MAVEN_OPTS "-Xms256m -Xmx512m"
 ENV ROOT_PASSWORD xpaas
 ENV PATH $MAVEN_HOME/bin:$JAVA_HOME/bin:$PATH
 
@@ -49,15 +49,15 @@ RUN mkdir -p /var/log/supervisord /etc/supervisord/conf.d
 ADD conf/supervisord/supervisord.conf /etc/supervisord.conf
 
 ####### MAVEN ############
-RUN curl --silent --output /tmp/maven.tar.gz http://apache.rediris.es/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz
-WORKDIR /tmp
-RUN tar -xzvf maven.tar.gz; \ 
-mv apache-maven-3.0.5/ apache-maven/; \ 
-mv apache-maven/ /opt/; \ 
-rm -rf maven.tar.gz
+#RUN curl --silent --output /tmp/maven.tar.gz http://apache.rediris.es/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz
+#WORKDIR /tmp
+#RUN tar -xzvf maven.tar.gz; \
+#mv apache-maven-3.0.5/ apache-maven/; \
+#mv apache-maven/ /opt/; \
+#rm -rf maven.tar.gz
 
 # Add the custom settings.xml file with JBoss Nexus repositories configured as well.
-ADD conf/maven/settings.xml /opt/apache-maven/conf/settings.xml
+# ADD conf/maven/settings.xml /opt/apache-maven/conf/settings.xml
 
 ####### SYSTEM PRIVILEGES CONFIGURATION ############
 WORKDIR /
