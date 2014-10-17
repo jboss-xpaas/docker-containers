@@ -3,23 +3,21 @@
 ######################################################################################
 # JBoss Application Server startup detection script
 # This script waits for JBoss Application Server startup and run some custom scripts
-# located at $STARTUP_DIRECTORY ( /jboss/scripts/jboss-appserver/startup )
-# NOTE: This script run the custom startup scripts once JBoss EAP/Wildfly has started,
-# before deploying web applications.
-# NOTE: The scripts will be executed only once (at first container run).
 ######################################################################################
 
+######################################################################################
 # Script arguments
-# 1.- The directory where sh script files to execute after server startup are located.
+# 1.- The full path for callback script to execute.
+######################################################################################
 
-# Check image argument to build.
+# Check callback script path argument.
 if [ $# -ne 1 ]; then
-  echo "Missing argument: startup directory."
-  echo "Usage: ./jboss-startup-detection.sh /jboss/scripts/jboss-appserver/startup"
+  echo "Missing argument: callback shell script."
+  echo "Usage: ./jboss-startup-detection.sh /jboss/scripts/jboss-appserver/script.sh"
   exit 65
 fi
 
-STARTUP_DIRECTORY=$1
+CALLBACK_SCRIPT=$1
 
 # Obtain the container IP address
 DOCKER_IP=$(/bin/sh /jboss/scripts/docker-ip.sh)
@@ -31,40 +29,15 @@ IS_STARTED=$(/opt/jboss-appserver/bin/jboss-cli.sh -c --controller=$DOCKER_IP:$J
 if [ "$IS_STARTED" == "" ]; then
     # Not started yet.
     echo "JBoss app-server not started yet. Retrying..."
-    # Return 1 as exit code will produce supervisor daemon to re-execute this script until jboss app-server has been started (exit code = 0)
+    # Return 1 as exit code will produce supervisor daemon to re-execute this script until jboss app-server has been started (until exit code = 0)
     exit 1
 fi
 
 # Jboss is started.
-# Configuration phase.
-# Execute all related CLI and scripts (only once).
 echo "************************* JBoss **************************"
-echo "JBoss app-server is started. Entering configuration phase."
+echo "                JBoss app-server is started. "
 echo "**********************************************************"
-echo "Running not previouly executed scripts in '$STARTUP_DIRECTORY'..."
-pushd .
-cd $STARTUP_DIRECTORY
-for script in *.sh
-do
-    if [ ! -f "$script.executed" ]; then
-        echo "Running jboss custom startup script '$script'"
-        ./$script
-        # Mark this script as already executed, so do not execute it any more.
-        touch "$script.executed"
-    fi
-done
-
-# Reload & deploy phase
-# Only exectue the deploy phase once.
-if [ ! -f "jboss-deploy.executed" ]; then
-    echo "*********** JBoss *************"
-    echo "Entering reload & deploy phase."
-    echo "********************************"
-    /jboss/scripts/jboss-appserver/jboss-cli.sh -f /jboss/scripts/jboss-appserver/startup/jboss-deploy.cli
-    # Mark the deploy script as already executed, so do not execute it any more.
-    touch "jboss-deploy.executed"
-fi
-
-popd
+echo "Running callback script located at '$CALLBACK_SCRIPT'"
+$CALLBACK_SCRIPT
 
 exit 0

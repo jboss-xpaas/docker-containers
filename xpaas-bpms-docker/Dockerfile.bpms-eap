@@ -56,10 +56,11 @@ rm helix.tar
 WORKDIR /
 RUN mkdir -p /jboss/scripts/bpms /opt/jboss/bpms/vfs /opt/jboss/bpms/index
 ADD conf/scripts/jboss-appserver/startup/1-configure-bpms.sh /jboss/scripts/jboss-appserver/startup/1-configure-bpms.sh
+ADD conf/scripts/jboss-appserver/deploy/1-deploy-bpms.sh /jboss/scripts/jboss-appserver/deploy/1-deploy-bpms.sh
 ADD conf/scripts/jboss-appserver/start-jboss.sh /jboss/scripts/jboss-appserver/start-jboss.sh
 ADD conf/scripts/bpms/bpms.cli /jboss/scripts/bpms/bpms.cli
 ADD conf/scripts/bpms/bpms-cluster.cli /jboss/scripts/bpms/bpms-cluster.cli
-ADD conf/scripts/jboss-appserver/startup/jboss-deploy.cli /jboss/scripts/jboss-appserver/startup/jboss-deploy.cli
+ADD conf/scripts/bpms/bpms-deploy.cli /jboss/scripts/bpms/bpms-deploy.cli
 ADD conf/scripts/bpms/change-hibernate-dialect.sh /jboss/scripts/bpms/change-hibernate-dialect.sh
 ADD conf/bpms-roles.properties /opt/jboss-appserver/standalone/configuration/bpms-roles.properties
 ADD conf/bpms-users.properties /opt/jboss-appserver/standalone/configuration/bpms-users.properties

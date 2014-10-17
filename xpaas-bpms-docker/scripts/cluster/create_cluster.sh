@@ -50,6 +50,7 @@ HAPROXY_IMAGE_NAME="xpaas/xpaas_haproxy"
 HAPROXY_IMAGE_VERSION="1.0"
 HAPROXY_CONTAINER_IP=
 HA_HOSTS=""
+BPMS_CURRENT_NODE_IP=""
 
 # *************************************************************************************************************
 # Usage function
@@ -190,7 +191,8 @@ function run_bpms() {
     #echo "BPMS - Run it using: 'docker run -t -i -P $BPMS_CONTAINER_ARGUMENTS --name bpms-node$BPMS_NODE_INSTANCE $BPMS_IMAGE_NAME:$BPMS_IMAGE_VERSION /bin/bash'"
     bpms_container_id=$(docker run -d -P $BPMS_CONTAINER_ARGUMENTS --name bpms-node$BPMS_NODE_INSTANCE $BPMS_IMAGE_NAME:$BPMS_IMAGE_VERSION)
     BPMS_CONTAINER_IP=$(docker inspect $bpms_container_id | grep IPAddress | awk '{print $2}' | tr -d '",')
-
+    BPMS_CURRENT_NODE_IP="$BPMS_CONTAINER_IP"
+    
     if [ "$BPMS_NODE_INSTANCE" != "1" ]; then
           HA_HOSTS="$HA_HOSTS,"
     fi
@@ -202,6 +204,28 @@ function run_bpms() {
     
     echo ""
     echo ""
+}
+
+
+# *************************************************************************************************************
+# Helper functions
+# *************************************************************************************************************
+function wait_for_bpms() {
+    NODE_IP=$1
+    KEYWORD=login
+    #URL_TO_CHECK="http://$NODE_IP:8080/kie-wb/org.kie.workbench.KIEWebapp/KIEWebapp.html?"
+    # Wait for dashbuilder application to be up, as it's the last one to deploy.
+    URL_TO_CHECK="http://$NODE_IP:8080/dashbuilder/"
+    
+    IS_STARTED=$(curl --silent $URL_TO_CHECK | grep $KEYWORD)
+    while [ "$IS_STARTED" == "" ]
+    do
+        # Not started yet.
+        echo "JBoss BPMS server with IP address $NODE_IP is not started yet..."
+        sleep 30
+        IS_STARTED=$(curl --silent $URL_TO_CHECK | grep $KEYWORD)
+    done
+    echo "JBoss BPMS server with IP address $NODE_IP started!"
 }
 
 while [ "$1" != "" ]; do
@@ -250,9 +274,14 @@ sleep 5
 for (( bpms_instance=1; bpms_instance<=$CLUSTER_INSTANCES; bpms_instance++ ))
 do
    run_bpms $bpms_instance
-   sleep 10
+   
+   # BPMS server instances cannot be run at same time.. wait for each one to startup.
+   wait_for_bpms "$BPMS_CURRENT_NODE_IP"
 done
 
+# *************************************************************************************************************
+# HAProxy
+# *************************************************************************************************************
 run_haproxy
 
 # Exit with no errors

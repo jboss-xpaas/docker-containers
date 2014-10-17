@@ -1,0 +1,1 @@
+-- Place here you shell scripts to configure your JBoss Applciation Server via CLI commands

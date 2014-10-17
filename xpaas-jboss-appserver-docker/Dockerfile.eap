@@ -59,17 +59,20 @@ EXPOSE 9999
 
 ####### HELPER SCRIPTS ###########
 WORKDIR /
-RUN mkdir -p /jboss/scripts/jboss-appserver/startup /jboss/scripts/jboss-appserver/init
+RUN mkdir -p /jboss/scripts/jboss-appserver/startup /jboss/scripts/jboss-appserver/init /jboss/scripts/jboss-appserver/deploy
 ADD conf/scripts/jboss-appserver/start.sh /jboss/scripts/jboss-appserver/start.sh
 ADD conf/scripts/jboss-appserver/start-jboss.sh /jboss/scripts/jboss-appserver/start-jboss.sh
 ADD conf/scripts/jboss-appserver/jboss-startup-detection.sh /jboss/scripts/jboss-appserver/jboss-startup-detection.sh
+ADD conf/scripts/jboss-appserver/jboss-startup-config-handler.sh /jboss/scripts/jboss-appserver/jboss-startup-config-handler.sh
+ADD conf/scripts/jboss-appserver/jboss-startup-deploy-handler.sh /jboss/scripts/jboss-appserver/jboss-startup-deploy-handler.sh
 ADD conf/scripts/jboss-appserver/jboss-cli.sh /jboss/scripts/jboss-appserver/jboss-cli.sh
 ADD conf/scripts/jboss-appserver/startup/0-jboss-configure.sh /jboss/scripts/jboss-appserver/startup/0-jboss-configure.sh
-ADD conf/scripts/jboss-appserver/startup/jboss-deploy.cli /jboss/scripts/jboss-appserver/startup/jboss-deploy.cli
 
 ####### ADD THE SUPERVISOR DAEMON PROGRAMS ###########
 WORKDIR /
 ADD conf/supervisord/httpd.sv.conf /etc/supervisord/conf.d/httpd.sv.conf
 ADD conf/supervisord/jboss-appserver.sv.conf /etc/supervisord/conf.d/jboss-appserver.sv.conf
-ADD conf/supervisord/jboss-appserver-startup.sv.conf /etc/supervisord/conf.d/jboss-appserver-startup.sv.conf
+ADD conf/supervisord/jboss-appserver-startup-config.sv.conf /etc/supervisord/conf.d/jboss-appserver-startup-config.sv.conf
+ADD conf/supervisord/jboss-appserver-startup-deploy.sv.conf /etc/supervisord/conf.d/jboss-appserver-startup-deploy.sv.conf
+
 CMD ["/usr/bin/supervisord","-c","/etc/supervisord.conf"]

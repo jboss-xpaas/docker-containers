@@ -1,6 +1,3 @@
-# Reload configuration
-reload
-
 # Deploy BPMS webapp
 deploy /tmp/kie-wb.war
 

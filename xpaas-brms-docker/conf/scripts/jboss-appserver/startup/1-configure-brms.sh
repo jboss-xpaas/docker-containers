@@ -12,7 +12,7 @@
 # can specify a different configuration rather than standalone.xml
 ##########################################################################################################
 
-echo "Starting JBoss BRMS web application configuration...."
+echo "Starting JBoss BRMS configuration...."
  
 # Obtain the container IP address
 DOCKER_IP=$(/bin/sh /jboss/scripts/docker-ip.sh)
@@ -23,7 +23,7 @@ BRMS_WAR=/tmp/kie-drools-wb.war
 # TODO: Support for other database systems
 if [ "$BRMS_CONNECTION_DRIVER" == "mysql" ]; then
     DIALECT="org.hibernate.dialect.MySQLDialect"
-	echo "Configuring BRMS web application for MySQL database..."
+	echo "Configuring BRMS for MySQL database..."
 	/jboss/scripts/brms/change-hibernate-dialect.sh -war $BRMS_WAR -d "$DIALECT"
 fi
 
@@ -31,13 +31,6 @@ fi
 echo "Configuring server datasource & security parameters..."
 /jboss/scripts/jboss-appserver/jboss-cli.sh -f /jboss/scripts/brms/brms.cli
 
-# Deploy BRMS webapp
-# TODO: Deploy via CLI?
-echo "Deploying BRMS webapp..."
-cp -f /tmp/kie-drools-wb.war /opt/jboss-appserver/standalone/deployments/
-touch /opt/jboss-appserver/standalone/deployments/kie-drools-wb.war.dodeploy
-
-
-echo "End of JBoss BRMS web application configuration."
+echo "End of JBoss BRMS configuration."
 
 exit 0

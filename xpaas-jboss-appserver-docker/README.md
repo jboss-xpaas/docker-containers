@@ -487,10 +487,9 @@ NOTES:
 
 **Deploy phase**          
 
-After the configuration phase, where all configuration scripts have been executed, the container perfoms the deploy phase.          
+After the configuration phase, where all configuration scripts have been executed, the container performs a restart and enters the deploy phase.          
 
-In this phase, the <code>/jboss/scripts/jboss-appserver/startup/jboss-deploy.cli</code> CLI script is executed.        
-By default this script only perform a server reload. You can override it in your container to perform your custom deploys after the reload command.     
+In this phase, the scripts located at <code>/jboss/scripts/jboss-appserver/deploy</code> are executed.        
 
 NOTES:      
 * You can find some examples in the  [BPMS docker image](../xpaas-bpms-docker)      

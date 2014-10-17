@@ -12,7 +12,7 @@
 # can specify a different configuration rather than standalone.xml
 ##########################################################################################################
 
-echo "Starting JBoss BPMS web application configuration...."
+echo "Starting JBoss BPMS configuration...."
  
 # Obtain the container IP address
 DOCKER_IP=$(/bin/sh /jboss/scripts/docker-ip.sh)
@@ -33,10 +33,10 @@ fi
 BPMS_WAR=/tmp/kie-wb.war
 if [ "$BPMS_CONNECTION_DRIVER" == "mysql" ]; then
     DIALECT="org.hibernate.dialect.MySQLDialect"
-	echo "Configuring BPMS web application for MySQL database..."
+	echo "Configuring BPMS for MySQL database..."
 	/jboss/scripts/bpms/change-hibernate-dialect.sh -war $BPMS_WAR -d "$DIALECT"
 fi
 
-echo "End of JBoss BPMS web application configuration."
+echo "End of JBoss BPMS configuration."
 
 exit 0

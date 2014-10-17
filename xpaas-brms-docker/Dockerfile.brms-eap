@@ -30,8 +30,10 @@ ENV JBOSS_MODE STANDALONE
 WORKDIR /
 RUN mkdir -p /jboss/scripts/brms
 ADD conf/scripts/jboss-appserver/startup/1-configure-brms.sh /jboss/scripts/jboss-appserver/startup/1-configure-brms.sh
+ADD conf/scripts/jboss-appserver/deploy/1-deploy-brms.sh /jboss/scripts/jboss-appserver/deploy/1-deploy-brms.sh
 ADD conf/scripts/jboss-appserver/start-jboss.sh /jboss/scripts/jboss-appserver/start-jboss.sh
 ADD conf/scripts/brms/brms.cli /jboss/scripts/brms/brms.cli
+ADD conf/scripts/brms/brms-deploy.cli /jboss/scripts/brms/brms-deploy.cli
 ADD conf/scripts/brms/change-hibernate-dialect.sh /jboss/scripts/brms/change-hibernate-dialect.sh
 ADD conf/brms-roles.properties /opt/jboss-appserver/standalone/configuration/brms-roles.properties
 ADD conf/brms-users.properties /opt/jboss-appserver/standalone/configuration/brms-users.properties

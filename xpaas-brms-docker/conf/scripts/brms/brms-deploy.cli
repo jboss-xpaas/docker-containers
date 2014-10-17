@@ -1,0 +1,2 @@
+# Deploy BRMS webapp
+deploy /tmp/kie-drools-wb.war
