@@ -5,7 +5,7 @@ This project builds a [docker](http://docker.io/) container for running JBoss Wi
 
 This image provides a container including:     
 * HTTP daemon     
-* JBoss Wildfly 8.1 / JBoss Enterprise Application Platform (EAP) 6.1.1    
+* JBoss Wildfly 8.1 / JBoss Enterprise Application Platform (EAP) 6.3.0    
 
 An its based on XPaaS Base docker image.
 

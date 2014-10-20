@@ -1,1 +1,1 @@
-**Drop here you JBoss EAP 6.1.1 ZIP file named <code>jboss-eap-6.1.1.zip</code>**
+**Drop here you JBoss EAP 6.3.0 ZIP file named <code>jboss-eap-6.3.0.zip</code>**
