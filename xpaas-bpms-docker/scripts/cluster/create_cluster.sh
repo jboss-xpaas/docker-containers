@@ -50,7 +50,6 @@ HAPROXY_IMAGE_NAME="redhat/xpaas_haproxy"
 HAPROXY_IMAGE_VERSION="1.0"
 HAPROXY_CONTAINER_IP=
 HA_HOSTS=""
-BPMS_CURRENT_NODE_IP=""
 
 # *************************************************************************************************************
 # Usage function
@@ -75,7 +74,12 @@ function run_haproxy() {
     echo "hahosts: $HA_HOSTS"
     image_xpaas_haproxy=$(docker run -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e HA_HOSTS="$HA_HOSTS" $HAPROXY_IMAGE_NAME:$HAPROXY_IMAGE_TAG)
     HAPROXY_CONTAINER_IP=$(docker inspect $image_xpaas_haproxy | grep IPAddress | awk '{print $2}' | tr -d '",')
+    if [ "$HAPROXY_CONTAINER_IP" == "" ]; then
+        echo "HAProxy container seems not to be started successfully. Please review the container logs. Exiting!"
+        exit 1
+    fi
     echo "HAProxy - Container started at $HAPROXY_CONTAINER_IP:5000"
+    echo "HAProxy - You can navigate into BPM Suite at URL 'http://$HAPROXY_CONTAINER_IP:5000/kie-wb"
 
     echo ""
     echo ""
@@ -95,6 +99,10 @@ function run_zk_helix() {
     ROOT_PASSWORD="xpaas"
     image_xpaas_zookeeper=$(docker run -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e CLUSTER_NAME="$CLUSTER_NAME" -e VFS_REPO="$VFS_LOCK" $ZK_IMAGE_NAME:$ZK_IMAGE_VERSION)
     ZK_HOST=$(docker inspect $image_xpaas_zookeeper | grep IPAddress | awk '{print $2}' | tr -d '",')
+    if [ "$ZK_HOST" == "" ]; then
+        echo "Zookeeper container seems not to be started successfully. Please review the container logs. Exiting!"
+        exit 1
+    fi
     echo "Zookeeper - Container started at $ZK_HOST:2181"
     
     echo ""
@@ -120,8 +128,29 @@ function init() {
         exit 1
     fi
     
+    # Check images exist on local docker registry.
+    chck_docker_image $ZK_IMAGE_NAME $ZK_IMAGE_VERSION "Zookeeper"
+    chck_docker_image $MYSQ_IMAGE_NAME $MYSQ_IMAGE_VERSION "MySQL"
+    chck_docker_image $BPMS_IMAGE_NAME $BPMS_IMAGE_VERSION "BPM Suite"
+    chck_docker_image $HAPROXY_IMAGE_NAME $HAPROXY_IMAGE_VERSION "HAProxy"
+
     echo ""
     echo ""
+}
+
+function chck_docker_image {
+    IMAGE=$1
+    VERSION=$2
+    NAME=$3
+    
+    # TODO: Check image versions too.
+    echo "Checking $NAME image existance...."
+    EXIST_IMAGE=$(docker images -q $IMAGE)
+    if [ "$EXIST_IMAGE" == "" ]; then
+        echo "$NAME image does not exist. Please pull or build it before running the cluster. Exiting!"
+        exit 1
+    fi
+    echo "$NAME image exists!"
 }
 
 # *************************************************************************************************************
@@ -135,30 +164,59 @@ function run_mysql() {
     # Create the MySQL container.
     mysql_container_id=$(docker run --name bpms-mysql -e MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PWD -P -d $MYSQ_IMAGE_NAME:$MYSQ_IMAGE_VERSION)
     MYSQL_CONTAINER_IP=$(docker inspect $mysql_container_id | grep IPAddress | awk '{print $2}' | tr -d '",')
+    if [ "$MYSQL_CONTAINER_IP" == "" ]; then
+        echo "MySQL container seems not to be started successfully. Please review the container logs. Exiting!"
+        exit 1
+    fi
     echo "MySQL - Container started at $MYSQL_CONTAINER_IP with the following credentials: root / $MYSQL_ROOT_PWD"
 
     # Setting the database JDBC URL.
     MYSQ_DB_URL="jdbc:mysql://$MYSQL_CONTAINER_IP:3306/$MYSQL_DB_NAME"
     echo "MySQL -The JDBC URL for the database is '$MYSQ_DB_URL'"
 
-    # TODO: Improve by waiting unitl port 3306 is available. (Including a timeout if startup fails)
     echo "MySQL - Waiting for port 3306 available..."
-    sleep 15
-    
+    # Wait for MySQL up & database ready.
+    # TODO: Implement timeout for this loop.
+    mysql -u root -p$MYSQL_ROOT_PWD --host=$MYSQL_CONTAINER_IP -e "use mysql" --connect-timeout=5
+    IS_MYSQL_UP=$?
+    while [ $IS_MYSQL_UP == 1 ]
+    do
+        # Not started yet.
+        echo "MySQL - Not started yet..."
+        sleep 2
+        mysql -u root -p$MYSQL_ROOT_PWD --host=$MYSQL_CONTAINER_IP -e "use mysql" --connect-timeout=5
+        IS_MYSQL_UP=$?
+    done
+    echo "MySQL - Started!"
+     
     # Import the quartz tables required for clustering.
     echo "MySQL - Creating database '$MYSQL_DB_NAME'"
     mysql -u root -p$MYSQL_ROOT_PWD --host=$MYSQL_CONTAINER_IP --execute="create database $MYSQL_DB_NAME;"
+    IS_COMMAND_OK=$?
+    if [ $IS_COMMAND_OK == 1 ]; then 
+        echo "MySQL - Cannot create the database. Exiting!"
+        exit 1
+    fi
 
-    # TODO: The docker network IP should NOT be a hardcoded one. It depedens on each docker daemon configuration.
+    # TODO: The docker network IP should NOT be a hardcoded one. It depends on each docker daemon network configuration.
     MYSQL_GRANT_IPS="172.17.%.%"
     MYSQL_GRANT_QUERY="GRANT ALL PRIVILEGES ON $MYSQL_DB_NAME.* TO 'root'@'$MYSQL_GRANT_IPS' IDENTIFIED BY '$MYSQL_ROOT_PWD' WITH GRANT OPTION;"
     echo "MySQL - Grant acces for user 'root' into database '$MYSQL_DB_NAME' for the following IP mask '$MYSQL_GRANT_IPS' using password '$MYSQL_ROOT_PWD' "
     # echo "MySQL - Grant query: $MYSQL_GRANT_QUERY"
     mysql -u root -p$MYSQL_ROOT_PWD --host=$MYSQL_CONTAINER_IP --execute="$MYSQL_GRANT_QUERY"
-    mysql -u root -p$MYSQL_ROOT_PWD --host=$MYSQL_CONTAINER_IP --execute="FLUSH PRIVILEGES;"
+    IS_COMMAND_OK=$?
+    if [ $IS_COMMAND_OK == 1 ]; then 
+        echo "MySQL - Cannot grant privileges. Exiting!"
+        exit 1
+    fi
     
     echo "MySQL - Importing Quartz tables into '$MYSQL_DB_NAME'"
     mysql -u root -p$MYSQL_ROOT_PWD --host=$MYSQL_CONTAINER_IP  $MYSQL_DB_NAME < $QUARTZ_MYSQL_SCRIPT
+    IS_COMMAND_OK=$?
+    if [ $IS_COMMAND_OK == 1 ]; then 
+        echo "MySQL - Cannot import quartz tables. Exiting!"
+        exit 1
+    fi
     
     echo "MySQL - Installation & configuration finished successfully"
     
@@ -191,14 +249,19 @@ function run_bpms() {
     #echo "BPMS - Run it using: 'docker run -t -i -P $BPMS_CONTAINER_ARGUMENTS --name bpms-node$BPMS_NODE_INSTANCE $BPMS_IMAGE_NAME:$BPMS_IMAGE_VERSION /bin/bash'"
     bpms_container_id=$(docker run -d -P $BPMS_CONTAINER_ARGUMENTS --name bpms-node$BPMS_NODE_INSTANCE $BPMS_IMAGE_NAME:$BPMS_IMAGE_VERSION)
     BPMS_CONTAINER_IP=$(docker inspect $bpms_container_id | grep IPAddress | awk '{print $2}' | tr -d '",')
-    BPMS_CURRENT_NODE_IP="$BPMS_CONTAINER_IP"
+    if [ "$BPMS_CONTAINER_IP" == "" ]; then
+        echo "BPM Suite container seems not to be started successfully. Please review the container logs. Exiting!"
+        exit 1
+    fi
     
     if [ "$BPMS_NODE_INSTANCE" != "1" ]; then
           HA_HOSTS="$HA_HOSTS,"
     fi
     HA_HOSTS="$HA_HOSTS$BPMS_CONTAINER_IP:8080"
 
-    # TODO: Wait for BPMS webapp started - check $BPMS_CONTAINER_IP:8080/kie-wb (Including a timeout if startup fails)
+    # BPMS server instances cannot be run at same time.. wait for each one to startup.
+    wait_for_bpms "$BPMS_CONTAINER_IP"
+    
     echo "BPMS - JBoss BPMS container started (server instance #$BPMS_NODE_INSTANCE) at $BPMS_CONTAINER_IP"
     echo "BPMS - You can navigate at URL 'http://$BPMS_CONTAINER_IP:8080/kie-wb'"
     
@@ -217,6 +280,7 @@ function wait_for_bpms() {
     # Wait for dashbuilder application to be up, as it's the last one to deploy.
     URL_TO_CHECK="http://$NODE_IP:8080/dashbuilder/"
     
+    # TODO: Implement timeout for this loop.
     IS_STARTED=$(curl --silent $URL_TO_CHECK | grep $KEYWORD)
     while [ "$IS_STARTED" == "" ]
     do
@@ -261,12 +325,10 @@ init
 # *************************************************************************************************************
 run_zk_helix
 
-
 # *************************************************************************************************************
 # Database
 # *************************************************************************************************************
 run_mysql
-sleep 5
 
 # *************************************************************************************************************
 # BPMS
@@ -274,9 +336,6 @@ sleep 5
 for (( bpms_instance=1; bpms_instance<=$CLUSTER_INSTANCES; bpms_instance++ ))
 do
    run_bpms $bpms_instance
-   
-   # BPMS server instances cannot be run at same time.. wait for each one to startup.
-   wait_for_bpms "$BPMS_CURRENT_NODE_IP"
 done
 
 # *************************************************************************************************************
