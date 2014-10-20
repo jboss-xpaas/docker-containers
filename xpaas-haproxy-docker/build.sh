@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-IMAGE_NAME="xpaas/xpaas_haproxy"
+IMAGE_NAME="redhat/xpaas_haproxy"
 IMAGE_TAG="1.0"
 
 echo "Building the Docker container for $IMAGE_NAME:$IMAGE_TAG.."

@@ -21,7 +21,7 @@ fi
 
 # Script variables
 IMAGE=$1
-IMAGE_NAME="xpaas/xpaas_$IMAGE"
+IMAGE_NAME="redhat/xpaas_$IMAGE"
 IMAGE_TAG="1.0"
 
 # Generate the dockerfile for the given image to build.

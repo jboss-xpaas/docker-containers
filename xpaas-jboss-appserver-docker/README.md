@@ -98,17 +98,17 @@ To run a new container from XPaaS JBoss Wildfly/EAP in standalone mode run:
 Or you can try it out via docker command directly:
 
     # Note: See environment variables section to discover the available environment variables when running this docker container
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_NODE_NAME="<node_name>"] xpaas/xpaas_wildfly
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_NODE_NAME="<node_name>"] xpaas/xpaas_eap
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_NODE_NAME="<node_name>"] redhat/xpaas_wildfly
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_NODE_NAME="<node_name>"] redhat/xpaas_eap
     
     # Example: Running a JBoss Wildfly container named "xpaas_wildfly" using all default arguments 
-    docker run -P -d --name xpaas_wildfly xpaas/xpaas_wildfly
+    docker run -P -d --name xpaas_wildfly redhat/xpaas_wildfly
     
     # Example: Running a JBoss EAP container named "xpaas_eap" using all default arguments 
-    docker run -P -d --name xpaas_eap xpaas/xpaas_eap
+    docker run -P -d --name xpaas_eap redhat/xpaas_eap
     
     # Example: Running a JBoss Wildfly container named "xpaas_wildfly" using a custom root and server administration password
-    docker run -P -d --name xpaas_wildfly -e ROOT_PASSWORD="myrootpass" -e JBOSS_ADMIN_PASSWORD="myadminpass" xpaas/xpaas_wildfly
+    docker run -P -d --name xpaas_wildfly -e ROOT_PASSWORD="myrootpass" -e JBOSS_ADMIN_PASSWORD="myadminpass" redhat/xpaas_wildfly
 
 In addition you can run the container using any of the server **profiles** rather than the <code>default</code> one: <code>full, full-ha, ha, osgi</code>      
 
@@ -118,7 +118,7 @@ By default, the configuration file used for running JBoss server is <code>standa
     ./start.sh -i wildfly -c xpaas_wildfly -conf-file =standalone-full.xml"
     
     # Running using docker command (full profile)
-    docker run -P -d --name <container_name> -e JBOSS_STANDALONE_CONF_FILE="standalone-full.xml" xpaas/xpaas_wildfly
+    docker run -P -d --name <container_name> -e JBOSS_STANDALONE_CONF_FILE="standalone-full.xml" redhat/xpaas_wildfly
 
 **Domain mode**     
 
@@ -172,17 +172,17 @@ Or you can try it out via docker command directly:
 
     # Note: See environment variables section to discover the available environment variables when running this docker container
     # Note: To run the container as a domain controller you must set the environment variable JBOSS_MODE the value DOMAIN
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_MODE="DOMAIN"] [-e JBOSS_NODE_NAME="<node_name>"] xpaas/xpaas_wildfly
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_MODE="DOMAIN"] [-e JBOSS_NODE_NAME="<node_name>"] xpaas/xpaas_eap
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_MODE="DOMAIN"] [-e JBOSS_NODE_NAME="<node_name>"] redhat/xpaas_wildfly
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_MODE="DOMAIN"] [-e JBOSS_NODE_NAME="<node_name>"] redhat/xpaas_eap
     
     # Example: Running a JBoss Wildfly domain controller host named "domain-controller" using all default arguments 
-    docker run -P -d --name domain-controller -e JBOSS_MODE="DOMAIN" -e JBOSS_NODE_NAME="node-controller" xpaas/xpaas_wildfly
+    docker run -P -d --name domain-controller -e JBOSS_MODE="DOMAIN" -e JBOSS_NODE_NAME="node-controller" redhat/xpaas_wildfly
     
     # Example: Running a JBoss EAP domain controller host named "domain-controller" using all default arguments 
-    docker run -P -d --name domain-controller -e JBOSS_MODE="DOMAIN" -e JBOSS_NODE_NAME="node-controller" xpaas/xpaas_eap
+    docker run -P -d --name domain-controller -e JBOSS_MODE="DOMAIN" -e JBOSS_NODE_NAME="node-controller" redhat/xpaas_eap
     
     # Example: Running a JBoss Wildfly container named "domain-controller" using a custom root and server administration password
-    docker run -P -d --name domain-controller -e ROOT_PASSWORD="myrootpass" -e JBOSS_ADMIN_PASSWORD="myadminpass" -e JBOSS_MODE="DOMAIN" -e JBOSS_NODE_NAME="node-controller" xpaas/xpaas_wildfly
+    docker run -P -d --name domain-controller -e ROOT_PASSWORD="myrootpass" -e JBOSS_ADMIN_PASSWORD="myadminpass" -e JBOSS_MODE="DOMAIN" -e JBOSS_NODE_NAME="node-controller" redhat/xpaas_wildfly
 
 
 **Running a domain managed host**
@@ -206,17 +206,17 @@ Or you can try it out via docker command directly:
 
     # Note: See environment variables section to discover the available environment variables when running this docker container
     # Note: To run the container as a domain controller you must set the environment variable JBOSS_MODE the value DOMAIN-HOST and set the controller IP address and port too using JBOSS_DOMAIN_MASTER_ADDR and JBOSS_DOMAIN_MASTER_PORT respectively
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_MODE="DOMAIN-HOST"] [-e JBOSS_DOMAIN_MASTER_ADDR=<controller_address>] [ -e JBOSS_DOMAIN_MASTER_PORT=<controller_port>] [-e JBOSS_NODE_NAME="<node_name>"] xpaas/xpaas_wildfly
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_MODE="DOMAIN-HOST"] [-e JBOSS_DOMAIN_MASTER_ADDR=<controller_address>] [ -e JBOSS_DOMAIN_MASTER_PORT=<controller_port>] [-e JBOSS_NODE_NAME="<node_name>"] xpaas/xpaas_eap
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_MODE="DOMAIN-HOST"] [-e JBOSS_DOMAIN_MASTER_ADDR=<controller_address>] [ -e JBOSS_DOMAIN_MASTER_PORT=<controller_port>] [-e JBOSS_NODE_NAME="<node_name>"] redhat/xpaas_wildfly
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_ADMIN_PASSWORD="<jboss_admin_password>"] [-e JBOSS_BIND_ADDRESS="<bind_address>"] [-e JBOSS_MODE="DOMAIN-HOST"] [-e JBOSS_DOMAIN_MASTER_ADDR=<controller_address>] [ -e JBOSS_DOMAIN_MASTER_PORT=<controller_port>] [-e JBOSS_NODE_NAME="<node_name>"] redhat/xpaas_eap
     
     # Example: Running a JBoss Wildfly domain host named "domain-host1" using all default arguments 
-    docker run -P -d --name domain-host1 -e JBOSS_NODE_NAME="node1" -e JBOSS_MODE="DOMAIN-HOST" -e JBOSS_DOMAIN_MASTER_ADDR=172.17.0.35 -e JBOSS_DOMAIN_MASTER_PORT=9999 xpaas/xpaas_wildfly
+    docker run -P -d --name domain-host1 -e JBOSS_NODE_NAME="node1" -e JBOSS_MODE="DOMAIN-HOST" -e JBOSS_DOMAIN_MASTER_ADDR=172.17.0.35 -e JBOSS_DOMAIN_MASTER_PORT=9999 redhat/xpaas_wildfly
     
     # Example: Running a JBoss EAP domain  host named "domain-host1" using all default arguments 
-    docker run -P -d --name domain-host1 -e JBOSS_NODE_NAME="node1" -e JBOSS_MODE="DOMAIN-HOST" -e JBOSS_DOMAIN_MASTER_ADDR=172.17.0.35 -e JBOSS_DOMAIN_MASTER_PORT=9999 xpaas/xpaas_eap
+    docker run -P -d --name domain-host1 -e JBOSS_NODE_NAME="node1" -e JBOSS_MODE="DOMAIN-HOST" -e JBOSS_DOMAIN_MASTER_ADDR=172.17.0.35 -e JBOSS_DOMAIN_MASTER_PORT=9999 redhat/xpaas_eap
     
     # Example: Running a JBoss Wildfly domain host instance named "domain-host1" using a custom root and server administration password
-    docker run -P -d --name domain-host1 -e JBOSS_NODE_NAME="node1" -e ROOT_PASSWORD="myrootpass" -e JBOSS_ADMIN_PASSWORD="myadminpass" -e JBOSS_MODE="DOMAIN-HOST" -e JBOSS_DOMAIN_MASTER_ADDR=172.17.0.35 -e JBOSS_DOMAIN_MASTER_PORT=9999 xpaas/xpaas_wildfly
+    docker run -P -d --name domain-host1 -e JBOSS_NODE_NAME="node1" -e ROOT_PASSWORD="myrootpass" -e JBOSS_ADMIN_PASSWORD="myadminpass" -e JBOSS_MODE="DOMAIN-HOST" -e JBOSS_DOMAIN_MASTER_ADDR=172.17.0.35 -e JBOSS_DOMAIN_MASTER_PORT=9999 redhat/xpaas_wildfly
 
 **Environment variables**
 
@@ -498,8 +498,8 @@ Experimenting
 -------------
 To spin up a shell in one of the containers try:
 
-    docker run -P -i -t xpaas/xpaas_wildfly /bin/bash # For JBoss Wildfly distribution
-    docker run -P -i -t xpaas/xpaas_eap /bin/bash # For JBoss EAP distribution
+    docker run -P -i -t redhat/xpaas_wildfly /bin/bash # For JBoss Wildfly distribution
+    docker run -P -i -t redhat/xpaas_eap /bin/bash # For JBoss EAP distribution
     
 You can then noodle around the container and run stuff & look at files etc.
 
@@ -512,8 +512,8 @@ Extending this docker image
 
 You can create a new container that uses this docker image as base:
 
-    FROM xpaas/xpaas_eap:<version> # For EAP case
-    FROM xpaas/xpaas_wildfly:<version> # For Wildfly case
+    FROM redhat/xpaas_eap:<version> # For EAP case
+    FROM redhat/xpaas_wildfly:<version> # For Wildfly case
     
 As extending this image, the JBoss Wildfly/EAP container is run by default, you can add your custom configuration changes
 or deployments via CLI.     

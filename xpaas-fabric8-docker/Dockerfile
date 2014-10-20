@@ -6,7 +6,7 @@
 ############################################################
 
 ####### BASE ############
-FROM xpaas/xpaas_base:1.0
+FROM redhat/xpaas_base:1.0
 
 ####### MAINTAINER ############
 MAINTAINER "JBoss XPaaS Team" "xpass-eng@redhat.com"

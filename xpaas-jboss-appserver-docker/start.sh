@@ -29,7 +29,7 @@ CONTAINER_NAME="xpaas-wildfly"
 ROOT_PASSWORD="xpaas"
 JBOSS_ADMIN_PASSWORD="admin123!"
 JBOSS_NODE_NAME="node1"
-IMAGE_NAME="xpaas/xpaas_wildfly"
+IMAGE_NAME="redhat/xpaas_wildfly"
 IMAGE_TAG="1.0"
 JBOSS_CONF_FILE="standalone.xml"
 RUN_ARGUMENTS=
@@ -44,7 +44,7 @@ function usage
 while [ "$1" != "" ]; do
     case $1 in
         -i | --image ) shift
-                                IMAGE_NAME="xpaas/xpaas_$1"
+                                IMAGE_NAME="redhat/xpaas_$1"
                                 CONTAINER_NAME="xpaas-$1"
                                 ;;
         -c | --container-name ) shift

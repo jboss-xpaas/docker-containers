@@ -3,8 +3,8 @@ XPaaS Zookeeper Docker Image
 
 This project builds a [docker](http://docker.io/) container for running XPaaS Zookeeper.
 
-This image is based on a <code>xpaas/xpaas_base</code> version <code>1.0</code> and provides a container including:     
-* Fabric8 IO version <code>3.4.6</code>
+This image is based on a <code>redhat/xpaas_base</code> version <code>1.0</code> and provides a container including:
+zookeeper server and helix controller initialization
 
 Table of contents
 ------------------
@@ -32,7 +32,7 @@ Building the docker container
 -----------------------------
 
 We have a Docker Index trusted build setup to automatically rebuild the xpass/xpass-zookeeper container whenever the
-[Dockerfile](https://github.com/pzapataf/xpaas-docker-containers/blob/master/xpaas-zookeeper-docker/Dockerfile) is updated, so you shouldn't have to rebuild it locally. But if you want to, here's now to do it...
+[Dockerfile](https://github.com/jboss-xpaas/docker-containers/blob/master/xpaas-zookeeper-docker/Dockerfile) is updated, so you shouldn't have to rebuild it locally. But if you want to, here's now to do it...
 
 Once you have [installed docker](https://www.docker.io/gettingstarted/#h_installation) you should be able to create the containers via the following:
 
@@ -48,11 +48,12 @@ Running the container
 To run a new container from XPaaS zookeeper run:
     
     ./start.sh [-c <container_name>] [-p <root_password>]
+    ./start.sh [-c <container_name>] [-p <root_password>]] -zServers [server.1=zServer1_IP:zooServer1_Port1:zooServer1_Port2\\\\nserver.2=zServer2_IP:zooServer2_Port1:zooServer2_Port2] [-cn <cluster_name>] [-cvfs <vfs-repo>] | [-h]
 
 
 Or you can try it out via docker command directly:
 
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"] xpaas/xpaas_zookeeper:<version>
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"] redhat/xpaas_zookeeper:<version>
 
 These commands will start a new XPaas zookeeper container with Zookeeper services enabled
 
@@ -170,7 +171,7 @@ Experimenting
 -------------
 To spin up a shell in one of the containers try:
 
-    docker run -P -i -t xpaas/xpaas_fabric8 /bin/bash
+    docker run -P -i -t redhat/xpaas_fabric8 /bin/bash
     
 You can then noodle around the container and run stuff & look at files etc.
 
@@ -180,4 +181,4 @@ In order to run all container services provided by this image, you have to run t
     
 Notes
 -----
-* This docker container is copied and adapted to build from <code>xpaas/xpaas_base</code> image and its services from this source [repository](https://github.com/fabric8io/fabric8-docker/)      
+* This docker container is copied and adapted to build from <code>redhat/xpaas_base</code> image and its services from this source [repository](https://github.com/fabric8io/fabric8-docker/)

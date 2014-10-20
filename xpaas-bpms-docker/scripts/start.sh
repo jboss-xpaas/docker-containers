@@ -28,7 +28,7 @@
 CONTAINER_NAME="xpaas-wildfly"
 ROOT_PASSWORD="xpaas"
 JBOSS_APPSERVER_ADMIN_PASSWORD="admin123!"
-IMAGE_NAME="xpaas/xpaas_bpms-wildfly"
+IMAGE_NAME="redhat/xpaas_bpms-wildfly"
 IMAGE_TAG="1.0"
 CONNECTION_DRIVER=h2
 CONNECTION_URL="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
@@ -62,7 +62,7 @@ fi
 while [ "$1" != "" ]; do
     case $1 in
         -i | --image ) shift
-                                IMAGE_NAME="xpaas/xpaas_$1"
+                                IMAGE_NAME="redhat/xpaas_$1"
                                 CONTAINER_NAME="xpaas-$1"
                                 ;;
         -c | --container-name ) shift

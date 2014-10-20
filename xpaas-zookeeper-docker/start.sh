@@ -53,7 +53,7 @@ while [ "$1" != "" ]; do
     shift
 done
 
-IMAGE_NAME="xpaas/xpaas_zookeeper"
+IMAGE_NAME="redhat/xpaas_zookeeper"
 IMAGE_TAG="1.0"
 
 # Check if container is already started

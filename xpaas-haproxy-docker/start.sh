@@ -41,7 +41,7 @@ while [ "$1" != "" ]; do
     shift
 done
 
-IMAGE_NAME="xpaas/xpaas_haproxy"
+IMAGE_NAME="redhat/xpaas_haproxy"
 IMAGE_TAG="1.0"
 
 # Check if container is already started

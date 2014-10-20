@@ -7,7 +7,7 @@
 ######################################################################
 
 ####### BASE ############
-FROM xpaas/xpaas_wildfly:1.0
+FROM redhat/xpaas_wildfly:1.0
 
 ####### MAINTAINER ############
 MAINTAINER "JBoss XPaaS Team" "xpass-eng@redhat.com"
