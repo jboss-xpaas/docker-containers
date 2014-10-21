@@ -1,5 +1,5 @@
 #####################################################################
-# Dockerfile to build xpaas-bpms-eap-docker container image including:
+# Dockerfile to build xpaas-bpms-docker container image including:
 #   - http daemon
 #   - EAP 6.1
 # Based on XPaaS JBoss EAP docker image

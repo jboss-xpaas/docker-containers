@@ -13,7 +13,7 @@ This image is based on a <code>fedora</code> version <code>20</code> and provide
 * wget tool     
 * Java 1.7     
 * Unzip tool    
-* Maven 3.0.5 with jboss repositories configured    
+
 
 Table of contents
 ------------------
@@ -40,7 +40,7 @@ Building the docker container
 -----------------------------
 
 We have a Docker Index trusted build setup to automatically rebuild the xpass-base/xpass-base container whenever the
-[Dockerfile](https://github.com/pzapataf/xpaas-docker-containers/blob/master/xpaas-base-docker/Dockerfile) is updated, so you shouldn't have to rebuild it locally. But if you want to, here's now to do it...
+[Dockerfile](https://github.com/jboss-xpaas/docker-containers/blob/master/xpaas-base-docker/Dockerfile) is updated, so you shouldn't have to rebuild it locally. But if you want to, here's now to do it...
 
 Once you have [installed docker](https://www.docker.io/gettingstarted/#h_installation) you should be able to create the containers via the following:
 
@@ -66,7 +66,7 @@ These commands will start a new XPaas Base container with SSH daemon enabed.
 
 **Environment variables**
 
-These are the environment variables supported when running the JBoss Wildfly/EAP container:       
+These are the environment variables supported when running the xpaas-base container:
 
 - <code>ROOT_PASSWORD</code> - The root password for <code>root</code> system user. Useful to connect via SSH
 
@@ -155,17 +155,5 @@ Notes
     <tr>
         <td>JAVA_HOME</td>
         <td>usr/lib/jvm/jre</td>
-    </tr>
-    <tr>
-        <td>M2_HOME</td>
-        <td>/opt/apache-maven</td>
-    </tr>
-    <tr>
-        <td>MAVEN_HOME</td>
-        <td>/opt/apache-maven</td>
-    </tr>
-    <tr>
-        <td>M2</td>
-        <td>/opt/apache-maven/bin</td>
     </tr>
 </table>

@@ -70,7 +70,7 @@ To run a new container from XPaaS JBoss Wildfly/EAP run:
 Or you can try it out via docker command directly:
 
     docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_APPSERVER_ADMIN_PASSWORD="<jboss_admin_password>"] [-e BPMS_CONNECTION_DRIVER="<connection_driver>"] [-e BPMS_CONNECTION_URL="<connection_url>"] [-e BPMS_CONNECTION_USER="<connection_user>"] [-e BPMS_CONNECTION_PASSWORD="<connection_password>"] redhat/xpaas_bpms-wildfly:<version>
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_APPSERVER_ADMIN_PASSWORD="<jboss_admin_password>"] [-e BPMS_CONNECTION_DRIVER="<connection_driver>"] [-e BPMS_CONNECTION_URL="<connection_url>"] [-e BPMS_CONNECTION_USER="<connection_user>"] [-e BPMS_CONNECTION_PASSWORD="<connection_password>"] redhat/xpaas_bpms-eap:<version>
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_APPSERVER_ADMIN_PASSWORD="<jboss_admin_password>"] [-e BPMS_CONNECTION_DRIVER="<connection_driver>"] [-e BPMS_CONNECTION_URL="<connection_url>"] [-e BPMS_CONNECTION_USER="<connection_user>"] [-e BPMS_CONNECTION_PASSWORD="<connection_password>"] redhat/xpaas_bpmsuite:<version>
 
 These commands will start JBoss BPMS web application.
 
@@ -105,7 +105,7 @@ For running BPMS in a clustered environment, you need to specify some other para
 
 **Notes**           
 * If no container name argument is set and image to build is <code>bpms-wildfly</code>, it defaults to <code>xpaas_bpms-wildfly</code>        
-* If no container name argument is set and image to build is <code>bpms-eap</code>, it defaults to <code>xpaas_bpms-eap</code>    
+* If no container name argument is set and image to build is <code>bpmsuite</code>, it defaults to <code>xpaas_bpmsuite</code>
 * If no root password argument is set, it defaults to <code>xpaas</code>    
 * If no JBoss Wildfly/EAP admin user password argument is set, it defaults to <code>admin123!</code>      
 * Current available bpms connection drivers are <code>h2</code> and <code>mysql</code>     
@@ -357,7 +357,7 @@ Experimenting
 To spin up a shell in one of the containers try:
 
     docker run -P -i -t redhat/xpaas_bpms-wildfly /bin/bash # For JBoss Wildfly distribution
-    docker run -P -i -t redhat/xpaas_bpms-eap /bin/bash # For JBoss EAP distribution
+    docker run -P -i -t redhat/xpaas_bpmsuite /bin/bash # For JBoss EAP distribution
     
 You can then noodle around the container and run stuff & look at files etc.
 

@@ -15,13 +15,13 @@ fi
 
 # Check if argument value is wildfly or eap (case sensitive)
 if [ ! "$1" == "bpms-eap" ] && [ ! "$1" == "bpms-wildfly" ]; then
-    echo "Argument value must be [bpms-wildfly,bpms-eap]"
+    echo "Argument value must be [bpms-wildfly, bpms-eap]"
     exit 65
 fi
 
 # Script variables
 IMAGE=$1
-IMAGE_NAME="redhat/xpaas_$IMAGE"
+IMAGE_NAME="redhat/xpaas_bpmsuite"
 IMAGE_TAG="1.0"
 
 # Work on parent directory.
@@ -33,7 +33,13 @@ echo "Generating the dockerfile for $IMAGE"
 if [ -f Dockerfile ]; then
     rm -f Dockerfile
 fi
+
+if [ "$1" == "bpms-wildfly" ]; then
+IMAGE_NAME="redhat/xpaas_bpms_wildfly"
+fi
+
 cp -f "Dockerfile.$IMAGE" Dockerfile
+
 
 # Build the container image.
 echo "Building the Docker container for $IMAGE_NAME:$IMAGE_TAG.."

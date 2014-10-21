@@ -50,7 +50,9 @@ To run a new container from XPaaS zookeeper run:
     ./start.sh [-c <container_name>] [-p <root_password>]
     ./start.sh [-c <container_name>] [-p <root_password>]] -zServers [server.1=zServer1_IP:zooServer1_Port1:zooServer1_Port2\\\\nserver.2=zServer2_IP:zooServer2_Port1:zooServer2_Port2] [-cn <cluster_name>] [-cvfs <vfs-repo>] | [-h]
 
-
+The parameter -zServers or --zookeeperServers: expects  the list of zookeeper servers that work together to ensure the zookeepeer HA.
+the   server.1=zoo1:2888:3888\\nserver.2=zoo2:2888:3888\\nserver.3=zoo3:2888:3888
+                           Other zookeeper server to ensure HA
 Or you can try it out via docker command directly:
 
     docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"] redhat/xpaas_zookeeper:<version>
@@ -66,7 +68,6 @@ These are the environment variables supported when running the JBoss Wildfly/EAP
 **Notes**           
 * If no container name argument is set, it defaults to <code>xpaas-zookeeper</code>
 * If no root password argument is set, it defaults to <code>xpaas</code>    
-* An specific user for fabric8 is created in the container: <code>zookeeper/zookeeper</code>
 
 Connection to a container using SSH
 -----------------------------------
@@ -86,34 +87,12 @@ This means that from outside the docker container; you need to use port 49001 to
 So if the port number is 49001 then you can type something like this:
 
     ssh root@localhost -p 49001
-    ssh fabric8@localhost -p 49001
-    
+
 **Notes**        
 * By default, the available users to connect using SSH are <code>root</code> and <code>fabric8</code>      
 * By default, the <code>root</code> user password is <code>xpaas</code>     
-* By default, the <code>fabric8</code> user password is <code>fabric8</code>     
-* You can change the default <code>root</code> password when running the container. See **[Running the container](#running-the-container)**      
+* You can change the default <code>root</code> password when running the container. See **[Running the container](#running-the-container)**
 
-Connection to Fabric8 web console (HawtIO)
-------------------------------------------
-
-When running a new container over this docker image, the Fabric8 web console (HawtIO based)  is started by default and waiting for connections.     
-
-In order to connect to the container using Fabric8 web console you must know the container binding port for internal <code>8181</code> port. If you type:
-
-    docker ps
-    
-you should see the port mappings for each docker container. For example you may see something like this in the PORTS section....
-
-    0.0.0.0:49156->8181/tcp
-    
-This means that from outside the docker container; you need to use port 49156 to access port 8181 inside the container.     
-
-So if the port number is 49156 then you can navigate to:
-
-    http://localhost:49156/
-
-The default user is <code>admin</code> with <code>admin</code> as password.
 
 Starting, stopping and restarting the SSH daemon
 ------------------------------------------------
@@ -129,21 +108,6 @@ To stop the SSH daemon run:
 To restart the SSH daemon run:
     
     ssh root@localhost -p <ssh_port> sh /jboss/scripts/restart.sh sshd
-
-Starting, stopping and restarting Fabric8
------------------------------------------
-
-To start Fabric8 run:
-    
-    ssh root@localhost -p <ssh_port> sh /jboss/scripts/start.sh fabric8
-
-To stop Fabric8 run:
-    
-    ssh root@localhost -p <ssh_port> sh /jboss/scripts/stop.sh fabric8
-
-To restart Fabric8 run:
-    
-    ssh root@localhost -p <ssh_port> sh /jboss/scripts/restart.sh fabric8
 
 Logging
 -------
@@ -171,7 +135,7 @@ Experimenting
 -------------
 To spin up a shell in one of the containers try:
 
-    docker run -P -i -t redhat/xpaas_fabric8 /bin/bash
+    docker run -P -i -t redhat/xpaas_zookeeper /bin/bash
     
 You can then noodle around the container and run stuff & look at files etc.
 
@@ -181,4 +145,4 @@ In order to run all container services provided by this image, you have to run t
     
 Notes
 -----
-* This docker container is copied and adapted to build from <code>redhat/xpaas_base</code> image and its services from this source [repository](https://github.com/fabric8io/fabric8-docker/)
+* This docker container is copied and adapted to build from <code>redhat/xpaas_base</code> image

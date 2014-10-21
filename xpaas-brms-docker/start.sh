@@ -25,7 +25,7 @@
 # -h | --help;              Show the script usage
 #
 
-CONTAINER_NAME="xpaas-wildfly"
+CONTAINER_NAME="xpaas-brms"
 ROOT_PASSWORD="xpaas"
 JBOSS_APPSERVER_ADMIN_PASSWORD="admin123!"
 IMAGE_NAME="redhat/xpaas_brms-wildfly"
@@ -58,13 +58,13 @@ if [ ! "$2" == "brms-eap" ] && [ ! "$2" == "brms-wildfly" ]; then
     exit
 fi
 
+if [ ! "$2" == "bpms-wildfly" ]; then
+   IMAGE_NAME="redhat/xpaas_brms_wildfly"
+   CONTAINER_NAME="xpaas-brms-wildfly"
+fi
 
 while [ "$1" != "" ]; do
     case $1 in
-        -i | --image ) shift
-                                IMAGE_NAME="redhat/xpaas_$1"
-                                CONTAINER_NAME="xpaas-$1"
-                                ;;
         -c | --container-name ) shift
                                 CONTAINER_NAME=$1
                                 ;;
@@ -121,15 +121,15 @@ echo "** BRMS connection driver: $CONNECTION_DRIVER"
 echo "** BRMS connection URL: $CONNECTION_URL"
 echo "** BRMS connection username: $CONNECTION_USERNAME"
 echo "** BRMS connection password: $CONNECTION_PASSWORD"
-image_xpaas_wildfly=$(docker run $CONTAINER_LINKING -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e JBOSS_APPSERVER_ADMIN_PASSWORD="$JBOSS_APPSERVER_ADMIN_PASSWORD" -e BRMS_CONNECTION_URL="$CONNECTION_URL" -e BRMS_CONNECTION_DRIVER="$CONNECTION_DRIVER" -e BRMS_CONNECTION_USER="$CONNECTION_USERNAME" -e BRMS_CONNECTION_PASSWORD="$CONNECTION_PASSWORD" -e BRMS_DATABASE="$CONNECTION_DATABASE" $IMAGE_NAME:$IMAGE_TAG)
-ip_wildfly=$(docker inspect $image_xpaas_wildfly | grep IPAddress | awk '{print $2}' | tr -d '",')
-echo $image_xpaas_wildfly > docker.pid
+image_xpaas_brms=$(docker run $CONTAINER_LINKING -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e JBOSS_APPSERVER_ADMIN_PASSWORD="$JBOSS_APPSERVER_ADMIN_PASSWORD" -e BRMS_CONNECTION_URL="$CONNECTION_URL" -e BRMS_CONNECTION_DRIVER="$CONNECTION_DRIVER" -e BRMS_CONNECTION_USER="$CONNECTION_USERNAME" -e BRMS_CONNECTION_PASSWORD="$CONNECTION_PASSWORD" -e BRMS_DATABASE="$CONNECTION_DATABASE" $IMAGE_NAME:$IMAGE_TAG)
+ip_brms=$(docker inspect $image_xpaas_wildfly | grep IPAddress | awk '{print $2}' | tr -d '",')
+echo $image_xpaas_brms > docker.pid
 
 # End
 echo ""
-echo "Server starting in $ip_wildfly"
-echo "You can access the server root context in http://$ip_wildfly:8080"
-echo "You can access the server HTTP administration console in http://$ip_wildfly:9990/console"
-echo "The brms is running at http://$ip_wildfly:8080/kie-drools-wb"
+echo "Server starting in $ip_brms"
+echo "You can access the server root context in http://$ip_brms:8080"
+echo "You can access the server HTTP administration console in http://$ip_brms:9990/console"
+echo "The brms is running at http://$ip_brms:8080/kie-drools-wb"
 
 exit 0

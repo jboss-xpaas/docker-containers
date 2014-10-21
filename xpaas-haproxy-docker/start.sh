@@ -6,8 +6,8 @@
 #                           If not specified, defaults to "xpaas-haproxy"
 # -p | --root-password:     The root password
 #                           If not specified, defaults to "xpaas"
-# -host | --host-list:      The root password
-#                           If not specified, defaults to "xpaas"
+# -host | --host-list:      IP1:Port1,IP2:Port2,IP3:Port3
+#                           The IP:PORT of each server
 # -h | --help;              Show the script usage
 #
 # Example: sh start.sh -c "xpaas-haproxy" -p "mypass"

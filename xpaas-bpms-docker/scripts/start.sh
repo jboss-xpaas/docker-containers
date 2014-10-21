@@ -25,10 +25,10 @@
 # -h | --help;              Show the script usage
 #
 
-CONTAINER_NAME="xpaas-wildfly"
+CONTAINER_NAME="xpaas-bpmsuite"
 ROOT_PASSWORD="xpaas"
 JBOSS_APPSERVER_ADMIN_PASSWORD="admin123!"
-IMAGE_NAME="redhat/xpaas_bpms-wildfly"
+IMAGE_NAME="redhat/xpaas_bpmsuite"
 IMAGE_TAG="1.0"
 CONNECTION_DRIVER=h2
 CONNECTION_URL="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
@@ -58,13 +58,14 @@ if [ ! "$2" == "bpms-eap" ] && [ ! "$2" == "bpms-wildfly" ]; then
     exit
 fi
 
+if [ "$2" == "bpms-wildfly" ]; then
+   IMAGE_NAME="redhat/xpaas_bpms_wildfly"
+   CONTAINER_NAME="xpaas-brms-wildfly"
+fi
+
 
 while [ "$1" != "" ]; do
     case $1 in
-        -i | --image ) shift
-                                IMAGE_NAME="redhat/xpaas_$1"
-                                CONTAINER_NAME="xpaas-$1"
-                                ;;
         -c | --container-name ) shift
                                 CONTAINER_NAME=$1
                                 ;;
@@ -119,15 +120,15 @@ echo "** BPMS connection driver: $CONNECTION_DRIVER"
 echo "** BPMS connection URL: $CONNECTION_URL"
 echo "** BPMS connection username: $CONNECTION_USERNAME"
 echo "** BPMS connection password: $CONNECTION_PASSWORD"
-image_xpaas_wildfly=$(docker run $CONTAINER_LINKING -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e JBOSS_APPSERVER_ADMIN_PASSWORD="$JBOSS_APPSERVER_ADMIN_PASSWORD" -e BPMS_CONNECTION_URL="$CONNECTION_URL" -e BPMS_CONNECTION_DRIVER="$CONNECTION_DRIVER" -e BPMS_CONNECTION_USER="$CONNECTION_USERNAME" -e BPMS_CONNECTION_PASSWORD="$CONNECTION_PASSWORD" -e BPMS_DATABASE="$CONNECTION_DATABASE" $IMAGE_NAME:$IMAGE_TAG)
-ip_wildfly=$(docker inspect $image_xpaas_wildfly | grep IPAddress | awk '{print $2}' | tr -d '",')
-echo $image_xpaas_wildfly > docker.pid
+image_xpaas_bpmsuite=$(docker run $CONTAINER_LINKING -P -d --name $CONTAINER_NAME -e ROOT_PASSWORD="$ROOT_PASSWORD" -e JBOSS_APPSERVER_ADMIN_PASSWORD="$JBOSS_APPSERVER_ADMIN_PASSWORD" -e BPMS_CONNECTION_URL="$CONNECTION_URL" -e BPMS_CONNECTION_DRIVER="$CONNECTION_DRIVER" -e BPMS_CONNECTION_USER="$CONNECTION_USERNAME" -e BPMS_CONNECTION_PASSWORD="$CONNECTION_PASSWORD" -e BPMS_DATABASE="$CONNECTION_DATABASE" $IMAGE_NAME:$IMAGE_TAG)
+ip_bpmsuite=$(docker inspect $image_xpaas_bpmsuite | grep IPAddress | awk '{print $2}' | tr -d '",')
+echo $image_xpaas_bpmsuite > docker.pid
 
 # End
 echo ""
-echo "Server starting in $ip_wildfly"
-echo "You can access the server root context in http://$ip_wildfly:8080"
-echo "You can access the server HTTP administration console in http://$ip_wildfly:9990/console"
-echo "The bpms is running at http://$ip_wildfly:8080/kie-wb"
+echo "Server starting in $ip_bpmsuite"
+echo "You can access the server root context in http://$ip_bpmsuite:8080"
+echo "You can access the server HTTP administration console in http://$ip_bpmsuite:9990/console"
+echo "The bpms is running at http://$ip_bpmsuite:8080/kie-wb"
 
 exit 0

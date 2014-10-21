@@ -1,5 +1,5 @@
 #####################################################################
-# Dockerfile to build xpaas-bpms-wildfly-docker container image including:
+# Dockerfile to build xpaas-bpms-docker container image including:
 #   - http daemon
 #   - wildfly 8.1
 # Based on XPaaS JBoss Wildfly docker image
