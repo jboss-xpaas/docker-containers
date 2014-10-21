@@ -19,6 +19,13 @@ if [ ! "$1" == "eap" ] && [ ! "$1" == "wildfly" ]; then
     exit 65
 fi
 
+# Check EAP is present.
+EAP_FILE=./bin/jboss-eap-6.3.0.zip
+if [ "$1" == "eap" ] && [ ! -f $EAP_FILE ]; then
+    echo "EAP zip file is not present in bin/. Please add your EAP binaries before building the image."
+    exit 65
+fi
+
 # Script variables
 IMAGE=$1
 IMAGE_NAME="redhat/xpaas_$IMAGE"

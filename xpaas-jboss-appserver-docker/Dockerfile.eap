@@ -36,13 +36,13 @@ ENV JBOSS_DOMAIN_MASTER_PORT 9999
 # ENV JBOSS_DEBUG_PORT // Not set by default
 
 ####### EAP 6.1 ############
-ADD bin/jboss-eap-6.1.1.zip /tmp/
+ADD bin/jboss-eap-6.3.0.zip /tmp/
 
 WORKDIR /tmp
-RUN unzip -q jboss-eap-6.1.1.zip; \
-mv jboss-eap-6.1/ jboss-appserver/; \
+RUN unzip -q jboss-eap-6.3.0.zip; \
+mv jboss-eap-6.3/ jboss-appserver/; \
 mv jboss-appserver/ /opt/; \
-rm -rf jboss-eap-6.1.1.zip
+rm -rf jboss-eap-6.3.0.zip
 ADD conf/jboss-appserver/host-slave-eap.xml /opt/jboss-appserver/domain/configuration/host-slave.xml
 
 ####### ADDITIONAL EAP MODULES ############
