@@ -21,8 +21,8 @@ cd xpaas-base-docker
 cd ..
 
 # XPaaS Zookeeper
-echo "Building XPaaS Zookeeper..."
-cd xpaas-zookeeper-docker
+echo "Building XPaaS uf-cluster-controller..."
+cd xpaas-uf-cluster-controller-docker
 ./build.sh
 cd ..
 

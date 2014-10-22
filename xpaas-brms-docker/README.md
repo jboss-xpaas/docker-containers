@@ -62,8 +62,8 @@ To run a new container from XPaaS JBoss Wildfly/EAP run:
 
 Or you can try it out via docker command directly:
 
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_APPSERVER_ADMIN_PASSWORD="<jboss_admin_password>"] [-e BRMS_CONNECTION_DRIVER="<connection_driver>"] [-e BRMS_CONNECTION_URL="<connection_url>"] [-e BRMS_CONNECTION_USER="<connection_user>"] [-e BRMS_CONNECTION_PASSWORD="<connection_password>"] redhat/xpaas_brms-wildfly:<version>
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_APPSERVER_ADMIN_PASSWORD="<jboss_admin_password>"] [-e BRMS_CONNECTION_DRIVER="<connection_driver>"] [-e BRMS_CONNECTION_URL="<connection_url>"] [-e BRMS_CONNECTION_USER="<connection_user>"] [-e BRMS_CONNECTION_PASSWORD="<connection_password>"] redhat/xpaas_brms-eap:<version>
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_APPSERVER_ADMIN_PASSWORD="<jboss_admin_password>"] [-e BRMS_CONNECTION_DRIVER="<connection_driver>"] [-e BRMS_CONNECTION_URL="<connection_url>"] [-e BRMS_CONNECTION_USER="<connection_user>"] [-e BRMS_CONNECTION_PASSWORD="<connection_password>"] redhat/xpaas-brms-wildfly:<version>
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_APPSERVER_ADMIN_PASSWORD="<jboss_admin_password>"] [-e BRMS_CONNECTION_DRIVER="<connection_driver>"] [-e BRMS_CONNECTION_URL="<connection_url>"] [-e BRMS_CONNECTION_USER="<connection_user>"] [-e BRMS_CONNECTION_PASSWORD="<connection_password>"] redhat/xpaas-brms-eap:<version>
 
 These commands will start JBoss BRMS web application.
 
@@ -235,7 +235,7 @@ Where <code>mysql_container_ip</code> - Can be found by running:
  
      ./start.sh -i brms-wildfly -c xpaas_brms-wildfly -l brms-mysql:mysql -db brms # Using start.sh script
       
-      docker run --link brms-mysql:mysql -P -d -e BRMS_DATABASE="brms" redhat/xpaas_brms-wildfly # Using docker command
+      docker run --link brms-mysql:mysql -P -d -e BRMS_DATABASE="brms" redhat/xpaas-brms-wildfly # Using docker command
       
  The JBoss BRMS database connection will automatically link to the MySQL docker container instance using the <code>brms</code> database.
  
@@ -250,8 +250,8 @@ Experimenting
 -------------
 To spin up a shell in one of the containers try:
 
-    docker run -P -i -t redhat/xpaas_brms-wildfly /bin/bash # For JBoss Wildfly distribution
-    docker run -P -i -t redhat/xpaas_brms-eap /bin/bash # For JBoss EAP distribution
+    docker run -P -i -t redhat/xpaas-brms-wildfly /bin/bash # For JBoss Wildfly distribution
+    docker run -P -i -t redhat/xpaas-brms-eap /bin/bash # For JBoss EAP distribution
     
 You can then noodle around the container and run stuff & look at files etc.
 

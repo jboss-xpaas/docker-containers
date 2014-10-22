@@ -69,8 +69,8 @@ To run a new container from XPaaS JBoss Wildfly/EAP run:
 
 Or you can try it out via docker command directly:
 
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_APPSERVER_ADMIN_PASSWORD="<jboss_admin_password>"] [-e BPMS_CONNECTION_DRIVER="<connection_driver>"] [-e BPMS_CONNECTION_URL="<connection_url>"] [-e BPMS_CONNECTION_USER="<connection_user>"] [-e BPMS_CONNECTION_PASSWORD="<connection_password>"] redhat/xpaas_bpms-wildfly:<version>
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_APPSERVER_ADMIN_PASSWORD="<jboss_admin_password>"] [-e BPMS_CONNECTION_DRIVER="<connection_driver>"] [-e BPMS_CONNECTION_URL="<connection_url>"] [-e BPMS_CONNECTION_USER="<connection_user>"] [-e BPMS_CONNECTION_PASSWORD="<connection_password>"] redhat/xpaas_bpmsuite:<version>
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_APPSERVER_ADMIN_PASSWORD="<jboss_admin_password>"] [-e BPMS_CONNECTION_DRIVER="<connection_driver>"] [-e BPMS_CONNECTION_URL="<connection_url>"] [-e BPMS_CONNECTION_USER="<connection_user>"] [-e BPMS_CONNECTION_PASSWORD="<connection_password>"] redhat/xpaas-bpms-wildfly:<version>
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"]  [-e JBOSS_APPSERVER_ADMIN_PASSWORD="<jboss_admin_password>"] [-e BPMS_CONNECTION_DRIVER="<connection_driver>"] [-e BPMS_CONNECTION_URL="<connection_url>"] [-e BPMS_CONNECTION_USER="<connection_user>"] [-e BPMS_CONNECTION_PASSWORD="<connection_password>"] redhat/xpaas-bpmsuite:<version>
 
 These commands will start JBoss BPMS web application.
 
@@ -261,7 +261,7 @@ Take a look at the following example:
 
     ./scripts/start.sh -i bpms-wildfly -c xpaas_bpms-wildfly -l bpms-mysql:mysql -db bpms # Using start.sh script
      
-     docker run --link bpms-mysql:mysql -P -d -e BPMS_DATABASE="bpms" redhat/xpaas_bpms-wildfly # Using docker command
+     docker run --link bpms-mysql:mysql -P -d -e BPMS_DATABASE="bpms" redhat/xpaas-bpms-wildfly # Using docker command
      
 The JBoss BPMS database connection will automatically link to the MySQL docker container instance using the <code>bpms</code> database.
 
@@ -356,8 +356,8 @@ Experimenting
 -------------
 To spin up a shell in one of the containers try:
 
-    docker run -P -i -t redhat/xpaas_bpms-wildfly /bin/bash # For JBoss Wildfly distribution
-    docker run -P -i -t redhat/xpaas_bpmsuite /bin/bash # For JBoss EAP distribution
+    docker run -P -i -t redhat/xpaas-bpms-wildfly /bin/bash # For JBoss Wildfly distribution
+    docker run -P -i -t redhat/xpaas-bpmsuite /bin/bash # For JBoss EAP distribution
     
 You can then noodle around the container and run stuff & look at files etc.
 

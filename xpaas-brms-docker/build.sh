@@ -21,7 +21,7 @@ fi
 
 # Script variables
 IMAGE=$1
-IMAGE_NAME="redhat/xpaas_brms"
+IMAGE_NAME="redhat/xpaas-brms"
 IMAGE_TAG="1.0"
 
 # Generate the dockerfile for the given image to build.
@@ -31,7 +31,7 @@ if [ -f Dockerfile ]; then
 fi
 
 if [ "$1" == "brms-wildfly" ]; then
-IMAGE_NAME="redhat/xpaas_brms_wildfly"
+IMAGE_NAME="redhat/xpaas-brms-wildfly"
 fi
 
 cp -f "Dockerfile.$IMAGE" Dockerfile

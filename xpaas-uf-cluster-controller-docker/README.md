@@ -3,7 +3,7 @@ XPaaS Zookeeper Docker Image
 
 This project builds a [docker](http://docker.io/) container for running XPaaS Zookeeper.
 
-This image is based on a <code>redhat/xpaas_base</code> version <code>1.0</code> and provides a container including:
+This image is based on a <code>redhat/xpaas-base</code> version <code>1.0</code> and provides a container including:
 zookeeper server and helix controller initialization
 
 Table of contents
@@ -55,7 +55,7 @@ the   server.1=zoo1:2888:3888\\nserver.2=zoo2:2888:3888\\nserver.3=zoo3:2888:388
                            Other zookeeper server to ensure HA
 Or you can try it out via docker command directly:
 
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"] redhat/xpaas_zookeeper:<version>
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"] redhat/xpaas-uf-cluster-controller:<version>
 
 These commands will start a new XPaas zookeeper container with Zookeeper services enabled
 
@@ -135,7 +135,7 @@ Experimenting
 -------------
 To spin up a shell in one of the containers try:
 
-    docker run -P -i -t redhat/xpaas_zookeeper /bin/bash
+    docker run -P -i -t redhat/xpaas-uf-cluster-controller /bin/bash
     
 You can then noodle around the container and run stuff & look at files etc.
 
@@ -145,4 +145,4 @@ In order to run all container services provided by this image, you have to run t
     
 Notes
 -----
-* This docker container is copied and adapted to build from <code>redhat/xpaas_base</code> image
+* This docker container is copied and adapted to build from <code>redhat/xpaas-base</code> image

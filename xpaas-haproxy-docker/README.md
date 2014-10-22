@@ -3,7 +3,7 @@ XPaaS haproxy Docker Image
 
 This project builds a [docker](http://docker.io/) container for running XPaaS based applications.
 
-This image is based on a <code>redhat/xpaas_base</code> version <code>1.0</code> and provides a container including:
+This image is based on a <code>redhat/xpaas-base</code> version <code>1.0</code> and provides a container including:
 HAProxy, is a free, very fast and reliable solution offering high availability, load balancing, and proxying for TCP and HTTP-based applications. ( http://www.haproxy.org/)
 
 
@@ -53,7 +53,7 @@ The parameter hosts: expects  the list of web servers to be managed by haproxy.
 
 Or you can try it out via docker command directly:
 
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"] redhat/xpaas_haproxy:<version>
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"] redhat/xpaas-haproxy:<version>
 
 
 **Environment variables**
@@ -111,7 +111,7 @@ Experimenting
 -------------
 To spin up a shell in one of the containers try:
 
-    docker run -P -i -t redhat/xpaas_haproxy /bin/bash
+    docker run -P -i -t redhat/xpaas-haproxy /bin/bash
 
 You can then noodle around the container and run stuff & look at files etc.
 
@@ -121,4 +121,4 @@ In order to run all container services provided by this image, you have to run t
 
 Notes
 -----
-* This docker container is copied and adapted to build from <code>redhat/xpaas_base</code> image
+* This docker container is copied and adapted to build from <code>redhat/xpaas-base</code> image

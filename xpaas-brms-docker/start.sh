@@ -28,7 +28,7 @@
 CONTAINER_NAME="xpaas-brms"
 ROOT_PASSWORD="xpaas"
 JBOSS_APPSERVER_ADMIN_PASSWORD="admin123!"
-IMAGE_NAME="redhat/xpaas_brms-wildfly"
+IMAGE_NAME="redhat/xpaas-brms-wildfly"
 IMAGE_TAG="1.0"
 CONNECTION_DRIVER=h2
 CONNECTION_URL="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"
@@ -59,7 +59,7 @@ if [ ! "$2" == "brms-eap" ] && [ ! "$2" == "brms-wildfly" ]; then
 fi
 
 if [ ! "$2" == "bpms-wildfly" ]; then
-   IMAGE_NAME="redhat/xpaas_brms_wildfly"
+   IMAGE_NAME="redhat/xpaas-brms-wildfly"
    CONTAINER_NAME="xpaas-brms-wildfly"
 fi
 

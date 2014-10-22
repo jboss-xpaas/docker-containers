@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-IMAGE_NAME="redhat/xpaas_zookeeper"
+IMAGE_NAME="redhat/xpaas-uf-cluster-controller"
 IMAGE_TAG="1.0"
 
 echo "Building the Docker container for $IMAGE_NAME:$IMAGE_TAG.."

@@ -21,7 +21,7 @@ fi
 
 # Script variables
 IMAGE=$1
-IMAGE_NAME="redhat/xpaas_bpmsuite"
+IMAGE_NAME="redhat/xpaas-bpmsuite"
 IMAGE_TAG="1.0"
 
 # Work on parent directory.
@@ -35,7 +35,7 @@ if [ -f Dockerfile ]; then
 fi
 
 if [ "$1" == "bpms-wildfly" ]; then
-IMAGE_NAME="redhat/xpaas_bpms_wildfly"
+IMAGE_NAME="redhat/xpaas-bpms-wildfly"
 fi
 
 cp -f "Dockerfile.$IMAGE" Dockerfile

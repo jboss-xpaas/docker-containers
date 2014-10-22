@@ -14,7 +14,7 @@
 #
 # Example: sh start.sh -c "xpaas-fabric8" -p "mypass"
 
-CONTAINER_NAME="xpaas-zookeeper"
+CONTAINER_NAME="xpaas-uf-cluster-controller"
 ROOT_PASSWORD="xpaas"
 ZSERVERS="#"
 CLUSTER_NAME="bpms-cluster"
@@ -53,7 +53,7 @@ while [ "$1" != "" ]; do
     shift
 done
 
-IMAGE_NAME="redhat/xpaas_zookeeper"
+IMAGE_NAME="redhat/xpaas-uf-cluster-controller"
 IMAGE_TAG="1.0"
 
 # Check if container is already started

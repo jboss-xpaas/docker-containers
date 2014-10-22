@@ -3,7 +3,7 @@ XPaaS Fabric8 Docker Image
 
 This project builds a [docker](http://docker.io/) container for running XPaaS Fabric8.
 
-This image is based on a <code>redhat/xpaas_base</code> version <code>1.0</code> and provides a container including:
+This image is based on a <code>redhat/xpaas-base</code> version <code>1.0</code> and provides a container including:
 * Fabric8 IO version <code>1.1.0.CR5</code>   
 
 Table of contents
@@ -53,7 +53,7 @@ To run a new container from XPaaS fabric8 run:
 
 Or you can try it out via docker command directly:
 
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"] redhat/xpaas_fabric8:<version>
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"] redhat/xpaas-fabric8:<version>
 
 These commands will start a new XPaas fabric8 container with Fabric8 services enabled     
 
@@ -171,7 +171,7 @@ Experimenting
 -------------
 To spin up a shell in one of the containers try:
 
-    docker run -P -i -t redhat/xpaas_fabric8 /bin/bash
+    docker run -P -i -t redhat/xpaas-fabric8 /bin/bash
     
 You can then noodle around the container and run stuff & look at files etc.
 
@@ -181,4 +181,4 @@ In order to run all container services provided by this image, you have to run t
     
 Notes
 -----
-* This docker container is copied and adapted to build from <code>redhat/xpaas_base</code> image and its services from this source [repository](https://github.com/fabric8io/fabric8-docker/)
+* This docker container is copied and adapted to build from <code>redhat/xpaas-base</code> image and its services from this source [repository](https://github.com/fabric8io/fabric8-docker/)

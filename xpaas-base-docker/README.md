@@ -60,7 +60,7 @@ To run a new container from XPaaS base run:
 
 Or you can try it out via docker command directly:
 
-    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"] redhat/xpaas_base:<version>
+    docker run -P -d [--name <container_name>] [-e ROOT_PASSWORD="<root_password>"] redhat/xpaas-base:<version>
 
 These commands will start a new XPaas Base container with SSH daemon enabed.     
 
@@ -134,7 +134,7 @@ Experimenting
 -------------
 To spin up a shell in one of the containers try:
 
-    docker run -P -i -t redhat/xpaas_base /bin/bash
+    docker run -P -i -t redhat/xpaas-base /bin/bash
     
 You can then noodle around the container and run stuff & look at files etc.
 

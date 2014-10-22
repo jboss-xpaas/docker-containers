@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-IMAGE_NAME="redhat/xpaas_fabric8"
+IMAGE_NAME="redhat/xpaas-fabric8"
 IMAGE_TAG="1.0"
 
 echo "Building the Docker container for $IMAGE_NAME:$IMAGE_TAG.."

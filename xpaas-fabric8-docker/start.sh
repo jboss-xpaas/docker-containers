@@ -35,7 +35,7 @@ while [ "$1" != "" ]; do
     shift
 done
 
-IMAGE_NAME="redhat/xpaas_fabric8"
+IMAGE_NAME="redhat/xpaas-fabric8"
 IMAGE_TAG="1.0"
 
 # Check if container is already started
